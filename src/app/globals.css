@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.fade-in {
+animation: appear 200ms;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.scale-up {
+animation: growUp 200ms;
+}
+
+@keyframes growUp {
+    0% {
+        scale: 0;
+    }
+    100% {
+        scale: 1;
+    }
+}
+
+.trinagle {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #27272a;
+}
+
+
+.blue-btn {
+    @apply bg-blue-500 hover:bg-blue-600  duration-300 text-white font-semibold rounded-lg px-3 py-1
+}
