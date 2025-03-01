@@ -2,18 +2,18 @@
 import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/cards/ProductCard';
 import Navbar from '@/components/Navbar';
-import { Categorie } from '@/types/types';
+import { Category } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 
 const page = () => {
-  const [categorie, setCategorie] = useState<Categorie>()
+  const [category, setCategory] = useState<Category>()
   const URL = process.env.NEXT_PUBLIC_API_URL
   const searchParams = useSearchParams();
   const id = searchParams.get('id')
 
-  console.log(categorie);
+  console.log(category);
 
 
 
@@ -21,9 +21,9 @@ const page = () => {
     const fetchProductsByCategory = async () => {
       if (!id) return
       try {
-        const response = await fetch(URL + `categories/${id}`);
+        const response = await fetch(URL + `category/${id}`);
         const data = await response.json();
-        setCategorie(data)
+        setCategory(data)
       } catch (error) {
         console.error('No se pudo obtener los datos', error)
       }
@@ -31,7 +31,7 @@ const page = () => {
     fetchProductsByCategory()
   }, [id])
 
-  const prods = categorie?.product || []
+  const prods = category?.product || []
 
   return (
     <div>
@@ -39,7 +39,7 @@ const page = () => {
       <main className='max-w-[75rem] mx-auto'>
         <div className='flex gap-6 py-4'>
           <figure className='w-[70%] mx-auto'>
-            <img src={`/img/${categorie?.name.toLocaleLowerCase()}.webp`} alt="" className='w-full' />
+            <img src={`/img/${category?.name.toLocaleLowerCase()}.webp`} alt="" className='w-full' />
           </figure>
           <HeroSection fontSize='text-md' maxWidth='max-w-[25rem]' />
         </div>

@@ -10,7 +10,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export default function Home() {
   const [page, setPage] = useState(1)
-  const [products, setProducts] = useState<any>({})
+  const [products, setProducts] = useState<{ data: Product[], cantPages: number }>({ data: [], cantPages: 1 });
   const [loading, setLoading] = useState(true)
 
 
@@ -59,12 +59,11 @@ export default function Home() {
           <div className="w-full"><img src="/img/loading.gif" alt="Loader" className="w-[15rem] mx-auto my-20" /> </div>
           :
           <div className="flex flex-wrap mx-auto  gap-4 ">
-            {
-              products.data.map((item: Product, i: number) => (
-                <Link href={'/' + item.id} key={i}><ProductCard item={item} /></Link>
-                // <button onClick={() => selectItem(item)} key={i}><ItemCard item={item} /></button>
-              ))
-            }
+            {products.data?.map((item: Product, i: number) => (
+              <Link href={`/${item.id}`} key={i}>
+                <ProductCard item={item} />
+              </Link>
+            ))}
           </div>
         }
       </main>
