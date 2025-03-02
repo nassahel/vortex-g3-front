@@ -1,6 +1,6 @@
 "use client"
 import AddEditProductModal from '@/components/modals/AddEditProductModal';
-import { Product } from '@/content/products';
+import useAppStore from '@/zustand/zustand';
 import React, { useEffect, useState } from 'react'
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -18,6 +18,7 @@ interface User {
 }
 
 const page = () => {
+    const { token } = useAppStore((state: any) => state)
     const [users, setUsers] = useState([])
     const [modal, setModal] = useState(false);
     const [productEdit, setProductEdit] = useState(null)
@@ -25,15 +26,24 @@ const page = () => {
     const [search, setSearch] = useState('')
     const URL = process.env.NEXT_PUBLIC_API_URL
 
-    console.log(users);
+    console.log(token);
 
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(URL + 'users/');
+                const response = await fetch(URL + 'users/admin/all', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    }
+                }
+                );
                 const data = await response.json();
-                setUsers(data)
+                console.log(data);
+
+                setUsers(data.data)
             } catch (error) {
                 console.error('No se pudo obtener los datos', error)
             }
@@ -54,7 +64,6 @@ const page = () => {
             <div>
                 <section className='flex flex-col gap-1'>
                     <article className='bg-neutral-800 text-white text-center flex rounded-sm overflow-hidden'>
-                        <p className='w-10'></p>
                         <p className={claseUlt}>Nombre</p>
                         <p className={claseUlt}>Email</p>
                         <p className={claseUlt}>Direccion</p>
@@ -69,7 +78,6 @@ const page = () => {
                         users.length !== 0 ? users.map((item: User, i) => (
                             // resultMenus.map((menu, i) => (
                             <article key={i} className='bg-white flex rounded-sm'>
-                                <img src={item.image === '' ? defaultImage : item.image} alt={item.name} className='h-full object-cover w-10' />
                                 <p className={claseUlt}>{item.name}</p>
                                 <p className={claseUlt}>{item.email}</p>
                                 <p className={claseUlt}>{item.address}</p>

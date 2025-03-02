@@ -2,15 +2,14 @@
 import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/cards/ProductCard";
 import Navbar from "@/components/Navbar";
-import { Product } from "@/types/types";
-import Image from "next/image";
+import { MostBoughtProduct, Product } from "@/types/types";
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export default function Home() {
   const [page, setPage] = useState(1)
-  const [products, setProducts] = useState<{ data: Product[], cantPages: number }>({ data: [], cantPages: 1 });
+  const [products, setProducts] = useState<MostBoughtProduct[]>();
   const [loading, setLoading] = useState(true)
 
 
@@ -20,8 +19,10 @@ export default function Home() {
       setLoading(true)
       const URL = process.env.NEXT_PUBLIC_API_URL
       try {
-        const response = await fetch(`${URL}products/active?limit=8&page=${page}`);
+        const response = await fetch(`${URL}product/most-bought-products?limit=4`);
         const data = await response.json();
+        console.log(data);
+
         setProducts(data)
         setLoading(false)
       } catch (error) {
@@ -32,20 +33,20 @@ export default function Home() {
   }, [page])
 
 
-  console.log(products);
+  // console.log(products);
   // console.log(itemSelected);
 
 
-  const nextPage = () => {
-    if (page < products.cantPages) {
-      setPage((prev) => prev + 1)
-    }
-  }
-  const backPage = () => {
-    if (page > 1) {
-      setPage((prev) => prev - 1)
-    }
-  }
+  // const nextPage = () => {
+  //   if (page < products.cantPages) {
+  //     setPage((prev) => prev + 1)
+  //   }
+  // }
+  // const backPage = () => {
+  //   if (page > 1) {
+  //     setPage((prev) => prev - 1)
+  //   }
+  // }
 
   // console.log('pagina', page);
 
@@ -59,21 +60,16 @@ export default function Home() {
           <div className="w-full"><img src="/img/loading.gif" alt="Loader" className="w-[15rem] mx-auto my-20" /> </div>
           :
           <div className="flex flex-wrap mx-auto  gap-4 ">
-            {products.data?.map((item: Product, i: number) => (
-              <Link href={`/${item.id}`} key={i}>
-                <ProductCard item={item} />
-              </Link>
-            ))}
+            {products && products.length < 1 ?
+              <p>No hay productos para mostrar</p>
+              : products?.map((item: MostBoughtProduct, i: number) => (
+                <Link href={`/${item.id}`} key={i}>
+                  <ProductCard item={item} />
+                </Link>
+              ))}
           </div>
         }
-      </main>
-      {
-        !loading && <div className="flex items-center gap-4 w-full justify-center my-10">
-          <button onClick={backPage} className="flex items-center gap-2 border border-neutral-500 px-1"><IoIosArrowBack /> <p>Anterior</p> </button>
-          <p>{page}</p>
-          <button onClick={nextPage} className="flex items-center gap-2 border border-neutral-500 px-1"> <p>Siguiente</p> <IoIosArrowForward /></button>
-        </div>
-      }
+      </main>     
     </div>
   );
 }

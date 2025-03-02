@@ -24,7 +24,6 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     return (
         <div>
             <section className='lg:hidden bg-neutral-200 h-screen flex text-center text-neutral-600  flex-col items-center justify-center px-4'>
-                <p className='font-bold text-lg'>Santori Delivery</p>
                 <img src="/img/pclogo.png" alt="logo PC" className='w-1/3' />
                 <p>Esta pagina solo puede verse desde una pc</p>
                 <p>Por favor conectese desde una Pc para usar el modo administrador</p>
@@ -32,9 +31,9 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
             </section>
 
             <section className='min-h-screen hidden lg:flex flex-col text-neutral-700'>
-                <header className='bg-mercado h-[4rem] border-b border-neutral-200 flex items-center   '>
+                <header className='bg-black h-[4rem] border-b border-neutral-200 flex items-center   '>
                     <Link href="/" className={` px-3 `}>
-                        <img src="/img/mercado_liebre_logo.png" alt="logo" className='h-10 mx-auto ' />
+                        <p className="font-bold text-3xl text-neutral-100">LuxShop</p>
                     </Link>
                     <section className='flex items-center justify-center grow'>
                         <h2 className="font-semibold ">Administración</h2>
