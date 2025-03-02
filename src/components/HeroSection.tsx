@@ -11,10 +11,10 @@ const HeroSection = ({
 
 }: Props) => {
   return (
-    <section className='h-screen bg-neutral-200 flex flex-col justify-end'>
+    <section className='h-screen bg-neutral-200 flex flex-col justify-end w-full'>
       <div className='w-[80rem] flex items-center mx-auto '>
-        <div className='w-1/2 flex flex-col justify-center'>
-          <h1 className='text-7xl font-extrabold'>ENCUENTRA LA ROPA QUE COMBINE CON TU ESTILO</h1>
+        <div className='lg:w-1/2 flex flex-col justify-center'>
+          <h1 className='lg:text-7xl font-extrabold'>ENCUENTRA LA ROPA QUE COMBINE CON TU ESTILO</h1>
           <h3 className='text-lg mt-6'>Explore nuestra variada gama de prendas meticulosamente elaboradas, diseñadas para resaltar su individualidad y satisfacer su sentido del estilo.</h3>
           <button className='bg-black rounded-full py-4 px-12 hover:bg-neutral-800 duration-200 mt-8 text-white w-fit'>Explorar categorías</button>
           <div className='flex justify-center mt-10 mb-20'>

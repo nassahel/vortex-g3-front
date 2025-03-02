@@ -3,8 +3,6 @@ import useAppStore from '@/zustand/zustand';
 import Link from 'next/link';
 import { useState } from 'react'
 
-
-
 interface FormData {
   email: string;
   password: string;
@@ -19,11 +17,8 @@ const page = () => {
     password: ''
   })
 
-
   const inputStyle: string = 'border rounded-lg py-2 px-4 outline-blue-600 mb-4';
   const labelStyle: string = ''
-
-
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true)
@@ -45,7 +40,9 @@ const page = () => {
       })
 
       if (!response.ok) {
+        console.log(response);
         throw new Error(`Error al obtener datos: ${response.status}`)
+        
       }
 
       const data = await response.json()
@@ -68,11 +65,11 @@ const page = () => {
         <input value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputStyle} type="text" name="email" id="email" />
         <label className={labelStyle} htmlFor="password">Contraseña</label>
         <input value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className={inputStyle} type="text" name="password" id="password" />
-        <button type='submit' className='bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg'>{loading ? 'Ingresando...' : 'Ingresar'}</button>
+        <button type='submit' className='bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg'>{loading ? 'Ingresando...' : 'Ingresar'}</button>
       </form>
       <div className='text-center'>
-        <p>No tenés cuenta? <Link href="/user/register" className='text-blue-500'>Registrarse</Link></p>
-        <Link className='text-sm text-blue-600' href=''>Olvide mi contraseña</Link>
+        <p>No tenés cuenta? <Link href="/user/register" className='font-semibold'>Registrarse</Link></p>
+        <Link className='text-sm font-semibold' href=''>Olvide mi contraseña</Link>
       </div>
     </div>
   )
