@@ -47,7 +47,7 @@ const BtnCategory = (props: Props) => {
                             {
                                 categories.map((item: any, i) => (
                                     <li key={i} className='w-[10rem] h-8 flex items-center  hover:bg-neutral-600 duration-200 cursor-pointer'>
-                                        <Link href={`/c?id=${item.id}`} className=' w-full px-8 ' >
+                                        <Link href={`/category?id=${item.id}`} className=' w-full px-8 ' >
                                             {item.name}
                                         </Link>
                                     </li>

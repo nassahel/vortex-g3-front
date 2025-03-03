@@ -46,9 +46,9 @@ const Navbar = (props: Props) => {
                     </div>
                 }
                 <div className='flex max-w-[80rem] min-w-[60rem] py-4 mx-auto gap-10 '>
-                    <div>
+                    <Link href="/">
                         <h2 className='text-4xl font-bold'>LuxShop</h2>
-                    </div>
+                    </Link>
                     <div className='flex items-center justify-end gap-5'>
                         <BtnCategory />
                         {

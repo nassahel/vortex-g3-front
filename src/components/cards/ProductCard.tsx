@@ -1,10 +1,7 @@
-import { MostBoughtProduct } from '@/types/types';
-import Image from 'next/image';
-import React from 'react'
-import { PiHeartStraightThin, PiHeartStraightFill } from "react-icons/pi";
+import Link from "next/link"
 
 interface Props {
-    item: MostBoughtProduct
+    item: any
 }
 
 const ProductCard = ({ item }: Props) => {
@@ -12,14 +9,9 @@ const ProductCard = ({ item }: Props) => {
 
 
     return (
-        <div className=' rounded-3xl w-[17rem] h-[30rem] group cursor-pointer bg-white hover:shadow-lg duration-200 mx-auto '>
-            <figure className='h-[60%] border-b relative rounded-3xl overflow-hidden  duration-400'>
-                {/* <div className={`${isFavorite ? 'inline' : 'hidden group-hover:inline'} absolute top-2 right-2 rounded-full p-1 bg-white text-xl text-blue-800 `}>
-                    {
-                        isFavorite ? <PiHeartStraightFill /> : <PiHeartStraightThin />
-                    }
-                </div> */}
-                <Image width={637} height={582} src="/img/default-product.webp" alt={name} className='h-full mx-auto object-cover' />
+        <Link href={`/${item.id}`} className=' rounded-3xl w-[17rem] h-[26rem]  group cursor-pointer bg-white hover:shadow-lg duration-200'>
+            <figure className='h-[60%] relative overflow-hidden rounded-2xl duration-400'>
+                <img src={item.images[0].url || "/img/default-product.webp"} alt={name} className='h-full w-full object-cover' />
             </figure>
             <div className='h-[40%] px-4 mt-2'>
                 <p className='font-semibold text-lg'>{name}</p>
@@ -34,7 +26,7 @@ const ProductCard = ({ item }: Props) => {
                 <p className='text-2xl font-semibold'>${price}</p>
             </div>
 
-        </div>
+        </Link>
     )
 }
 
