@@ -163,29 +163,33 @@ const page = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-4/5">
-                        <h2 className="text-black text-3xl capitalize font-semibold">
-                            {
-                                categories.find((item: any) => item.id === id)
-                                    ?.name
-                            }
-                        </h2>
+                    <div className="w-4/5 md:min-h-[700px] flex flex-col justify-between">
+                        <div>
+                            <h2 className="text-black text-3xl capitalize font-semibold">
+                                {
+                                    categories.find(
+                                        (item: any) => item.id === id
+                                    )?.name
+                                }
+                            </h2>
 
-                        <div className="flex flex-wrap w-full gap-8 pt-10 pb-10">
-                            {products?.length === 0 ? (
-                                <div className="italic">Cargando...</div>
-                            ) : (
-                                products?.map((item: any, i: number) => (
-                                    <ProductCard key={i} item={item} />
-                                ))
-                            )}
+                            <div className="flex flex-wrap w-full gap-8 pt-10 pb-10">
+                                {products?.length === 0 ? (
+                                    <div className="italic">Cargando...</div>
+                                ) : (
+                                    products?.map((item: any, i: number) => (
+                                        <ProductCard key={i} item={item} />
+                                    ))
+                                )}
+                            </div>
                         </div>
-
-                        <hr />
-                        <Pagination
-                            pagination={pagination}
-                            handleChangePage={handleChangePage}
-                        />
+                        <div>
+                            <hr />
+                            <Pagination
+                                pagination={pagination}
+                                handleChangePage={handleChangePage}
+                            />
+                        </div>
                     </div>
                 </div>
             </main>

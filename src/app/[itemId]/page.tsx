@@ -87,12 +87,12 @@ const page = () => {
                                           ]
                                 }
                             />
-                            <div className="w-[50%] flex flex-col gap-4">
+                            <div className="w-[50%] flex flex-col gap-6">
                                 <div className="flex items-center gap-2">
                                     {product?.categories.map(
                                         (item: any, i: number) => (
                                             <p
-                                                className="bg-gray-200 text-gray-800 px-2 py-1 rounded-xl text-xs"
+                                                className="bg-gray-200 text-gray-800 px-2 py-1 rounded-xl text-xs cursor-default"
                                                 key={i}
                                             >
                                                 {item?.category?.name}
@@ -100,12 +100,46 @@ const page = () => {
                                         )
                                     )}
                                 </div>
-                                <h2 className="text-2xl font-semibold ">
-                                    {product && product.name}
-                                </h2>
-                                <p className="text-4xl">
-                                    ${product && product.price}
+                                <div className="space-y-2">
+                                    <h2 className="text-4xl font-extrabold cursor-default">
+                                        {product && product.name.toUpperCase()}
+                                    </h2>
+                                    <p className="cursor-default">⭐⭐⭐⭐</p>
+                                    <p className="text-4xl font-semibold cursor-default">
+                                        ${product && product.price}
+                                    </p>
+                                </div>
+                                <hr />
+                                <p className="text-xs mt-1 ms-2">
+                                    *Máximo 10 unidades por compra
                                 </p>
+                                <div className="flex items-center gap-2">
+                                    <div>
+                                        <div className="flex items-center  bg-gray-200 rounded-2xl justify-between overflow-hidden py-1">
+                                            <button
+                                                onClick={removeItem}
+                                                className={btnStyle}
+                                            >
+                                                <FaMinus className="transition-transform hover:rotate-180 duration-300" />
+                                            </button>
+                                            <p className="font-semibold">
+                                                {quantity}
+                                            </p>
+                                            <button
+                                                onClick={addItem}
+                                                className={btnStyle}
+                                            >
+                                                <FaPlus className="transition-transform hover:rotate-180 duration-300" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={addItemToCart}
+                                        className="bg-black py-2 rounded-2xl text-white font-semibold w-full transition-colors hover:bg-neutral-600"
+                                    >
+                                        Agregar al carrito
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div>
@@ -116,7 +150,7 @@ const page = () => {
                         </div>
                     </main>
 
-                    <aside className="w-[25rem] border border-neutral-300 rounded-lg p-4 gap-8 flex flex-col">
+                    {/* <aside className="w-[25rem] border border-neutral-300 rounded-lg p-4 gap-8 flex flex-col">
                         <div>
                             <p>Tenés 30 dias para devolverlo</p>
                         </div>
@@ -144,7 +178,7 @@ const page = () => {
                         >
                             Agregar al carrito
                         </button>
-                    </aside>
+                    </aside> */}
                 </div>
             </div>
         </section>

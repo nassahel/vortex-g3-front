@@ -10,7 +10,7 @@ const ProductCard = ({ item }: Props) => {
     return (
         <Link
             href={`/${item.id}`}
-            className=" rounded-3xl w-[17rem] h-[26rem]  group cursor-pointer bg-white hover:shadow-lg duration-200"
+            className=" rounded-3xl w-[17rem] h-[26rem]  group cursor-pointer bg-white hover:shadow-md duration-200"
         >
             <figure className="h-[60%] relative overflow-hidden rounded-2xl duration-400">
                 <img

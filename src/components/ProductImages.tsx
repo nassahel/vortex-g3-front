@@ -18,7 +18,15 @@ const ProductImages = ({ image }: Props) => {
         <div className="flex gap-2">
             <div className="flex flex-col gap-2">
                 {image.map((item, i) => (
-                    <button key={i} onClick={() => setSelectedImg(i)}>
+                    <button
+                        key={i}
+                        onClick={() => setSelectedImg(i)}
+                        className={`border border-transparent ${
+                            selectedImg === i
+                                ? "border-gray-400 rounded-md"
+                                : ""
+                        }`}
+                    >
                         <img
                             src={item.url}
                             alt={item.altText ?? ""}
@@ -31,7 +39,9 @@ const ProductImages = ({ image }: Props) => {
                 {image[selectedImg] && (
                     <img
                         src={image[selectedImg]?.url}
-                        alt={image[selectedImg]?.altText ?? ""}
+                        alt={
+                            image[selectedImg]?.altText ?? "imagen de producto"
+                        }
                         className="object-cover h-full w-full"
                     />
                 )}

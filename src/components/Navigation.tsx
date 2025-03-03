@@ -7,7 +7,7 @@ function Navigation() {
         <div>
             <button
                 onClick={() => router.back()}
-                className="flex items-center gap-2 border-b border-transparent transition-all hover:border-black duration-200"
+                className="flex items-center gap-2 border-b border-transparent transition-all hover:-translate-y-1 duration-200 hover:border-black"
             >
                 <IoIosArrowBack />
                 Volver
