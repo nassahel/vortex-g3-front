@@ -18,7 +18,7 @@ interface User {
 }
 
 const page = () => {
-    const { token } = useAppStore((state: any) => state)
+    // const { token } = useAppStore((state: any) => state)
     const [users, setUsers] = useState([])
     const [modal, setModal] = useState(false);
     const [productEdit, setProductEdit] = useState(null)
@@ -26,12 +26,12 @@ const page = () => {
     const [search, setSearch] = useState('')
     const URL = process.env.NEXT_PUBLIC_API_URL
 
-    console.log(token);
-
-
+    
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                const token = localStorage.getItem('token');
+                // console.log(state);
                 const response = await fetch(URL + 'users/admin/all', {
                     method: 'GET',
                     headers: {

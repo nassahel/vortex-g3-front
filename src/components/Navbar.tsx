@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosSearch, IoMdMenu } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 // import { GoBell } from "react-icons/go";
@@ -7,6 +7,8 @@ import Link from 'next/link';
 import BtnCategory from './BtnCategory';
 import useAppStore from '@/zustand/zustand';
 import { IoCloseOutline } from 'react-icons/io5';
+import { jwtDecode } from 'jwt-decode';
+import { MdLogout } from "react-icons/md";
 
 
 type Props = {}
@@ -15,7 +17,20 @@ const Navbar = (props: Props) => {
     const items = useAppStore((state: any) => state.items)
     const [offerModal, setOfferModal] = useState(true)
     const [showNav, setShowNav] = useState(false)
+    const [user, setUser] = useState<any>(null);
 
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const user = jwtDecode(token);
+            setUser(user);
+        }
+    }, [])
+
+    const logout = () => {
+        localStorage.removeItem('token')
+        window.location.reload()
+    }
 
 
     return (
@@ -36,7 +51,10 @@ const Navbar = (props: Props) => {
                     </div>
                     <div className='flex items-center justify-end gap-5'>
                         <BtnCategory />
-                        <Link href="/administration/products">Administración</Link>
+                        {
+                            (user !== null && user.userRol === 'ADMIN') && <Link href="/administration/products">Administración</Link>
+                        }
+
                         <Link href="">Favoritos</Link>
                     </div>
                     <div className='flex w-full h-12  items-center pe-2 rounded-full overflow-hidden bg-neutral-100 shadow-inner border'>
@@ -59,7 +77,17 @@ const Navbar = (props: Props) => {
 
                             <CiShoppingCart className='text-3xl' />
                         </Link>
-                        <Link href="/user/login">Ingresá</Link>
+                        {
+                            user === null ? <Link href="/user/login">Ingresá</Link>
+                                :
+                                <div className='flex gap-6'>
+                                    <Link className='w-fit  font-bold' href="/user/login">
+                                        {user.userName.split(' ')[0]}
+                                    </Link>
+                                    <button onClick={logout}><MdLogout className='text-2xl' /></button>
+                                </div>
+
+                        }
                     </div>
                 </div>
 

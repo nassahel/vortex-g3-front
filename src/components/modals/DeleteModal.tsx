@@ -13,11 +13,14 @@ const DeleteModal: React.FC<Props> = ({ setDeleteModal, modalText, routeDelete, 
     const deleteProduct = async () => {
         const url = `${process.env.NEXT_PUBLIC_API_URL}${routeDelete}/${itemId}`
         const method = 'DELETE'
+        const token = localStorage.getItem('token');
+        if (!token) return console.log('No se pudo obtener el token');
         try {
             const response = await fetch(url, {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
                 },
             })
             const data = await response.json()

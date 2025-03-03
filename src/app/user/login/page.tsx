@@ -9,7 +9,7 @@ interface FormData {
 }
 
 const page = () => {
-  const logUser = useAppStore((state:any) => state.setToken)
+  // const logUser = useAppStore((state: any) => state.setToken)
   const [loading, setLoading] = useState(false)
   const [errorType, setErrorType] = useState('')
   const [formData, setFormData] = useState<FormData>({
@@ -42,14 +42,15 @@ const page = () => {
       if (!response.ok) {
         console.log(response);
         throw new Error(`Error al obtener datos: ${response.status}`)
-        
+
       }
 
       const data = await response.json()
       setLoading(false)
       // console.log(data);
       // localStorage.setItem('token', data.token)
-      logUser(data.token)
+      // logUser(data.token)
+      localStorage.setItem('token', data.token);
       window.location.href = '/'
     } catch (error) {
       setLoading(false)
