@@ -31,7 +31,12 @@ const page = () => {
         max: Number(currentMax) || 0,
     });
 
-    console.log(products);
+    const handleChangePage = (page: number) => {
+        setPagination((prev: any) => ({
+            ...prev,
+            currentPage: page,
+        }));
+    };
 
     const handleClearFilter = () => {
         router.push(`/category?id=${id}`);
@@ -44,18 +49,20 @@ const page = () => {
         const fetchProductsByCategory = async () => {
             if (!id) return;
             try {
-                let url = URL + `product/all?categoryId=${id}`;
+                let url =
+                    URL +
+                    `product/all?categoryId=${id}&page=${pagination.currentPage}`;
                 if (filters.min > 0) url += `&minPrice=${filters.min}`;
                 if (filters.max > 0) url += `&maxPrice=${filters.max}`;
-                console.log(url);
+
                 const response = await fetch(url);
                 const data = await response.json();
                 setProducts(data.data);
                 setPagination({
-                    currentPage: data.currentPage,
-                    totalPages: data.totalPages,
-                    hasNextPage: data.hasNextPage,
-                    hasPreviousPage: data.hasPreviousPage,
+                    currentPage: data.meta.currentPage,
+                    totalPages: data.meta.totalPages,
+                    hasNextPage: data.meta.hasNextPage,
+                    hasPreviousPage: data.meta.hasPreviousPage,
                 });
             } catch (error) {
                 console.error("No se pudo obtener los datos", error);
@@ -63,7 +70,7 @@ const page = () => {
             }
         };
         fetchProductsByCategory();
-    }, [id, filters]);
+    }, [id, filters, pagination.currentPage]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -175,7 +182,10 @@ const page = () => {
                         </div>
 
                         <hr />
-                        <Pagination pagination={pagination} />
+                        <Pagination
+                            pagination={pagination}
+                            handleChangePage={handleChangePage}
+                        />
                     </div>
                 </div>
             </main>
