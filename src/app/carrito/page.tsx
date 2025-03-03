@@ -8,9 +8,7 @@ import React, { useEffect } from 'react'
 const page = () => {
     const items = useAppStore((state: any) => state.items)
 
-
     // console.log(items);
-
 
 
 

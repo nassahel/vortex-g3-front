@@ -2,13 +2,12 @@
 import HeroSection from '@/components/HeroSection';
 import ProductCard from '@/components/cards/ProductCard';
 import Navbar from '@/components/Navbar';
-import { Category } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 
 const page = () => {
-  const [category, setCategory] = useState<Category>()
+  const [category, setCategory] = useState<any>()
   const URL = process.env.NEXT_PUBLIC_API_URL
   const searchParams = useSearchParams();
   const id = searchParams.get('id')
@@ -31,24 +30,19 @@ const page = () => {
     fetchProductsByCategory()
   }, [id])
 
-  const prods = category?.product || []
+  const prods = category?.products || []
 
   return (
     <div>
       <Navbar />
-      <main className='max-w-[75rem] mx-auto'>
-        <div className='flex gap-6 py-4'>
-          <figure className='w-[70%] mx-auto'>
-            <img src={`/img/${category?.name.toLocaleLowerCase()}.webp`} alt="" className='w-full' />
-          </figure>
-          <HeroSection fontSize='text-md' maxWidth='max-w-[25rem]' />
-        </div>
-
-        <div className="flex flex-wrap w-full   gap-4 pt-20 pb-10">
-          {prods.length === 0 ? <div className='italic'>No hay productos de esta categoria :(</div>
+      <main className='max-w-[75rem] mx-auto mt-20'>
+          <h2 className='text-black text-3xl mt-[10rem] capitalize font-semibold'>Categoria: {category?.name}</h2>
+      
+        <div className="flex flex-wrap w-full gap-8 pt-10 pb-10">
+          {prods.length === 0 ? <div className='italic'>Cargando...</div>
             :
-            prods.map((item, i) => (
-              <ProductCard key={i} item={item} />
+            prods.map((item: any, i: number) => (
+              <ProductCard key={i} item={item.product} />
             ))
           }
         </div>

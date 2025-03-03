@@ -23,7 +23,7 @@ const page = () => {
 
   console.log(chartItem);
   // console.log(itemId);
-  // console.log('producto', product);
+  console.log('producto', product);
 
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const page = () => {
       // setLoading(true)
       const URL = process.env.NEXT_PUBLIC_API_URL
       try {
-        const response = await fetch(`${URL}products/${itemId}`);
+        const response = await fetch(`${URL}product/${itemId}`);
         const data = await response.json();
         // console.log('data', data);
 
@@ -65,18 +65,23 @@ const page = () => {
   return (
     <section>
       <Navbar />
-      <div className='max-w-[80rem] mx-auto flex py-6'>
-        <main className='w-full px-20 py-10 flex gap-10'>
-          <ProductImages />
-          <div className='w-[50%] flex flex-col gap-4'>
-            <h2 className='text-2xl font-semibold '>{product && product.name}</h2>
-            <p className='text-4xl'>${product && product.price}</p>
-            <p>{product && product.description}</p>
+      <div className='max-w-[80rem] mx-auto pt-[10rem] flex py-6'>
+        <main className='w-full px-20 pt-10 gap-10'>
+          <div className='flex mb-10 gap-10'>
+          <ProductImages image={Array.isArray(product?.images) ? product.images : []} />
+            <div className='w-[50%] flex flex-col gap-4'>
+              <h2 className='text-2xl font-semibold '>{product && product.name}</h2>
+              <p className='text-4xl'>${product && product.price}</p>
+            </div>
           </div>
+
+          <p>{product && product.description}</p>
         </main>
+
+
+
         <aside className='w-[25rem] border border-neutral-300 rounded-lg p-4 gap-8 flex flex-col'>
           <div>
-            <p>Llega muy rapido por Mercado Liebre</p>
             <p>Tenés 30 dias para devolverlo</p>
           </div>
           <div>
