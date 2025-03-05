@@ -46,7 +46,7 @@ const Navbar = (props: Props) => {
                     <Link href="/">
                         <h2 className='text-4xl font-bold'>LuxShop</h2>
                     </Link>
-                    <div className='flex items-center justify-end gap-5'>
+                    <div className='flex items-center gap-5'>
                         <BtnCategory />
                         {
                             (user !== null && user.userRol === 'ADMIN') && <Link href="/administration/products">Administración</Link>
