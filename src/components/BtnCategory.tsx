@@ -66,8 +66,8 @@ const BtnCategory = ({ setShowNav }: Props) => {
 
                 }
             </div>
-            <div>
-                <button className='flex md:hidden gap-2 items-end' onClick={() => setShowCategories(!showCategories)}>Categorias <IoIosArrowDown className={`${showCategories ? 'rotate-180': ''} duration-200`} /></button>
+            <div className='md:hidden'>
+                <button className='flex gap-2 items-end' onClick={() => setShowCategories(!showCategories)}>Categorias <IoIosArrowDown className={`${showCategories ? 'rotate-180': ''} duration-200`} /></button>
                 <div className={`${showCategories ? 'max-h-[40rem] ' : 'max-h-0 '}duration-500 overflow-hidden`}>
                     {
                         categories.map((item: any, i) => (
