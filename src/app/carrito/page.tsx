@@ -68,7 +68,7 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                         return {
                             id: item.productId,
                             name: productData.name,
-                            image: productData.image || "/img/default-product.jpg",
+                            image: productData.images.length > 0 ? productData.images[0].url : "/img/default-product.jpg", // 🔥 Accede al primer elemento de images
                             size: productData.size || "N/A",
                             color: productData.color || "N/A",
                             price: parseFloat(item.price),
@@ -210,112 +210,118 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
     const total = subtotal - discount + deliveryFee;
 
 
-  return (
-    <>
-      <Navbar/>
-
-      <div className="max-w-7xl mx-auto px-4 lg:mt-8">
-      <h3 className="font-sans mb-5 text-gray-500"> Home {">"} Cart</h3>
-
-      <h1 className="text-3xl font-sans font-black mb-6">YOUR CART</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Lista de productos */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg border">
-          {cart.length > 0 ? (
-              cart.map(item => {
-                return (
-                    <div key={item.id} className="flex items-center gap-4 border-b py-4">
-                        <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-md" />
-                        <div className="flex-1">
-                            <h2 className="text-lg font-semibold">{item.name}</h2>
-                            <p className="text-sm text-gray-500">Size: {item.size}</p>
-                            <p className="text-sm text-gray-500">Color: {item.color}</p>
-                            <p className="text-lg font-semibold mt-2">${item.price}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <button 
-                                onClick={() => {
-                                    const productId = item.productId || item.id;
-                                    handleQuantityChange(productId, -1);
-                                }} 
-                                className="px-3 py-1 border rounded-lg"
-                            >
-                                −
-                            </button>
-                            <span className="w-8 text-center">{item.quantity}</span>
-                            <button 
-                                onClick={() => {
-                                    const productId = item.productId || item.id; // 🔥 Usa `id` si `productId` es `undefined`
-                                    handleQuantityChange(productId, 1);
-                                }}                               
-                                className="px-3 py-1 border rounded-lg"
-                            >
-                                +
-                            </button>
-                        </div>
+    return (
+        <>
+          <Navbar/>
+    
+          <div className="max-w-7xl mx-auto px-4 lg:mt-8">
+            <h3 className="font-sans mb-5 text-gray-500 text-sm sm:text-base mt-5">Home {">"} Cart</h3>
+    
+            <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">YOUR CART</h1>
+    
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Lista de productos */}
+              <div className="md:col-span-2 bg-white p-4 sm:p-6 rounded-lg border">
+                {cart.length > 0 ? (
+                  cart.map(item => (
+                    <div key={item.id} className="flex flex-col sm:flex-row items-center gap-4 border-b py-4">
+                      <img src={item.image} alt={item.name} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md" />
+                      
+                      <div className="flex-1 text-center sm:text-left">
+                        <h2 className="text-lg font-semibold">{item.name}</h2>
+                        <p className="text-sm text-gray-500">Size: {item.size}</p>
+                        <p className="text-sm text-gray-500">Color: {item.color}</p>
+                        <p className="text-lg font-semibold mt-2">${item.price}</p>
+                      </div>
+    
+                      <div className="flex items-center gap-2">
                         <button 
-                            onClick={() => handleRemoveItem(item.productId || item.id)}
-                            className="text-red-500 text-xl ml-4"
+                          onClick={() => {
+                            const productId = item.productId || item.id;
+                            handleQuantityChange(productId, -1);
+                          }} 
+                          className="px-3 py-1 border rounded-full w-8 h-8 flex items-center justify-center"
                         >
-                            🗑️
+                          −
                         </button>
+    
+                        <span className="w-8 text-center">{item.quantity}</span>
+    
+                        <button 
+                          onClick={() => {
+                            const productId = item.productId || item.id;
+                            handleQuantityChange(productId, 1);
+                          }}                               
+                          className="px-3 py-1 border rounded-full w-8 h-8 flex items-center justify-center"
+                        >
+                          +
+                        </button>
+                      </div>
+    
+                      <button 
+                        onClick={() => handleRemoveItem(item.productId || item.id)}
+                        className="text-red-500 text-xl ml-4"
+                      >
+                        🗑️
+                      </button>
                     </div>
-                );
-            })
-        ) : (
-          <p className="text-gray-500">Your cart is empty.</p>
-        )}
-            
-        </div>
-
-        {/* Resumen del pedido */}
-        <div className="bg-white p-6 rounded-lg border">
-          <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-          <div className="flex justify-between text-lg">
-            <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center sm:text-left">Your cart is empty.</p>
+                )}
+              </div>
+    
+              {/* Resumen del pedido */}
+              <div className="bg-white p-4 sm:p-6 rounded-lg border w-full md:w-[350px] h-fit mx-auto">
+                <h2 className="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">Order Summary</h2>
+    
+                <div className="flex justify-between text-base sm:text-lg">
+                  <span>Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-base sm:text-lg text-red-500">
+                  <span>Discount (-10%)</span>
+                  <span>-${discount.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-base sm:text-lg">
+                  <span>Delivery Fee</span>
+                  <span>${deliveryFee.toFixed(2)}</span>
+                </div>
+    
+                <hr className="my-4" />
+    
+                <div className="flex justify-between text-lg sm:text-xl font-bold">
+                  <span>Total</span>
+                  <span>${total.toFixed(2)}</span>
+                </div>
+    
+                {/* Código de descuento */}
+                <div className="mt-4 flex flex-col sm:flex-row items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add promo code"
+                    className="w-full border px-4 py-2 rounded-full text-center sm:text-left"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                  />
+                  <button className="bg-black text-white px-4 py-2 rounded-full w-full sm:w-auto">Apply</button>
+                </div>
+    
+                {/* Botón de checkout */}
+                <Link href="/checkout">
+                  <button 
+                    className="w-full bg-black text-white text-lg font-bold py-3 rounded-full mt-4 flex items-center justify-center gap-2"
+                    onClick={handleCheckout}
+                  >
+                    Go to Checkout →
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between text-lg text-red-500">
-            <span>Discount (-10%)</span>
-            <span>-${discount.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-lg">
-            <span>Delivery Fee</span>
-            <span>${deliveryFee.toFixed(2)}</span>
-          </div>
-          <hr className="my-4" />
-          <div className="flex justify-between text-xl font-bold">
-            <span>Total</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
-
-          {/* Código de descuento */}
-          <div className="mt-4 flex items-center gap-2">
-            <input
-              type="text"
-              placeholder="Add promo code"
-              className="w-full border px-3 py-2 rounded-lg"
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value)}
-            />
-            <button className="bg-black text-white px-4 py-2 rounded-lg">Apply</button>
-          </div>
-
-          {/* Botón de checkout */}
-          <Link href="/checkout">
-            <button 
-                className="w-full bg-black text-white text-lg font-bold py-3 rounded-lg mt-4 flex items-center justify-center gap-2"
-                onClick={handleCheckout}
-            >
-              Go to Checkout →
-            </button>
-          </Link>
-        </div>
-      </div>
-      </div>
-
-    </>
-  );
+        </>
+    );
+    
 };
 
 export default CartPage;

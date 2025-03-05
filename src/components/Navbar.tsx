@@ -36,7 +36,7 @@ const Navbar = (props: Props) => {
     return (
         <>
 
-            <div className="w-full bg-white border-b border-neutral-300">
+            <div className="w-full bg-white ">
                 {
                     offerModal && <div className='py-2 px-4 bg-black text-white text-center'>
                         <div className='max-w-[80rem] mx-auto text-sm flex items-center justify-center relative '>
@@ -45,7 +45,7 @@ const Navbar = (props: Props) => {
                         </div>
                     </div>
                 }
-                <div className='flex max-w-[80rem] min-w-[60rem] py-4 mx-auto gap-10 '>
+                <div className='flex max-w-[80rem] min-w-[60rem] py-4 mx-auto gap-10 hidden md:flex border-b'>
                     <Link href="/">
                         <h2 className='text-4xl font-bold'>LuxShop</h2>
                     </Link>
@@ -96,7 +96,7 @@ const Navbar = (props: Props) => {
 
 
             {/* Nav Movil */}
-            <nav aria-label='Menú principal' className={` h-[4rem] md:hidden sticky bg-neutral-800 top-0 w-full z-40 flex text-white items-center justify-between px-4`}>
+            <nav aria-label='Menú principal' className={` h-[4rem] md:hidden sticky bg-neutral-800 top-0 w-full z-40 flex text-white items-center justify-between px-4 m-0 p-0`}>
                 <Link className='font-bold text-3xl' href="#inicio">LuxShop</Link>
                 <button onClick={() => setShowNav(true)} className="text-4xl text-white"><IoMdMenu /></button>
                 <div className={`${showNav ? "w-full" : "w-0"} fixed top-0 z-40 bottom-0 left-0 right-0`}>
