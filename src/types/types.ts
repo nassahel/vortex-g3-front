@@ -25,9 +25,14 @@ export interface FormuData {
 }
 
 export interface CartItem {
-  itemId: string | string[] | undefined;
+  id: string;
+  name: string;
+  image: string;
+  size: string;
+  productId: string;
+  color: string;
+  price: number;
   quantity: number;
-  subtotal: number;
 }
 
 
