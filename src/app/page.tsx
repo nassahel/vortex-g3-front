@@ -60,13 +60,13 @@ export default function Home() {
           <div className="w-full"><img src="/img/loading.gif" alt="Loader" className="w-[15rem] mx-auto my-20" /> </div>
           :
           <div className="flex flex-wrap mx-auto  gap-4 ">
-            {products && products.length < 1 ?
+            {/* {products && products.length < 1 ?
               <p>No hay productos para mostrar</p>
               : products?.map((item: MostBoughtProduct, i: number) => (
                 <Link href={`/${item.id}`} key={i}>
                   <ProductCard item={item} />
                 </Link>
-              ))}
+              ))} */}
           </div>
         }
       </main>     

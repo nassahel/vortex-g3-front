@@ -36,7 +36,7 @@ const Navbar = (props: Props) => {
     return (
         <>
 
-            <div className='hidden md:block border-b border-neutral-300 fixed top-0 w-full z-50 bg-white'>
+            <div className="w-full bg-white border-b border-neutral-300">
                 {
                     offerModal && <div className='py-2 px-4 bg-black text-white text-center'>
                         <div className='max-w-[80rem] mx-auto text-sm flex items-center justify-center relative '>
@@ -77,7 +77,7 @@ const Navbar = (props: Props) => {
 
                             <CiShoppingCart className='text-3xl' />
                         </Link>
-                        {
+                        {/* {
                             user === null ? <Link href="/user/login">Ingresá</Link>
                                 :
                                 <div className='flex gap-6'>
@@ -87,7 +87,7 @@ const Navbar = (props: Props) => {
                                     <button onClick={logout}><MdLogout className='text-2xl' /></button>
                                 </div>
 
-                        }
+                        } */}
                     </div>
                 </div>
 
