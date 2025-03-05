@@ -41,3 +41,9 @@ export interface MostBoughtProduct {
   category: string;
   quantity: number;
 }
+
+export interface DecodedToken {
+  userId: string;
+  userName: string;
+  userRol: string
+}

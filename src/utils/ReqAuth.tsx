@@ -9,7 +9,7 @@ type DecodedToken = {
 
 type ReqAuthProps = {
   allowedRoles: string[];
-  children: React.ReactNode;  // Definir el tipo de children correctamente
+  children: React.ReactNode; 
 };
 
 const ReqAuth = ({ allowedRoles = [], children }: ReqAuthProps) => {
@@ -20,7 +20,7 @@ const ReqAuth = ({ allowedRoles = [], children }: ReqAuthProps) => {
     const token = localStorage.getItem('token');
     if (!token) {
       window.location.href = '/';
-      setIsLoading(false);  // Finaliza la carga
+      setIsLoading(false); 
       return;
     }
 
@@ -28,22 +28,20 @@ const ReqAuth = ({ allowedRoles = [], children }: ReqAuthProps) => {
 
     if (allowedRoles.length && !allowedRoles.includes(user.userRol)) {
       window.location.href = '/';
-      setIsLoading(false);  // Finaliza la carga
+      setIsLoading(false); 
       return;
     }
 
-    setIsAuthenticated(true);  // Usuario autenticado con el rol adecuado
-    setIsLoading(false);  // Finaliza la carga
+    setIsAuthenticated(true); 
+    setIsLoading(false);
   }, [allowedRoles]);
 
   if (isLoading) {
-    // Mientras se verifica la autenticación, no renderices nada (puedes mostrar un spinner)
     return <div className='w-full h-screen flex items-center justify-center'>
-      <img src="/img/spiner.gif" alt="" className='w-36' />
+      <img src="/img/spiner.gif" alt="" className='w-32' />
     </div>;
   }
 
-  // Si está autenticado, renderiza el contenido
   return <>{isAuthenticated ? children : null}</>;
 };
 

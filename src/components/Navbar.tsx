@@ -27,10 +27,7 @@ const Navbar = (props: Props) => {
         }
     }, [])
 
-    const logout = () => {
-        localStorage.removeItem('token')
-        window.location.reload()
-    }
+   
 
 
     return (
@@ -81,10 +78,9 @@ const Navbar = (props: Props) => {
                             user === null ? <Link href="/user/login">Ingresá</Link>
                                 :
                                 <div className='flex gap-6'>
-                                    <Link className='w-fit  font-bold' href="/user/login">
+                                    <Link className='w-fit  font-bold' href="/profile">
                                         {user.userName.split(' ')[0]}
-                                    </Link>
-                                    <button onClick={logout}><MdLogout className='text-2xl' /></button>
+                                    </Link>                                    
                                 </div>
 
                         }

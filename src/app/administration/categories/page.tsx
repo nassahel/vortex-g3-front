@@ -35,9 +35,6 @@ const page = () => {
         fetchCategories()
     }, [modal, deleteModal])
 
-    const claseUlt = 'border h-full flex items-center justify-center w-1/3'
-
-
 
     const openModal = (id: string) => {
         setSelectedId(id)
@@ -52,38 +49,56 @@ const page = () => {
             {deleteModal && <DeleteModal
                 itemId={selectedId}
                 routeDelete='category/delete'
-                modalText='Deseas borrar la categoria?'
-                setDeleteModal={setDeleteModal} />}
+                modalText='¿Deseas borrar la categoría?'
+                setDeleteModal={setDeleteModal} />
+            }
 
             <div className='flex justify-between'>
-                <input value={search} onChange={(e) => setSearch(e.target.value)} className='bg-white py-2 px-4 my-2  rounded-md border-2 border-neutral-400 outline-none w-[25rem]' type="search" name="searchProd" placeholder='Buscar productos...' />
-                <button onClick={() => setModal(true)} className='bg-white py-2 px-4 my-2  rounded-md border-2 border-neutral-400 hover:border-black duration-200'>Agregar categoría</button>
+                <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className='bg-white py-2 px-4 my-2 rounded-md border-2 border-neutral-400 outline-none w-[25rem]'
+                    type="search"
+                    name="searchProd"
+                    placeholder='Buscar categorías...'
+                />
+                <button
+                    onClick={() => setModal(true)}
+                    className='bg-white text-neutral-800 py-2 px-4 my-2 rounded-md border-2 border-neutral-400 hover:bg-neutral-200 duration-200'
+                >
+                    Agregar categoría
+                </button>
             </div>
+
             <div>
                 <section className='flex flex-col gap-1'>
-                    <article className='bg-black text-white flex h-10 rounded-md w-full'>
-                        <p className='px-4 flex items-center w-full py-1 border-e h-full '>Nombre</p>
-                        <div className=' flex text-2xl items-center  justify-center'>
-                            <button className='w-20 flex justify-center'><RiDeleteBin6Line /></button>
+                    <article className='bg-neutral-800 text-white flex h-12 rounded-md w-full'>
+                        <p className='px-4 flex items-center w-full py-2 border-e h-full font-semibold'>Nombre</p>
+                        <div className='flex  items-center justify-center'>
+                            <p className='w-48 flex justify-center font-semibold'>Acciones</p>
                         </div>
                     </article>
+
                     {
-                        categories.length !== 0 ? categories.map((item: any, i) => (
-                            <article key={i} className='bg-white flex h-10 rounded-md w-full'>
-                                <p className='px-4 flex items-center w-full py-1 border-e h-full '>{item.name}</p>
-                                <div className=' flex text-2xl items-center  justify-center '>
-                                    <button className='text-red-500 w-20 flex justify-center items-center hover:bg-red-200 h-full' onClick={() => openModal(item.id)}><RiDeleteBin6Line /></button>
+                        categories.length !== 0 ? categories.map((item, i) => (
+                            <article key={i} className='bg-white flex h-12 rounded-md w-full'>
+                                <p className='px-4 flex items-center w-full py-2 border-e h-full'>{item.name}</p>
+                                <div className='flex items-center justify-center'>
+                                    <button
+                                        className='text-red-500 w-48 flex justify-center items-center hover:bg-red-200 h-full rounded-md duration-200'
+                                        onClick={() => openModal(item.id)}
+                                    >
+                                        <RiDeleteBin6Line />
+                                    </button>
                                 </div>
                             </article>
-                        ))
-                            :
-                            <p className='mt-6 text-lg'>Cargando...</p>
+                        )) :
+                            <p className='mt-6 text-lg text-center'>Cargando...</p>
                     }
                 </section>
             </div>
-
-
         </section>
+
     )
 }
 
