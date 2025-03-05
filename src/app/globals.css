@@ -47,3 +47,7 @@
 .flex-center {
     @apply flex items-center justify-center
 }
+
+.btn-black {
+    @apply bg-neutral-500 hover:bg-neutral-700 duration-300 text-white font-semibold py-1 px-3 rounded-lg
+}
