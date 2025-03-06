@@ -7,24 +7,48 @@ export interface Categorie {
 
 export interface Product {
   id: string;
-  image: string;
+  images: string;
   name: string;
   price: number;
   isFavorite: boolean;
   description: string;
-  category: string
+  categories: string[];
 }
 
-export interface FormData {
+export interface FormuData {
   name: string;
   description: string;
-  image: string;
+  images: File[];
   price: string;
-  categoryId: string;
+  stock: number;
+  categories: string[];
 }
 
 export interface CartItem {
-  itemId: string | string[] | undefined;
+  id: string;
+  name: string;
+  image: string;
+  size: string;
+  productId: string;
+  color: string;
+  price: number;
   quantity: number;
-  subtotal: number;
+}
+
+
+export interface MostBoughtProduct {
+  id: string;
+  image: string;
+  name: string;
+  price: number;
+  // isFavorite: boolean;
+  description: string;
+  category: string;
+  quantity: number;
+}
+
+export interface DecodedToken {
+  userId: string;
+  userName: string;
+  userRol: string
 }

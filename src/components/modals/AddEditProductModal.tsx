@@ -1,99 +1,163 @@
-import { FormData } from '@/types/types';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 interface Props {
     setModal: (value: boolean) => void;
+    isEditing: boolean;
+    product: string;
 }
 
-const AddEditProductModal: React.FC<Props> = ({ setModal }) => {
-    const [categories, setCategories] = useState([])
-    const [formData, setFormData] = useState<FormData>({
-        name: '',
-        description: '',
-        image: '',
-        price: '',
-        categoryId: '',
-    })
-    const url = process.env.NEXT_PUBLIC_API_URL
+interface FormDataType {
+    name: string;
+    description: string;
+    price: string;
+    stock: number;
+    categories: string[];
+}
+
+const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) => {
+    const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+    const [formData, setFormData] = useState<FormDataType>({
+        name: isEditing ? product.name : '',
+        description: isEditing ? product.description : '',
+        price: isEditing ? product.price : '',
+        stock: isEditing ? product.stock : '',
+        categories: isEditing ? product.categories : []
+    });
+
+    const url = process.env.NEXT_PUBLIC_API_URL;
+
+    // Simulamos cargar un producto si es edición
+    // 1. Cargar las categorías cuando se monta el componente
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    // 2. Cuando las categorías ya estén cargadas, inicializamos el formData en modo edición
+    useEffect(() => {
+        if (isEditing && product && product.categories && categories.length > 0) {
+            const selectedCategoryIds = categories
+                .filter(cat => product.categories.includes(cat.name)) // Comparar por nombre
+                .map(cat => cat.id); // Obtener IDs
+
+            setFormData(prev => ({
+                ...prev,
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                stock: product.stock,
+                categories: selectedCategoryIds
+            }));
+        }
+    }, [isEditing, product, categories]);
 
 
-    const createProduct = async () => {
+    const fetchCategories = async () => {
         try {
-            const response = await fetch(url + 'products/', {
-                method: 'POST',
+            const response = await fetch(`${url}category/all`);
+            const data = await response.json();
+            setCategories(data.data);
+        } catch (error) {
+            console.error('Error cargando categorías', error);
+        }
+    };
+
+    const handleSubmit = async () => {
+        const token = localStorage.getItem('token');
+
+        const productData = {
+            name: formData.name,
+            description: formData.description,
+            price: formData.price,
+            stock: formData.stock,
+            categories: formData.categories
+        };
+
+        console.log(productData);
+
+
+        const endpoint = isEditing
+            ? `${url}product/update/${product && product.id}`
+            : `${url}product/create-product`;
+
+        const method = isEditing ? 'PATCH' : 'POST';
+
+        try {
+            const response = await fetch(endpoint, {
+                method,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    name: formData.name,
-                    description: formData.description,
-                    image: formData.image,
-                    price: formData.price ? Number(formData.price) : undefined,
-                    categoryId: formData.categoryId,
-                })
-            })
-            const data = await response.json()
+                body: JSON.stringify(productData)
+            });
+
+            console.log('respouesta', response);
+
             if (response.ok) {
-                setFormData({ name: '', description: '', image: '', price: '', categoryId: '', })
-                setModal(false)
-                return data
+                toast.success(isEditing ? 'Producto actualizado!' : 'Producto creado!');
+                setModal(false);
             } else {
-                console.error('Error:', data);
-                return data
+                toast.error('Error al guardar el producto');
             }
         } catch (error) {
-            return console.error(error);
+            console.error('Error al guardar', error);
+            toast.error('No se pudo guardar el producto');
         }
-    }
+    };
 
-    const closeModal = () => {
-        setModal(false)
-    }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await fetch(url + 'categories/');
-                const data = await response.json();
-                setCategories(data)
-            } catch (error) {
-                console.error('No se pudo obtener los datos', error)
-            }
-        }
-        fetchCategories()
-    }, [])
+    const handleCategoryChange = (id: string, checked: boolean) => {
+        setFormData(prev => {
+            const updatedCategories = checked
+                ? [...prev.categories, id]
+                : prev.categories.filter(cat => cat !== id);
 
-    const inputStyle = 'mb-6 border-b bg-neutral-100 px-2 py-1 outline-none';
+            return { ...prev, categories: updatedCategories };
+        });
+    };
 
     return (
         <section className='fixed z-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center'>
-            <div onClick={closeModal} className='fixed z-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-black/50 fade-in'></div>
-            <article className=' bg-white min-h-4/6 w-11/12 h-[36rem] max-w-[30rem] rounded-md relative shadow py-6 px-10 z-50 flex flex-col items-center scale-up '>
-                <h2 className='mb-6 '>Agregar Producto</h2>
-                <div className='flex flex-col h-full w-full'>
-                    <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} maxLength={50} className={inputStyle} type="text" name="nombre" placeholder='Nombre' />
-                    <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} maxLength={120} className={`resize-none h-[5.5rem] ${inputStyle}`} name="description" placeholder='Descripción'></textarea>
-                    <input value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} maxLength={150} className={inputStyle} type="text" name="" id="" placeholder='Imagen' />
-                    <input value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} maxLength={6} max={100000} className="border-b bg-neutral-100 px-2 py-1 outline-none" type="string" name="price" placeholder='Precio' />
-                    <p className='text-xs mb-6 ms-2'>Escribir los centavos con punto. Ej: 120.33</p>
-                    <select value={formData.categoryId} onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })} className={inputStyle} name="category" id="category" >
-                        <option value="">Categoría</option>
-                        {
-                            categories.map((item: any, i) => (
-                                <option key={i} value={item.id} >{item.name}</option>
-                            ))
-                        }
+            <div onClick={() => setModal(false)} className='fixed z-40 top-0 bottom-0 left-0 right-0 bg-black/50'></div>
+            <article className='bg-white w-11/12 max-w-[30rem] rounded-md relative shadow py-6 px-10 z-50'>
+                <h2 className='mb-6'>{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
+                <input name="name" value={formData.name} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Nombre' />
 
-                    </select>
-                    <div className='flex gap-4'>
-                        <button onClick={createProduct} className='bg-neutral-800 mt-auto rounded-sm w-[8rem] mx-auto py-1 text-white hover:bg-neutral-700 duration-200'>Guardar</button>
-                        <button onClick={closeModal} className='bg-neutral-600 mt-auto rounded-sm w-[8rem] mx-auto py-1 text-white hover:bg-neutral-500 duration-200'>Cancelar</button>
-                    </div>
+                <textarea name="description" value={formData.description} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Descripción' />
 
+                <input name="price" value={formData.price} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Precio' />
+
+                <input type="number" name="stock" value={formData.stock} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Stock' />
+
+                <div className='grid grid-cols-3 gap-2 mb-4'>
+                    {categories.map(cat => (
+                        <label key={cat.id} className='flex items-center gap-2'>
+                            <input
+                                type="checkbox"
+                                checked={formData.categories.includes(cat.id)}
+                                onChange={(e) => handleCategoryChange(cat.id, e.target.checked)}
+                            />
+                            {cat.name}
+                        </label>
+                    ))}
+                </div>
+
+                <div className='flex justify-end gap-2'>
+                    <button onClick={handleSubmit} className='bg-blue-500 text-white px-4 py-2 rounded'>
+                        {isEditing ? 'Actualizar' : 'Guardar'}
+                    </button>
+                    <button onClick={() => setModal(false)} className='bg-gray-500 text-white px-4 py-2 rounded'>
+                        Cancelar
+                    </button>
                 </div>
             </article>
-        </section >
-    )
-}
+        </section>
+    );
+};
 
-export default AddEditProductModal
+export default AddEditProductModal;

@@ -2,28 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+}
 
 .fade-in {
-animation: appear 200ms;
+    animation: appear 200ms;
 }
 
 @keyframes appear {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
 }
 
 .scale-up {
-animation: growUp 200ms;
+    animation: growUp 200ms;
 }
 
 @keyframes growUp {
     0% {
         scale: 0;
     }
+
     100% {
         scale: 1;
     }
@@ -39,5 +49,13 @@ animation: growUp 200ms;
 
 
 .blue-btn {
-    @apply bg-blue-500 hover:bg-blue-600  duration-300 text-white font-semibold rounded-lg px-3 py-1
+    @apply bg-blue-500 hover:bg-blue-600 duration-300 text-white font-semibold rounded-lg px-3 py-1
+}
+
+.flex-center {
+    @apply flex items-center justify-center
+}
+
+.btn-black {
+    @apply bg-neutral-500 hover:bg-neutral-700 duration-300 text-white font-semibold py-1 px-3 rounded-lg
 }

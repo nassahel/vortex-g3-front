@@ -7,6 +7,7 @@ type Props = {}
 
 
 const page = (props: Props) => {
+  const [proccess, setProccess] = useState<boolean>(false);
   const URL = process.env.NEXT_PUBLIC_API_URL
 
 
@@ -18,19 +19,19 @@ const page = (props: Props) => {
     const formData = new FormData(form)
     const name = formData.get('name');
     const email = formData.get('email')
-    const address = formData.get('address');
-    const phone = formData.get('phone');
     const password = formData.get('password');
+    const repeatPassword = formData.get('rePassword');
 
 
 
     toast.promise((async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth`, {
+      setProccess(true);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, address, phone, password }),
+        body: JSON.stringify({ name, email, password, repeatPassword }),
       });
 
       if (!response.ok) {
@@ -39,33 +40,15 @@ const page = (props: Props) => {
       }
 
       const responseData = await response.json();
-      form.reset(); // Limpia el formulario
+      form.reset();
+      setProccess(false)
+      window.location.href = '/user/login';
       return responseData;
     })(), {
       loading: 'Guardando...',
       success: 'Usuario registrado!',
       error: 'No se pudo registrar usuario.'
     })
-
-    // try {
-    //   const response = await fetch(URL + 'auth', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ name, email, address, phone, password })
-    //   })
-
-    //   if (!response.ok) return toast.error('No se pudo enviar 1'), console.log(response);
-    //   const responseData = await response.json();
-    //   toast.success(responseData.message)
-    //   return console.log(responseData);
-
-    // } catch (error) {
-    //   toast.error('no se pudo enviar 2')
-    //   console.log(error);
-
-    // }
   }
 
 
@@ -83,19 +66,17 @@ const page = (props: Props) => {
         <label className={labelStyle} htmlFor="email">Email</label>
         <input className={inputStyle} type="text" name="email" id="email" />
 
-        <label className={labelStyle} htmlFor="address">Dirección</label>
-        <input className={inputStyle} type="text" name="address" id="address" />
-
-        <label className={labelStyle} htmlFor="phone">Teléfono</label>
-        <input className={inputStyle} type="text" name="phone" id="phone" />
-
         <label className={labelStyle} htmlFor="password">Contraseña</label>
         <input className={inputStyle} type="text" name="password" id="password" />
 
-        <button type='submit' className='bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg'>Aceptar</button>
+        <label className={labelStyle} htmlFor="rePassword">Repetir contraseña</label>
+        <input className={inputStyle} type="text" name="rePassword" id="password" />
+
+        <button disabled={proccess ? true : false} type='submit' className='bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg'>
+          {proccess ? 'Registrando...' : 'Aceptar'}</button>
       </form>
       <div className='text-center'>
-        <p>Ya tenés cuenta? <Link href="/user/login" className='text-blue-600'>Iniciar sesión</Link></p>
+        <p>Ya tenés cuenta? <Link href="/user/login" className='font-bold'>Iniciar sesión</Link></p>
       </div>
     </div>
   )
