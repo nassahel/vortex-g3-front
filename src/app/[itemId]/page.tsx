@@ -110,13 +110,6 @@ const page = () => {
                 <div className="flex py-6">
                     <main className="w-full px-20 pt-10 gap-10">
                         <div className="flex mb-10 gap-10">
-                            {/* <ProductImages
-                            image={
-                                Array.isArray(product?.images)
-                                    ? product.images
-                                    : []
-                            }
-                        /> */}
                             <ProductImages
                                 image={
                                     Array.isArray(product?.images) && product.images.length > 0
@@ -192,36 +185,6 @@ const page = () => {
                             <p>{product?.description}</p>
                         </div>
                     </main>
-
-                    {/* <aside className="w-[25rem] border border-neutral-300 rounded-lg p-4 gap-8 flex flex-col">
-                        <div>
-                            <p>Tenés 30 dias para devolverlo</p>
-                        </div>
-                        <div>
-                            <p>Cantidad:</p>
-                            <div className="flex items-center w-full border border-neutral-300 rounded-lg justify-between overflow-hidden mt-1">
-                                <button
-                                    onClick={removeItem}
-                                    className={btnStyle}
-                                >
-                                    <FaMinus />
-                                </button>
-                                <p className="font-semibold">{quantity}</p>
-                                <button onClick={addItem} className={btnStyle}>
-                                    <FaPlus />
-                                </button>
-                            </div>
-                            <p className="text-xs mt-1 ms-2">
-                                *Máximo 10 unidades por compra
-                            </p>
-                        </div>
-                        <button
-                            onClick={addItemToCart}
-                            className="bg-blue-600 w-full py-2 rounded-md text-white font-semibold"
-                        >
-                            Agregar al carrito
-                        </button>
-                    </aside> */}
                 </div>
             </div>
         </section>

@@ -8,6 +8,7 @@ import BtnCategory from "@/components/BtnCategory";
 import { IoIosSearch } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
 import { jwtDecode } from "jwt-decode";
 
 
@@ -73,12 +74,21 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
     
                 const data = await response.json();
     
-                if (!data.data || !data.data.items) {
-                    console.warn("⚠️ No hay items en el carrito.");
-                    setCart([]);
-                } else {
-                    setCart(data.data.items);
-                }
+                const productDetailsPromises = data.data.items.map(async (item: CartItem) => {
+                const productResponse = await fetch(`${PRODUCTS_API}/${item.productId}`);
+                const productData = await productResponse.json();
+                console.log("items", productData);
+                return {
+                    ...item,
+                    name: productData.name || "Producto sin nombre",
+                    image: productData.images?.[0] || "/img/default-product.jpg",
+                    size: "N/A",
+                    color: "N/A"
+                  };
+                });
+  
+              const detailedCart = await Promise.all(productDetailsPromises);
+              setCart(detailedCart);
             } catch (err) {
                 console.error("🚨 Error al obtener el carrito:", err);
                 setError(true);
@@ -183,12 +193,18 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                 {cart.length > 0 ? (
                   cart.map(item => (
                     <div key={item.id} className="flex flex-col sm:flex-row items-center gap-4 border-b py-4">
-                      <img src={item.image} alt={item.name} className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md" />
+                      <img 
+                        src={item.image && typeof item.image === "string" ? item.image.trim() : "/img/default-product.jpg"} 
+                        alt={item.name || "Producto"} 
+                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md" 
+                        onError={(e) => (e.currentTarget.src = "/img/default-product.jpg")} 
+                      />
+
                       
                       <div className="flex-1 text-center sm:text-left">
                         <h2 className="text-lg font-semibold">{item.name}</h2>
-                        <p className="text-sm text-gray-500">Talle: {item.size}</p>
-                        <p className="text-sm text-gray-500">Color: {item.color}</p>
+                        <p className="ml-3 text-sm text-gray-500">Talle: {item.size}</p>
+                        <p className="ml-3 text-sm text-gray-500">Color: {item.color}</p>
                         <p className="text-lg font-semibold mt-2">${item.price}</p>
                       </div>
     
