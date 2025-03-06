@@ -77,7 +77,6 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                 const productDetailsPromises = data.data.items.map(async (item: CartItem) => {
                 const productResponse = await fetch(`${PRODUCTS_API}/${item.productId}`);
                 const productData = await productResponse.json();
-                console.log("items", productData);
                 return {
                     ...item,
                     name: productData.name || "Producto sin nombre",
@@ -194,10 +193,9 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                   cart.map(item => (
                     <div key={item.id} className="flex flex-col sm:flex-row items-center gap-4 border-b py-4">
                       <img 
-                        src={item.image && typeof item.image === "string" ? item.image.trim() : "/img/default-product.jpg"} 
+                        src={item.image && typeof item.image === "string" ? `${item.image.trim()}?t=${Date.now()}` : "/img/default-product.jpg"} 
                         alt={item.name || "Producto"} 
                         className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md" 
-                        onError={(e) => (e.currentTarget.src = "/img/default-product.jpg")} 
                       />
 
                       
