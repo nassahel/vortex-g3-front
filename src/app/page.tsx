@@ -73,9 +73,7 @@ export default function Home() {
                         ) : (
                             products?.map(
                                 (item: MostBoughtProduct, i: number) => (
-                                    <Link href={`/${item.id}`} key={i}>
-                                        <ProductCard item={item} />
-                                    </Link>
+                                    <ProductCard item={item} key={i} />
                                 )
                             )
                         )}
