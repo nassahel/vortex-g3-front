@@ -10,9 +10,9 @@ const ProductCard = ({ item }: Props) => {
     return (
         <Link
             href={`/${item.id}`}
-            className=" rounded-3xl w-[17rem] h-[26rem]  group cursor-pointer bg-white hover:shadow-md duration-200"
+            className=" rounded-xl w-[17rem] h-[26rem]  group cursor-pointer bg-white hover:border-black duration-200 border border-neutral-200 overflow-hidden"
         >
-            <figure className="h-[60%] relative overflow-hidden rounded-2xl duration-400">
+            <figure className="h-[60%] relative overflow-hidden rounded-t-xl duration-400">
                 <img
                     src={item.images[0]?.url || "/img/default-product.webp"}
                     alt={name}

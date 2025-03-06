@@ -106,7 +106,7 @@ const ProductPage = () => {
     return (
         <section>
             <Navbar />
-            <div className="max-w-[80rem] mx-auto pt-[2rem]">
+            <div className="max-w-[80rem] mx-auto py-4">
                 <Navigation />
                 <div className="flex py-6">
                     <main className="w-full px-20 pt-10 gap-10">
