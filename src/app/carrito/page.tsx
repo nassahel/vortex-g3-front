@@ -173,9 +173,9 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
           <Navbar/>
     
           <div className="max-w-7xl mx-auto px-4 lg:mt-8">
-            <h3 className="font-sans mb-5 text-gray-500 text-sm sm:text-base mt-5">Home {">"} Cart</h3>
+            <h3 className="font-sans mb-5 text-gray-500 text-sm sm:text-base mt-5">Inicio {">"} Carrito</h3>
     
-            <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">YOUR CART</h1>
+            <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">TU CARRITO</h1>
     
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Lista de productos */}
@@ -187,7 +187,7 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                       
                       <div className="flex-1 text-center sm:text-left">
                         <h2 className="text-lg font-semibold">{item.name}</h2>
-                        <p className="text-sm text-gray-500">Size: {item.size}</p>
+                        <p className="text-sm text-gray-500">Talle: {item.size}</p>
                         <p className="text-sm text-gray-500">Color: {item.color}</p>
                         <p className="text-lg font-semibold mt-2">${item.price}</p>
                       </div>
@@ -225,24 +225,24 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center sm:text-left">Your cart is empty.</p>
+                  <p className="text-gray-500 text-center sm:text-left">Tu carrito está vacío.</p>
                 )}
               </div>
     
               {/* Resumen del pedido */}
               <div className="bg-white p-4 sm:p-6 rounded-lg border w-full md:w-[350px] h-fit mx-auto">
-                <h2 className="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">Order Summary</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">Detalle del Pedido</h2>
     
                 <div className="flex justify-between text-base sm:text-lg">
                   <span>Subtotal</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-base sm:text-lg text-red-500">
-                  <span>Discount (-10%)</span>
+                  <span>Descuento (-10%)</span>
                   <span>-${discount.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-base sm:text-lg">
-                  <span>Delivery Fee</span>
+                  <span>Envío</span>
                   <span>${deliveryFee.toFixed(2)}</span>
                 </div>
     
@@ -262,7 +262,7 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                   />
-                  <button className="bg-black text-white px-4 py-2 rounded-full w-full sm:w-auto">Apply</button>
+                  <button className="bg-black text-white px-4 py-2 rounded-full w-full sm:w-auto">Aplicar</button>
                 </div>
     
                 {/* Botón de checkout */}
@@ -271,7 +271,7 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                     className="w-full bg-black text-white text-lg font-bold py-3 rounded-full mt-4 flex items-center justify-center gap-2"
                     onClick={handleCheckout}
                   >
-                    Go to Checkout →
+                    Completar el pago →
                   </button>
                 </Link>
               </div>
