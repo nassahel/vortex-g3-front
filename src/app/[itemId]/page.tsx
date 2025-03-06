@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { jwtDecode } from "jwt-decode";
 
-const page = () => {
+const ProductPage = () => {
     const { itemId } = useParams();
     const router = useRouter();
     const addItemToChart = useAppStore((state: any) => state.addItem);
@@ -46,26 +46,28 @@ const page = () => {
         if (quantity > 1) setQuantity((prev) => prev - 1);
     };
 
-
     const addItemToCart = async () => {
         const token = localStorage.getItem("token");
-    
+
         if (!token) {
             router.push("/user/login"); // 🔥 Redirigir al login si no hay sesión activa
             return;
         }
-    
+
         let user;
         try {
-            const decoded = jwtDecode<{ userId: string; userRol: string }>(token);
-            if (!decoded.userId) throw new Error("Token inválido: No tiene user.id");
-        
+            const decoded = jwtDecode<{ userId: string; userRol: string }>(
+                token
+            );
+            if (!decoded.userId)
+                throw new Error("Token inválido: No tiene user.id");
+
             user = { id: decoded.userId, userRol: decoded.userRol };
         } catch (error) {
             console.error("❌ Error al decodificar el token:", error);
             return;
         }
-    
+
         const newItem = {
             id: product?.id,
             name: product?.name,
@@ -75,32 +77,31 @@ const page = () => {
             price: product?.price || 0,
             quantity,
         };
-    
+
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}cart/item/${user?.id}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
-                body: JSON.stringify({ productId: product?.id, quantity }),
-            });
-    
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user?.id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ productId: product?.id, quantity }),
+                }
+            );
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("❌ Error en la API:", errorData);
                 throw new Error("Error al agregar el producto al carrito.");
             }
-    
+
             toast.success("Producto agregado al carrito!", { duration: 3000 });
-    
         } catch (err) {
             console.error("🚨 Error al agregar producto al backend:", err);
         }
     };
-    
-    
-
 
     return (
         <section>
@@ -112,7 +113,8 @@ const page = () => {
                         <div className="flex mb-10 gap-10">
                             <ProductImages
                                 image={
-                                    Array.isArray(product?.images) && product.images.length > 0
+                                    Array.isArray(product?.images) &&
+                                    product.images.length > 0
                                         ? product.images
                                         : [
                                               {
@@ -191,4 +193,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default ProductPage;
