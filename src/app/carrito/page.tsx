@@ -8,6 +8,7 @@ import BtnCategory from "@/components/BtnCategory";
 import { IoIosSearch } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 import Navbar from "@/components/Navbar";
+import { jwtDecode } from "jwt-decode";
 
 
 const USERS_API = `${process.env.NEXT_PUBLIC_API_URL}users/get-all-active`;
@@ -22,146 +23,113 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
         const [error, setError] = useState(false);
         const [promoCode, setPromoCode] = useState("");
     
+    
         useEffect(() => {
-      const fetchUser = async () => {
-        try {
-          const response = await fetch(USERS_API);
-          if (!response.ok) throw new Error("Error al obtener usuarios activos");
-  
-          const data = await response.json();
-          const usersList = data.data || [];
-
-          if (!data || !Array.isArray(usersList) || usersList.length === 0) {
-            throw new Error("No hay usuarios activos");
+          const token = localStorage.getItem("token");
+      
+          if (token) {
+              try {
+                  const decodedUser = jwtDecode<{ userRol: string; userId: string }>(token);
+                  if (!decodedUser.userId) throw new Error("Token inválido: No tiene userId");
+      
+                  setUser({ id: decodedUser.userId, userRol: decodedUser.userRol }); // 🔥 Ajuste aquí
+              } catch (error) {
+                  console.error("❌ Error al decodificar el token:", error);
+                  setUser(null);
+              }
+          } else {
+              setUser(null);
           }
-  
-          const activeUser = usersList[0]; // Suponiendo que el primer usuario es el activo
-          setUser(activeUser);
-
-        } catch (err) {
-            throw new Error("No hay usuario logueado, se usará localStorage para el carrito.");
-        }
-      };
-  
-      fetchUser();
-    }, []);
-  
-    useEffect(() => {
+      }, []);
+      
+      
+      useEffect(() => {
         const fetchCart = async () => {
             try {
                 setLoading(true);
-
-                if (user) {
-                    // Si el usuario está logueado, cargar el carrito desde la API
-                    const response = await fetch(`${CART_API}/${user.id}`);
-                    if (!response.ok) throw new Error("Error al obtener el carrito");
-
-                    const data = await response.json();
-
-                    const cartItems = data.data.items;
-
-                    // Obtener detalles de cada producto
-                    const productsPromises = cartItems.map(async (item: any) => {
-                        const productRes = await fetch(`${PRODUCTS_API}/${item.productId}`);
-                        const productData = await productRes.json();
-
-                        return {
-                            id: item.productId,
-                            name: productData.name,
-                            image: productData.images.length > 0 ? productData.images[0].url : "/img/default-product.jpg", // 🔥 Accede al primer elemento de images
-                            size: productData.size || "N/A",
-                            color: productData.color || "N/A",
-                            price: parseFloat(item.price),
-                            quantity: item.quantity,
-                        };
-                    });
-
-                    const products = await Promise.all(productsPromises);
-                    setCart(products);
+                setError(false);
+    
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    console.log("🔍 No hay token en localStorage, carrito vacío.");
+                    setCart([]); // No hay usuario, carrito vacío
+                    return;
+                }
+    
+                const decodedUser = jwtDecode<{ userRol: string; userId: string }>(token);
+                console.log("🔍 Usuario decodificado:", decodedUser);
+    
+                if (!decodedUser.userId) {
+                    console.log("🚨 Usuario sin userId en el token, deteniendo.");
+                    return;
+                }
+    
+                const response = await fetch(`${CART_API}/${decodedUser.userId}`, {
+                    headers: { "Authorization": `Bearer ${token}` },
+                });
+    
+                console.log("🔍 Respuesta de la API de carrito:", response);
+    
+                if (!response.ok) {
+                    console.error("❌ Error en la API:", response.status, response.statusText);
+                    throw new Error("Error al obtener el carrito");
+                }
+    
+                const data = await response.json();
+                console.log("✅ Datos obtenidos del carrito:", data);
+    
+                if (!data.data || !data.data.items) {
+                    console.warn("⚠️ No hay items en el carrito.");
+                    setCart([]);
                 } else {
-                    // Si el usuario NO está logueado, cargar carrito desde localStorage
-                    const localCart = JSON.parse(localStorage.getItem("cart") || "[]");
-                    setCart(localCart);
+                    setCart(data.data.items);
                 }
             } catch (err) {
-                console.error("Error al obtener el carrito", err);
+                console.error("🚨 Error al obtener el carrito:", err);
                 setError(true);
             } finally {
                 setLoading(false);
             }
         };
-
-        fetchCart();
+    
+        if (user) fetchCart();
     }, [user]);
-
-    // Función para agregar un producto al carrito
-    const addToCart = (product: CartItem) => {
-        let updatedCart;
-
-        if (user) {
-            // Si el usuario está logueado, enviar el producto al backend
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/cart/item/${product.id}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ productId: product.id, quantity: 1 }),
-            }).then(() => fetchCart());
-        } else {
-            // Si el usuario NO está logueado, actualizar `localStorage`
-            updatedCart = [...cart, product];
-            localStorage.setItem("cart", JSON.stringify(updatedCart));
-            setCart(updatedCart);
-        }
-    };
+    
+    
   
     const handleQuantityChange = async (productId: string, delta: number) => {
-    
-        if (!user || !user.id) {
-            console.error("Usuario no autenticado.");
-            return;
-        }
-
-        if (!productId) {
-            console.error("Error: productId es `undefined` o vacío.");
-            return;
-        }
-        const currentItem = cart.find(item => item.id === productId || item.productId === productId);
-
-        if (!currentItem) {
-            console.error("Error: Producto no encontrado en el carrito.");
-            return;
-        }
-        
-        const newQuantity = currentItem.quantity + delta;
-
-        if (newQuantity < 1) {
-            return handleRemoveItem(productId);
-        }
-
-        setCart(cart.map(item => 
-            item.id === productId || item.productId === productId 
-                ? { ...item, quantity: newQuantity } 
-                : item
-        ));
-
-        const url = `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user.id}`;
-    
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ productId, quantity: newQuantity }),
-            });
-    
-            const responseData = await response.json();
-    
-            if (!response.ok) {
-                console.error("Error en la API:", responseData);
-            }
-    
-        } catch (error) {
-            console.error("Error en `fetch`:", error);
-        }
-    };
+      const currentItem = cart.find(item => item.id === productId || item.productId === productId);
+      if (!currentItem) return;
+  
+      const newQuantity = currentItem.quantity + delta;
+      if (newQuantity < 1) return handleRemoveItem(productId);
+  
+      if (user?.id) {
+          // 🔥 Si el usuario está logueado, actualizar en el backend
+          try {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}cart/item/${user.id}`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ productId, quantity: newQuantity }),
+              });
+  
+              if (!response.ok) throw new Error("Error al actualizar el carrito");
+          } catch (error) {
+              console.error("Error al actualizar carrito:", error);
+          }
+      } else {
+          // 🔥 Si el usuario NO está logueado, actualizar `localStorage`
+          const updatedCart = cart.map(item => 
+              item.id === productId || item.productId === productId 
+                  ? { ...item, quantity: newQuantity } 
+                  : item
+          );
+  
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          setCart(updatedCart);
+      }
+  };
+  
     
     
     const handleRemoveItem = async (productId: string) => {
