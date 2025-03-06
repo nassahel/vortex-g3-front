@@ -21,7 +21,6 @@ export default function Home() {
                     `${URL}product/most-bought-products?limit=4`
                 );
                 const data = await response.json();
-                console.log(data);
                 if (data.length > 0) {
                     setProducts(data);
                 } else {
@@ -35,23 +34,6 @@ export default function Home() {
         fetchActiveProducts();
     }, [page]);
 
-    console.log(products);
-
-    // console.log(products);
-    // console.log(itemSelected);
-
-    // const nextPage = () => {
-    //   if (page < products.cantPages) {
-    //     setPage((prev) => prev + 1)
-    //   }
-    // }
-    // const backPage = () => {
-    //   if (page > 1) {
-    //     setPage((prev) => prev - 1)
-    //   }
-    // }
-
-    // console.log('pagina', page);
 
     return (
         <div>

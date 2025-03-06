@@ -25,7 +25,6 @@ const page = () => {
             try {
                 const response = await fetch(URL + 'category/all');
                 const data = await response.json();
-                console.log(data);
 
                 setCategories(data.data)
             } catch (error) {

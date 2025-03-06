@@ -40,16 +40,12 @@ const page = () => {
       })
 
       if (!response.ok) {
-        console.log(response);
         throw new Error(`Error al obtener datos: ${response.status}`)
 
       }
 
       const data = await response.json()
       setLoading(false)
-      // console.log(data);
-      // localStorage.setItem('token', data.token)
-      // logUser(data.token)
       localStorage.setItem('token', data.token);
       window.location.href = '/'
     } catch (error) {
@@ -70,7 +66,7 @@ const page = () => {
       </form>
       <div className='text-center'>
         <p>No tenés cuenta? <Link href="/user/register" className='font-semibold'>Registrarse</Link></p>
-        <Link className='text-sm font-semibold' href=''>Olvide mi contraseña</Link>
+        <Link className='text-sm font-semibold' href='/user/request-recovery-password'>Olvide mi contraseña</Link>
       </div>
     </div>
   )

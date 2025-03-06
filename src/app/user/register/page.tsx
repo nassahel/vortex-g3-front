@@ -42,6 +42,7 @@ const page = (props: Props) => {
       const responseData = await response.json();
       form.reset();
       setProccess(false)
+      window.location.href = '/user/login';
       return responseData;
     })(), {
       loading: 'Guardando...',
