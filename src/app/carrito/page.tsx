@@ -51,16 +51,13 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
     
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    console.log("🔍 No hay token en localStorage, carrito vacío.");
                     setCart([]); // No hay usuario, carrito vacío
                     return;
                 }
     
                 const decodedUser = jwtDecode<{ userRol: string; userId: string }>(token);
-                console.log("🔍 Usuario decodificado:", decodedUser);
     
                 if (!decodedUser.userId) {
-                    console.log("🚨 Usuario sin userId en el token, deteniendo.");
                     return;
                 }
     
@@ -68,7 +65,6 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                     headers: { "Authorization": `Bearer ${token}` },
                 });
     
-                console.log("🔍 Respuesta de la API de carrito:", response);
     
                 if (!response.ok) {
                     console.error("❌ Error en la API:", response.status, response.statusText);
@@ -76,7 +72,6 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
                 }
     
                 const data = await response.json();
-                console.log("✅ Datos obtenidos del carrito:", data);
     
                 if (!data.data || !data.data.items) {
                     console.warn("⚠️ No hay items en el carrito.");
@@ -137,13 +132,9 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
             console.error("Usuario no autenticado.");
             return;
         }
-
-        console.log("Eliminando producto del carrito, productId:", productId);
-
         setCart(cart.filter(item => item.id !== productId && item.productId !== productId));
 
         const url = `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user.id}/${productId}`;
-        console.log("🔍 Enviando petición DELETE a:", url);
 
         try {
             const response = await fetch(url, {
@@ -151,7 +142,6 @@ const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
             });
 
             const responseData = await response.json();
-            console.log("Respuesta del servidor (producto eliminado):", responseData);
 
             if (!response.ok) {
                 console.error("Error en la API al eliminar producto:", responseData);

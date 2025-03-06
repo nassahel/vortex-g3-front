@@ -58,11 +58,9 @@ const page = () => {
         let user;
         try {
             const decoded = jwtDecode<{ userId: string; userRol: string }>(token);
-            console.log("🔍 Token decodificado:", decoded); 
             if (!decoded.userId) throw new Error("Token inválido: No tiene user.id");
         
             user = { id: decoded.userId, userRol: decoded.userRol };
-            console.log("✅ Usuario obtenido:", user);
         } catch (error) {
             console.error("❌ Error al decodificar el token:", error);
             return;
@@ -107,7 +105,7 @@ const page = () => {
     return (
         <section>
             <Navbar />
-            <div className="max-w-[80rem] mx-auto pt-[10rem]">
+            <div className="max-w-[80rem] mx-auto pt-[2rem]">
                 <Navigation />
                 <div className="flex py-6">
                     <main className="w-full px-20 pt-10 gap-10">
