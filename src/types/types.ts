@@ -35,7 +35,6 @@ export interface CartItem {
   quantity: number;
 }
 
-
 export interface MostBoughtProduct {
   id: string;
   image: string;

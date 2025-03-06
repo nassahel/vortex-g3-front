@@ -2,19 +2,21 @@
 import React, { useEffect, useState } from 'react'
 import { IoIosSearch, IoMdMenu } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
-// import { GoBell } from "react-icons/go";
+import { GoBell } from "react-icons/go";
 import Link from 'next/link';
 import BtnCategory from './BtnCategory';
 import useAppStore from '@/zustand/zustand';
 import { IoCloseOutline } from 'react-icons/io5';
 import { jwtDecode } from 'jwt-decode';
 import { MdLogout } from "react-icons/md";
+import useCartStore from '@/zustand/zustand';
 
 
 type Props = {}
 
 const Navbar = (props: Props) => {
-    const items = useAppStore((state: any) => state.items)
+    const cart = useCartStore((state) => state?.cart);
+    const cartItemCount = useCartStore((state) => state?.cart?.reduce((total, item) => total + item.quantity, 0)); // 🔥 Obtener la cantidad total de productos en el carrito
     const [offerModal, setOfferModal] = useState(true)
     const [showNav, setShowNav] = useState(false)
     const [user, setUser] = useState<any>(null);
@@ -66,8 +68,9 @@ const Navbar = (props: Props) => {
                     <div className='flex items-center gap-4'>
                         <Link href="/carrito" className='relative h-8 w-7 '>
                             {
-                                items.length !== 0 && <p className='absolute top-[7px] left-[14px] text-xs'>{items.length}</p>
-                            }
+                                cartItemCount > 0 && ( 
+                                    <p className='absolute top-[7px] left-[14px] text-xs bg-red-500 text-white rounded-full px-2 py-1'>{cartItemCount}</p>
+                                )                            }
 
                             <CiShoppingCart className='text-3xl' />
                         </Link>
@@ -102,9 +105,9 @@ const Navbar = (props: Props) => {
                             <li className='m-3'>
                                 <Link href="/carrito" className="flex w-full justify-between">
                                 <span>Mi Carrito</span>
-                                    {items.length !== 0 && (
-                                        <p className="absolute top-0 right-7 text-xs">{items.length}</p>
-                                    )}
+                                {cartItemCount > 0 && ( 
+                                    <p className='absolute top-[7px] left-[14px] text-xs bg-red-500 text-white rounded-full px-2 py-1'>{cartItemCount}</p>
+                                )}
                                     <CiShoppingCart className="text-3xl text-black me-4" />
                                 </Link>
                             </li>

@@ -22,10 +22,6 @@ const page = () => {
         subtotal: product ? product.price * quantity : 0,
     };
 
-    console.log(chartItem);
-    // console.log(itemId);
-    console.log("producto", product);
-
     useEffect(() => {
         const fetchItem = async () => {
             // setLoading(true)
@@ -62,22 +58,15 @@ const page = () => {
     return (
         <section>
             <Navbar />
-            <div className="max-w-[80rem] mx-auto pt-[10rem]">
+            <div className="max-w-[80rem] mx-auto pt-[2rem]">
                 <Navigation />
                 <div className="flex py-6">
-                    <main className="w-full px-20 pt-10 gap-10">
+                    <main className="w-full px-20  gap-10">
                         <div className="flex mb-10 gap-10">
-                            {/* <ProductImages
-                            image={
-                                Array.isArray(product?.images)
-                                    ? product.images
-                                    : []
-                            }
-                        /> */}
                             <ProductImages
                                 image={
-                                    product?.images?.length > 0
-                                        ? product?.images
+                                    Array.isArray(product?.images) && product.images.length > 0
+                                        ? product.images
                                         : [
                                               {
                                                   url: "/img/default-product.webp",

@@ -98,8 +98,8 @@ const page = () => {
     return (
         <div>
             <Navbar />
-            <main className="mt-24">
-                <div className="max-w-[1300px] mx-auto flex md:flex-row justify-between py-12 gap-6">
+            <main className="mt-8">
+                <div className="max-w-[1300px] mx-auto flex md:flex-row justify-between gap-6">
                     <div className="w-1/5 relative">
                         <div className="rounded-lg p-4 space-y-4 border sticky top-36">
                             <p className="text-black text-lg font-semibold flex items-center justify-between gap-2">
