@@ -9,7 +9,7 @@ import { IoIosArrowForward, IoMdClose } from "react-icons/io";
 import { GiSettingsKnobs } from "react-icons/gi";
 import Pagination from "@/components/Pagination";
 
-const page = () => {
+const CategoryPage = () => {
     const [products, setProducts] = useState<any>();
     const URL = process.env.NEXT_PUBLIC_API_URL;
     const router = useRouter();
@@ -98,10 +98,10 @@ const page = () => {
     return (
         <div>
             <Navbar />
-            <main className="mt-24">
+            <main className="">
                 <div className="max-w-[1300px] mx-auto flex md:flex-row justify-between py-12 gap-6">
                     <div className="w-1/5 relative">
-                        <div className="rounded-lg p-4 space-y-4 border sticky top-36">
+                        <div className="rounded-lg p-4 space-y-4 border sticky top-6">
                             <p className="text-black text-lg font-semibold flex items-center justify-between gap-2">
                                 Filtros
                                 <GiSettingsKnobs className="text-gray-400" />
@@ -197,4 +197,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default CategoryPage;
