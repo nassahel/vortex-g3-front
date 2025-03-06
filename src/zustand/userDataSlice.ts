@@ -25,8 +25,7 @@ export const userDataSlice = (set: any): UserState => ({
 
         try {
             const decoded: Decoded = jwtDecode(token);
-            console.log(decoded);
-
+    
             set({
                 token,
                 name: decoded.userName,

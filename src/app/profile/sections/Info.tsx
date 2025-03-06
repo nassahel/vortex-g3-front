@@ -11,7 +11,6 @@ const Info = ({ user }: Props) => {
     const [inputData, setInputData] = useState<string>('');
 
 
-    console.log(inputData);
 
 
     const updateProfile = async (field: string) => {

@@ -27,7 +27,6 @@ const BtnCategory = ({ setShowNav }: Props) => {
             try {
                 const response = await fetch(`${URL}all`);
                 const data = await response.json();
-                // console.log("Categorías obtenidas:", data);
                 setCategories(Array.isArray(data.data) ? data.data : [])
             } catch (error) {
                 console.error('No se pudo obtener los datos', error)
