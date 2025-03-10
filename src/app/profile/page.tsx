@@ -13,8 +13,9 @@ type Props = {}
 const page = (props: Props) => {
     const [user, setUser] = useState<any>();
     const [sectionSelected, setSectionSelected] = useState(0)
-    const [image, setImage] = useState<File | null>(null);  // Estado para la imagen seleccionada
+    const [image, setImage] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
+    const [userImage, setUserImage] = useState('')
 
     const logout = () => {
         localStorage.removeItem('token')
@@ -27,52 +28,46 @@ const page = (props: Props) => {
             setImage(file);
         }
     }
-   
+
 
     const handleUploadImage = async () => {
+        const token = localStorage.getItem("token");
+
         if (!image) {
-            console.error('No se seleccionó ninguna imagen');
+            console.error('No se ha seleccionado ninguna imagen');
             return;
         }
 
-        const token = localStorage.getItem('token');
-        if (!token) {
-            console.error('No se encontró el token en el localStorage');
-            return;
-        }
         const formData = new FormData();
         formData.append('file', image);
-        
-        // Obtener el userId de la respuesta o del estado
-        const userId = user.id;
-        formData.append('userId', userId);
-        
+        formData.append('userId', user.id);
+
         setLoading(true);
+
         try {
-            const response = await fetch(process.env.NEXT_PUBLIC_API_URL + 'profile/upload', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}profile/upload-image`, {
                 method: 'POST',
+                body: formData,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
-                body: formData,
             });
 
-            const data = await response.json();
+            const result = await response.json();
+
             if (response.ok) {
-                setUser(prevUser => ({
-                    ...prevUser,
-                    profileImage: data.imagePath,
-                }));
-                console.log('Imagen de perfil actualizada');
+                console.log('Imagen subida con éxito:', result);
+                setUserImage(result.data.userImage)
+                setImage(null);
             } else {
-                console.error('Error al actualizar la imagen:', data.message);
+                console.error('Error al subir la imagen', result.message);
             }
         } catch (error) {
-            console.error('Error al subir la imagen:', error);
+            console.error('Error de conexión', error);
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         const getUserData = async () => {
@@ -100,13 +95,14 @@ const page = (props: Props) => {
 
                 const userData = await response.json();
                 setUser(userData);
+                setUserImage(userData.profile.profileImage)
             } catch (error: any) {
                 console.error('Error:', error.message);
             }
         };
 
         getUserData();
-    }, []);
+    }, [userImage]);
 
     return (
         <ReqAuth allowedRoles={['ADMIN', 'USER']}>
@@ -117,16 +113,11 @@ const page = (props: Props) => {
                     <div className="flex items-center gap-8 mb-12">
                         <div className="shrink-0 flex flex-col items-center">
                             <img
-                                src={user?.profileImage || "/img/default-profile.jpg"}
+                                src={userImage || "/img/default-profile.jpg"}
                                 alt="Foto de perfil"
                                 className="rounded-full w-[12rem] h-[12rem] object-cover border border-gray-300"
                             />
-                            <button
-                                onClick={() => document.getElementById('image-upload')?.click()}
-                                className="mt-4 inline-block bg-black text-white text-sm font-medium mx-auto px-5 py-2 rounded-lg hover:bg-gray-800 transition"
-                            >
-                                Editar
-                            </button>
+
                             <input
                                 type="file"
                                 id="image-upload"
@@ -134,14 +125,22 @@ const page = (props: Props) => {
                                 accept="image/*"
                                 onChange={handleImageChange}
                             />
-                            {image && (
+                            {image ? (
                                 <button
                                     onClick={handleUploadImage}
-                                    className="mt-4 inline-block bg-neutral-600 text-white text-sm font-medium mx-auto px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+                                    className="mt-4 inline-block bg-black text-white text-sm font-medium mx-auto px-5 py-2 rounded-lg hover:bg-gray-800 transition"
                                 >
-                                    {loading ? 'Cargando...' : 'Subir imagen'}
+                                    {loading ? 'Cargando...' : 'Subir'}
                                 </button>
-                            )}
+                            )
+                                :
+                                <button
+                                    onClick={() => document.getElementById('image-upload')?.click()}
+                                    className="mt-4 inline-block bg-black text-white text-sm font-medium mx-auto px-5 py-2 rounded-lg hover:bg-gray-800 transition"
+                                >
+                                    Editar
+                                </button>
+                            }
                         </div>
                         <div className="space-y-3">
                             <h1 className="text-3xl font-bold text-gray-900">
