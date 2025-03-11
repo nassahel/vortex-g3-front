@@ -9,6 +9,7 @@ import useAppStore from "@/zustand/zustand";
 import { IoCloseOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import { MdLogout } from "react-icons/md";
+import SearchBar from "./SearchBar";
 
 type Props = {};
 
@@ -62,7 +63,7 @@ const Navbar = (props: Props) => {
 
                         <Link href="">Favoritos</Link>
                     </div>
-                    <div className="flex w-full h-12  items-center pe-2 rounded-full overflow-hidden bg-neutral-100 shadow-inner border">
+                    {/* <div className="flex w-full h-12  items-center pe-2 rounded-full overflow-hidden bg-neutral-100 shadow-inner border">
                         <div className="p-2 rounded-full m-1 duration-300 hover:bg-neutral-200 flex items-center">
                             <button>
                                 <IoIosSearch className="text-2xl text-neutral-400" />
@@ -75,7 +76,8 @@ const Navbar = (props: Props) => {
                             placeholder="Buscar productos..."
                             className="w-full h-full outline-none px-3 bg-neutral-100"
                         />
-                    </div>
+                    </div> */}
+                    <SearchBar />
 
                     <div className="flex items-center gap-4">
                         <Link href="/carrito" className="relative h-8 w-7 ">

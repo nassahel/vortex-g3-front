@@ -207,7 +207,7 @@ const CartPage = () => {
             console.error("Error al realizar el pago:", error);
         }
     };
-
+    console.log(cart);
     const subtotal = cart.reduce(
         (acc, item) => acc + item.price * item.quantity,
         0
@@ -240,10 +240,8 @@ const CartPage = () => {
                                 >
                                     <img
                                         src={
-                                            item.image &&
-                                            typeof item.image === "string"
-                                                ? `${item.image.trim()}?t=${Date.now()}`
-                                                : "/img/default-product.jpg"
+                                            item?.image?.url ||
+                                            "/img/default-product.jpg"
                                         }
                                         alt={item.name || "Producto"}
                                         className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-md"
