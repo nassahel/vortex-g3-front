@@ -140,7 +140,7 @@ const page = (props: Props) => {
                                 >
                                     Editar
                                 </button>
-                            }
+                            } 
                         </div>
                         <div className="space-y-3">
                             <h1 className="text-3xl font-bold text-gray-900">
