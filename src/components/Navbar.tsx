@@ -144,7 +144,9 @@ const Navbar = (props: Props) => {
                                 <BtnCategory setShowNav={setShowNav} />
                             </li>
                             <li className="m-3">
-                                <Link href="/administration/products">Administración</Link>
+                                {user !== null && user.userRol === "ADMIN" && (
+                                    <Link href="/administration/products">Administración</Link>
+                                )}
                             </li>
                             <li className="m-3">
                                 <Link href="">Favoritos</Link>
