@@ -117,40 +117,59 @@ const Navbar = () => {
             )}
 
             {/* Nav Movil */}
-            <nav aria-label="Menú principal" className="h-[4rem] md:hidden sticky bg-neutral-800 top-0 w-full z-40 flex text-white items-center justify-between px-4">
-                <Link className="font-bold text-3xl" href="#inicio">
-                    LuxShop
-                </Link>
-                <button onClick={() => setShowNav(true)} className="text-4xl text-white">
-                    <IoMdMenu />
-                </button>
-                <div className={`${showNav ? "w-full" : "w-0"} fixed top-0 z-40 bottom-0 left-0 right-0`}>
-                    <div onClick={() => setShowNav(false)} className={`${showNav ? "fixed" : "hidden"} fixed bg-black/60 animate-appear top-0 bottom-0 left-0 right-0`}></div>
-                    <div className={`${showNav ? "" : "-translate-x-[17rem]"} duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}>
-                        <div onClick={() => setShowNav(false)} className="absolute top-2 right-2 text-black border-2 border-neutral-300 p-1 rounded-md">
-                            <IoCloseOutline />
-                        </div>
-                        <ul className="text-xl text-black pt-10 ps-4">
-                            <li className="m-3">
-                                <BtnCategory setShowNav={setShowNav} />
-                            </li>
-                            <li className="m-3">
-                                {user?.userRol === "ADMIN" && (
-                                    <Link href="/administration/products">Administración</Link>
-                                )}
-                            </li>
-                            <li className="m-3">
-                                <Link href="">Favoritos</Link>
-                            </li>
-                            <li className="m-3">
-                                <Link href="/profile" className="text-black">
-                                    {user ? user.userName?.split(" ")[0] : "Ingresá"}
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <nav
+    aria-label="Menú principal"
+    className="h-[4rem] md:hidden sticky bg-neutral-800 top-0 w-full z-40 flex text-white items-center justify-between px-4"
+>
+    <Link className="font-bold text-3xl" href="/">
+        LuxShop
+    </Link>
+
+    <div className="flex items-center gap-4">
+        {/* Botón de Carrito */}
+        <Link href="/carrito" className="relative">
+            <CiShoppingCart className="text-3xl" />
+            {items.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                    {items.length}
+                </span>
+            )}
+        </Link>
+
+        {/* Botón de menú hamburguesa */}
+        <button onClick={() => setShowNav(true)} className="text-4xl text-white">
+            <IoMdMenu />
+        </button>
+    </div>
+
+    <div className={`${showNav ? "w-full" : "w-0"} fixed top-0 z-40 bottom-0 left-0 right-0`}>
+        <div onClick={() => setShowNav(false)} className={`${showNav ? "fixed" : "hidden"} fixed bg-black/60 animate-appear top-0 bottom-0 left-0 right-0`}></div>
+        <div className={`${showNav ? "" : "-translate-x-[17rem]"} duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}>
+            <div onClick={() => setShowNav(false)} className="absolute top-2 right-2 text-black border-2 border-neutral-300 p-1 rounded-md">
+                <IoCloseOutline />
+            </div>
+            <ul className="text-xl text-black pt-10 ps-4">
+                <li className="m-3">
+                    <BtnCategory setShowNav={setShowNav} />
+                </li>
+                <li className="m-3">
+                    {user?.userRol === "ADMIN" && (
+                        <Link href="/administration/products">Administración</Link>
+                    )}
+                </li>
+                <li className="m-3">
+                    <Link href="">Favoritos</Link>
+                </li>
+                <li className="m-3">
+                    <Link href="/profile" className="text-black">
+                        {user ? user.userName?.split(" ")[0] : "Ingresá"}
+                    </Link>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
         </>
     );
 };
