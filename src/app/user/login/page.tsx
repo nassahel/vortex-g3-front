@@ -55,21 +55,48 @@ const page = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={login} className='flex flex-col bg-white px-6 py-6 w-[25rem] border rounded-lg'>
-        <h2 className='text-center text-4xl font-semibold mb-4'>Iniciar sesión</h2>
+    <div className="min-h-screen flex flex-col justify-center items-center px-4">
+      <form 
+        onSubmit={login} 
+        className="flex flex-col bg-white px-6 py-6 w-full max-w-[25rem] border rounded-lg"
+      >
+        <h2 className="text-center text-4xl font-semibold mb-4">Iniciar sesión</h2>
+  
         <label className={labelStyle} htmlFor="email">Email</label>
-        <input value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputStyle} type="text" name="email" id="email" />
+        <input 
+          value={formData.email} 
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
+          className={inputStyle} 
+          type="text" 
+          name="email" 
+          id="email" 
+        />
+  
         <label className={labelStyle} htmlFor="password">Contraseña</label>
-        <input value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} className={inputStyle} type="text" name="password" id="password" />
-        <button type='submit' className='bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg'>{loading ? 'Ingresando...' : 'Ingresar'}</button>
+        <input 
+          value={formData.password} 
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
+          className={inputStyle} 
+          type="text" 
+          name="password" 
+          id="password" 
+        />
+  
+        <button 
+          type="submit" 
+          className="bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg"
+        >
+          {loading ? 'Ingresando...' : 'Ingresar'}
+        </button>
       </form>
-      <div className='text-center'>
-        <p>No tenés cuenta? <Link href="/user/register" className='font-semibold'>Registrarse</Link></p>
-        <Link className='text-sm font-semibold' href='/user/request-recovery-password'>Olvide mi contraseña</Link>
+  
+      <div className="text-center mt-4">
+        <p>No tenés cuenta? <Link href="/user/register" className="font-semibold">Registrarse</Link></p>
+        <Link className="text-sm font-semibold" href='/user/request-recovery-password'>Olvidé mi contraseña</Link>
       </div>
     </div>
-  )
+  );
+  
 }
 
 export default page
