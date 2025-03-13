@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { IoIosSearch, IoMdMenu } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
-// import { GoBell } from "react-icons/go";
 import Link from "next/link";
 import BtnCategory from "./BtnCategory";
 import useAppStore from "@/zustand/zustand";
@@ -10,20 +9,36 @@ import { IoCloseOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import SearchBar from "./SearchBar";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
     const items = useAppStore((state: any) => state.items);
     const [offerModal, setOfferModal] = useState(true);
     const [showNav, setShowNav] = useState(false);
     const [user, setUser] = useState<any>(null);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
+    // Función para obtener el usuario desde el localStorage o sessionStorage
+    const getUser = () => {
+        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
         if (token) {
-            const user = jwtDecode(token);
-            setUser(user);
+            try {
+                const decodedUser = jwtDecode(token);
+                setUser(decodedUser);
+            } catch (error) {
+                console.error("Error al decodificar el token:", error);
+                setUser(null);
+            }
         }
+    };
+
+    useEffect(() => {
+        getUser(); // Cargar usuario al montar el componente
+
+        // Escuchar cambios en localStorage para mantener sesión en mobile
+        const handleStorageChange = () => getUser();
+        window.addEventListener("storage", handleStorageChange);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
     }, []);
 
     return (
@@ -38,16 +53,13 @@ const Navbar = (props: Props) => {
                                 Registrate ahora!
                             </Link>
                         </p>
-                        <button
-                            onClick={() => setOfferModal(false)}
-                            className="absolute right-4 text-xl"
-                        >
+                        <button onClick={() => setOfferModal(false)} className="absolute right-4 text-xl">
                             ×
                         </button>
                     </div>
                 </div>
             )}
-    
+
             <div className="w-full bg-white hidden md:block">
                 <div className="flex max-w-[80rem] min-w-[60rem] py-4 mx-auto gap-10 border-b">
                     <Link href="/">
@@ -55,7 +67,7 @@ const Navbar = (props: Props) => {
                     </Link>
                     <div className="flex items-center gap-5">
                         <BtnCategory />
-                        {user !== null && user.userRol === "ADMIN" && (
+                        {user?.userRol === "ADMIN" && (
                             <Link href="/administration/products">Administración</Link>
                         )}
                         <Link href="">Favoritos</Link>
@@ -64,9 +76,7 @@ const Navbar = (props: Props) => {
                     <div className="flex items-center gap-4">
                         <Link href="/carrito" className="relative h-8 w-7 ">
                             {items.length !== 0 && (
-                                <p className="absolute top-[7px] left-[14px] text-xs">
-                                    {items.length}
-                                </p>
+                                <p className="absolute top-[7px] left-[14px] text-xs">{items.length}</p>
                             )}
                             <CiShoppingCart
                                 className={`text-3xl transition-all hover:scale-110 duration-150 ${
@@ -74,24 +84,21 @@ const Navbar = (props: Props) => {
                                 }`}
                             />
                         </Link>
-                        {user === null ? (
-                            <Link
-                                href="/user/login"
-                                className="border-b border-transparent transition-all hover:-translate-y-1 duration-200 hover:border-black"
-                            >
-                                Ingresá
-                            </Link>
-                        ) : (
+                        {user ? (
                             <div className="flex gap-6">
                                 <Link className="w-fit font-bold" href="/profile">
-                                    {user.userName.split(" ")[0]}
+                                    {user.userName?.split(" ")[0]}
                                 </Link>
                             </div>
+                        ) : (
+                            <Link href="/user/login" className="border-b border-transparent transition-all hover:-translate-y-1 duration-200 hover:border-black">
+                                Ingresá
+                            </Link>
                         )}
                     </div>
                 </div>
             </div>
-    
+
             {/* Offer Modal para Mobile */}
             {offerModal && (
                 <div className="py-2 px-4 bg-black text-white text-center md:hidden">
@@ -102,21 +109,15 @@ const Navbar = (props: Props) => {
                                 Registrate ahora!
                             </Link>
                         </p>
-                        <button
-                            onClick={() => setOfferModal(false)}
-                            className="absolute right-4 text-lg sm:text-xl"
-                        >
+                        <button onClick={() => setOfferModal(false)} className="absolute right-4 text-lg sm:text-xl">
                             ×
                         </button>
                     </div>
                 </div>
             )}
-    
+
             {/* Nav Movil */}
-            <nav
-                aria-label="Menú principal"
-                className="h-[4rem] md:hidden sticky bg-neutral-800 top-0 w-full z-40 flex text-white items-center justify-between px-4"
-            >
+            <nav aria-label="Menú principal" className="h-[4rem] md:hidden sticky bg-neutral-800 top-0 w-full z-40 flex text-white items-center justify-between px-4">
                 <Link className="font-bold text-3xl" href="#inicio">
                     LuxShop
                 </Link>
@@ -124,19 +125,9 @@ const Navbar = (props: Props) => {
                     <IoMdMenu />
                 </button>
                 <div className={`${showNav ? "w-full" : "w-0"} fixed top-0 z-40 bottom-0 left-0 right-0`}>
-                    <div
-                        onClick={() => setShowNav(false)}
-                        className={`${showNav ? "fixed" : "hidden"} fixed bg-black/60 animate-appear top-0 bottom-0 left-0 right-0`}
-                    ></div>
-                    <div
-                        className={`${
-                            showNav ? "" : "-translate-x-[17rem]"
-                        } duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}
-                    >
-                        <div
-                            onClick={() => setShowNav(false)}
-                            className="absolute top-2 right-2 text-black border-2 border-neutral-300 p-1 rounded-md"
-                        >
+                    <div onClick={() => setShowNav(false)} className={`${showNav ? "fixed" : "hidden"} fixed bg-black/60 animate-appear top-0 bottom-0 left-0 right-0`}></div>
+                    <div className={`${showNav ? "" : "-translate-x-[17rem]"} duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}>
+                        <div onClick={() => setShowNav(false)} className="absolute top-2 right-2 text-black border-2 border-neutral-300 p-1 rounded-md">
                             <IoCloseOutline />
                         </div>
                         <ul className="text-xl text-black pt-10 ps-4">
@@ -144,7 +135,7 @@ const Navbar = (props: Props) => {
                                 <BtnCategory setShowNav={setShowNav} />
                             </li>
                             <li className="m-3">
-                                {user !== null && user.userRol === "ADMIN" && (
+                                {user?.userRol === "ADMIN" && (
                                     <Link href="/administration/products">Administración</Link>
                                 )}
                             </li>
@@ -152,28 +143,9 @@ const Navbar = (props: Props) => {
                                 <Link href="">Favoritos</Link>
                             </li>
                             <li className="m-3">
-                                <Link href="/carrito" className="flex w-full justify-between">
-                                    <span>Mi Carrito</span>
-                                    {items.length !== 0 && (
-                                        <p className="absolute top-0 right-7 text-xs">
-                                            {items.length}
-                                        </p>
-                                    )}
-                                    <CiShoppingCart className="text-3xl text-black me-4" />
+                                <Link href="/profile" className="text-black">
+                                    {user ? user.userName?.split(" ")[0] : "Ingresá"}
                                 </Link>
-                            </li>
-                            <li className="m-3">
-                                {user === null ? (
-                                    <Link href="/user/login" className="text-black">
-                                        Ingresá
-                                    </Link>
-                                ) : (
-                                    <div className="flex gap-6 items-center">
-                                        <Link className="text-black" href="/user/login">
-                                            {user.userName.split(" ")[0]}
-                                        </Link>
-                                    </div>
-                                )}
                             </li>
                         </ul>
                     </div>
@@ -181,7 +153,6 @@ const Navbar = (props: Props) => {
             </nav>
         </>
     );
-    
 };
 
 export default Navbar;
