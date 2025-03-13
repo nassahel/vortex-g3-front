@@ -37,8 +37,12 @@ export default function Home() {
 
     return (
         <div>
+            <div>
             <Navbar />
+            </div>
+            <div className="mt-5 pt-5">
             <HeroSection />
+            </div>
             <main className="max-w-[75rem] mx-auto pt-20 pb-10">
                 {loading ? (
                     <div className="w-full">
