@@ -43,29 +43,28 @@ export default function Home() {
             <div className="mt-5 pt-5">
             <HeroSection />
             </div>
-            <main className="max-w-[75rem] mx-auto pt-20 pb-10">
+            <main className="max-w-[75rem] mx-auto pt-20 pb-10 px-4">
                 {loading ? (
-                    <div className="w-full">
+                    <div className="w-full flex justify-center">
                         <img
                             src="/img/loading.gif"
                             alt="Loader"
-                            className="w-[15rem] mx-auto my-20"
-                        />{" "}
+                            className="w-[12rem] sm:w-[15rem] my-20"
+                        />
                     </div>
                 ) : (
-                    <div className="flex flex-wrap mx-auto  gap-4 ">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-auto">
                         {products && products.length < 1 ? (
-                            <p>No hay productos para mostrar</p>
+                            <p className="text-center col-span-full">No hay productos para mostrar</p>
                         ) : (
-                            products?.map(
-                                (item: MostBoughtProduct, i: number) => (
-                                    <ProductCard item={item} key={i} />
-                                )
-                            )
+                            products?.map((item: MostBoughtProduct, i: number) => (
+                                <ProductCard item={item} key={i} />
+                            ))
                         )}
                     </div>
                 )}
             </main>
+
         </div>
     );
 }
