@@ -240,7 +240,7 @@ const CartPage = () => {
                                 >
                                     <img
                                         src={
-                                            item?.image?.url ||
+                                            item?.image ||
                                             "/img/default-product.jpg"
                                         }
                                         alt={item.name || "Producto"}
