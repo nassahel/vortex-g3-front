@@ -72,7 +72,7 @@ const page = () => {
     const commonStyle = "flex-center border-e p-2";
 
     return (
-        <section className="relative">
+        <section className="relative px-4">
             {modal && (
                 <AddEditProductModal
                     setModal={setModal}
@@ -87,11 +87,13 @@ const page = () => {
                     itemId={productEdit?.id || ""}
                 />
             )}
-            <div className="flex justify-between">
+    
+            {/* Búsqueda y botón responsivos */}
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="bg-white py-2 px-4 my-2 rounded-md border-2 border-neutral-400 outline-none w-[25rem]"
+                    className="bg-white py-2 px-4 rounded-md border-2 border-neutral-400 outline-none w-full sm:w-[25rem]"
                     type="search"
                     placeholder="Buscar productos..."
                 />
@@ -100,132 +102,111 @@ const page = () => {
                         setModal(true);
                         setModalEdit(false);
                     }}
-                    className="bg-white py-2 px-4 my-2 rounded-md border-2 border-neutral-400 hover:border-black duration-200"
+                    className="bg-white py-2 px-4 rounded-md border-2 border-neutral-400 hover:border-black duration-200 w-full sm:w-auto"
                 >
                     Agregar Producto
                 </button>
             </div>
-
-            <div>
-                <section className="flex flex-col gap-1">
-                    {/* Encabezado */}
-                    <article className="bg-neutral-800 text-white rounded-md flex font-semibold">
-                        <div className="flex w-full">
-                            <div className={`${commonStyle} w-2/12`}>
-                                <p className="capitalize">Nombre</p>
-                            </div>
-                            <div className={`${commonStyle} w-6/12`}>
-                                <p>Descripción</p>
-                            </div>
-                            <div className={`${commonStyle} w-1/12`}>
-                                <p>Precio</p>
-                            </div>
-                            <div className={`${commonStyle} w-2/12`}>
-                                <p>Categoría</p>
-                            </div>
-                            <div className={`${commonStyle} w-1/12`}>
-                                Opciones
-                            </div>
+    
+            <section className="flex flex-col gap-1 mt-4">
+                {/* Encabezado responsivo */}
+                <article className="bg-neutral-800 text-white rounded-md font-semibold hidden md:flex">
+                    <div className="w-full grid grid-cols-2 md:grid-cols-12 gap-2">
+                        <div className={`${commonStyle} md:col-span-2`}>
+                            <p className="capitalize">Nombre</p>
                         </div>
-                    </article>
-
-                    {/* Productos */}
-                    {loading ? (
-                        <p className="mt-6 text-lg">Cargando...</p>
-                    ) : (
-                        products.map((item: Product, i) => (
-                            <article
-                                key={i}
-                                className="bg-white overflow-hidden rounded-md border border-neutral-200 flex flex-col"
-                            >
-                                <div className="flex">
-                                    <div className="flex w-full">
-                                        <div
-                                            className={`${commonStyle} w-2/12`}
-                                        >
-                                            <p className="capitalize font-semibold">
-                                                {item.name}
-                                            </p>
-                                        </div>
-                                        <div
-                                            className={`${commonStyle} w-6/12`}
-                                        >
-                                            <p>{item.description}</p>
-                                        </div>
-                                        <div
-                                            className={`${commonStyle} w-1/12`}
-                                        >
-                                            <p>${item.price}</p>
-                                        </div>
-                                        <div
-                                            className={`${commonStyle} w-2/12 gap-1 flex-wrap`}
-                                        >
-                                            {item.categories.map(
-                                                (cat: any, i) => (
-                                                    <p
-                                                        key={i}
-                                                        className="border border-neutral-700 text-sm rounded-lg bg-white w-fit px-1"
-                                                    >
-                                                        {cat}
-                                                    </p>
-                                                )
-                                            )}
-                                        </div>
-                                        <div
-                                            className={`${commonStyle} w-1/12 text-xl gap-4`}
-                                        >
-                                            <button
-                                                onClick={() => {
-                                                    setProductEdit(item);
-                                                    setModal(true);
-                                                    setModalEdit(true);
-                                                }}
-                                            >
-                                                <FaEdit />
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setProductEdit(item);
-                                                    setDeleteModal(true);
-                                                }}
-                                            >
-                                                <RiDeleteBin6Line color="red" />
-                                            </button>
-                                        </div>
-                                    </div>
+                        <div className={`${commonStyle} md:col-span-6`}>
+                            <p>Descripción</p>
+                        </div>
+                        <div className={`${commonStyle} md:col-span-1`}>
+                            <p>Precio</p>
+                        </div>
+                        <div className={`${commonStyle} md:col-span-2`}>
+                            <p>Categoría</p>
+                        </div>
+                        <div className={`${commonStyle} md:col-span-1`}>Opciones</div>
+                    </div>
+                </article>
+    
+                {/* Productos responsivos */}
+                {loading ? (
+                    <p className="mt-6 text-lg text-center">Cargando...</p>
+                ) : (
+                    products.map((item: Product, i) => (
+                        <article
+                            key={i}
+                            className="bg-white overflow-hidden rounded-md border border-neutral-200 flex flex-col p-4"
+                        >
+                            <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
+                                <div className={`${commonStyle} md:col-span-2`}>
+                                    <p className="capitalize font-semibold">{item.name}</p>
                                 </div>
-                                <div className="flex items-center gap-2 flex-wrap px-4 py-2 bg-gray-50 border-t border-neutral-200">
-                                    {item.images.map((img, idx) => (
-                                        <div
-                                            key={idx}
-                                            className={`w-16 h-16 rounded overflow-hidden border ${
-                                                idx === 0
-                                                    ? "border-2 border-blue-500 shadow-md"
-                                                    : "border-neutral-300"
-                                            }`}
-                                        >
-                                            {/* Asegúrate de usar 'img.url' para acceder a la URL de la imagen */}
-                                            <img
-                                                src={img.url}
-                                                alt={`Producto ${idx + 1}`}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                                <div className={`${commonStyle} md:col-span-6`}>
+                                    <p>{item.description}</p>
+                                </div>
+                                <div className={`${commonStyle} md:col-span-1`}>
+                                    <p>${item.price}</p>
+                                </div>
+                                <div className={`${commonStyle} md:col-span-2 flex-wrap`}>
+                                    {item.categories.map((cat: any, i) => (
+                                        <p key={i} className="border border-neutral-700 text-sm rounded-lg bg-white w-fit px-1">
+                                            {cat}
+                                        </p>
                                     ))}
+                                </div>
+                                <div className={`${commonStyle} md:col-span-1 text-xl flex gap-2`}>
                                     <button
-                                        className="w-16 h-16 flex items-center justify-center border border-neutral-400 rounded hover:bg-neutral-100"
-                                        onClick={() => handleAddImage(item.id)}
+                                        onClick={() => {
+                                            setProductEdit(item);
+                                            setModal(true);
+                                            setModalEdit(true);
+                                        }}
                                     >
-                                        +
+                                        <FaEdit />
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setProductEdit(item);
+                                            setDeleteModal(true);
+                                        }}
+                                    >
+                                        <RiDeleteBin6Line color="red" />
                                     </button>
                                 </div>
-                            </article>
-                        ))
-                    )}
-                </section>
-            </div>
+                            </div>
+    
+                            {/* Imágenes responsivas */}
+                            <div className="flex items-center gap-2 flex-wrap px-4 py-2 bg-gray-50 border-t border-neutral-200">
+                                {item.images.map((img, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`w-16 h-16 rounded overflow-hidden border ${
+                                            idx === 0
+                                                ? "border-2 border-blue-500 shadow-md"
+                                                : "border-neutral-300"
+                                        }`}
+                                    >
+                                        <img
+                                            src={img.url}
+                                            alt={`Producto ${idx + 1}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                ))}
+                                <button
+                                    className="w-16 h-16 flex items-center justify-center border border-neutral-400 rounded hover:bg-neutral-100"
+                                    onClick={() => handleAddImage(item.id)}
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </article>
+                    ))
+                )}
+            </section>
         </section>
     );
+    
 };
 
 export default page;
