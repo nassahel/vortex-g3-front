@@ -2,10 +2,25 @@
 
 import AddEditProductModal from "@/components/modals/AddEditProductModal";
 import { DeleteModal } from "@/components/modals/DeleteModal";
-import { Product } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+
+
+
+interface Product {
+    id: string
+    categories: string[];
+    description: string;
+    images: Image[];
+    name: string;
+    price: number;
+    stock: number;
+}
+
+interface Image {
+    url: string;
+}
 
 const page = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -16,6 +31,7 @@ const page = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const URL = process.env.NEXT_PUBLIC_API_URL;
+    const [refresh, setRefresh] = useState<number>(0)
 
     useEffect(() => {
         const fetchActiveProducts = async () => {
@@ -30,9 +46,9 @@ const page = () => {
             }
         };
         fetchActiveProducts();
-    }, [deleteModal]);
+    }, [deleteModal, refresh]);
 
-    console.log(products);
+
 
     const handleAddImage = async (productId: string) => {
         const input = document.createElement("input");
@@ -56,6 +72,7 @@ const page = () => {
                 );
 
                 const result = await response.json();
+                setRefresh(Math.random())
 
                 if (response.ok) {
                 } else {
@@ -69,22 +86,24 @@ const page = () => {
         input.click(); // Abrir el selector de archivos
     };
 
-    const commonStyle = "flex-center border-e p-2";
+    const commonStyle = " p-3";
 
     return (
         <section className="relative">
             {modal && (
                 <AddEditProductModal
                     setModal={setModal}
-                    product={productEdit}
+                    user={productEdit}
                     isEditing={modalEdit}
                 />
             )}
             {deleteModal && (
                 <DeleteModal
                     setDeleteModal={setDeleteModal}
-                    modalText="¿Estás seguro de que deseas borrar este producto?"
+                    elemento="producto"
+                    nombre={productEdit?.name}
                     itemId={productEdit?.id || ""}
+                    ruta="product/delete/"
                 />
             )}
             <div className="flex justify-between">
@@ -106,10 +125,10 @@ const page = () => {
                 </button>
             </div>
 
-            <div>
-                <section className="flex flex-col gap-1">
+            <div >
+                <section className="flex flex-col rounded-md overflow-hidden">
                     {/* Encabezado */}
-                    <article className="bg-neutral-800 text-white rounded-md flex font-semibold">
+                    <article className="bg-gray-800 text-white flex font-semibold">
                         <div className="flex w-full">
                             <div className={`${commonStyle} w-2/12`}>
                                 <p className="capitalize">Nombre</p>
@@ -136,7 +155,7 @@ const page = () => {
                         products.map((item: Product, i) => (
                             <article
                                 key={i}
-                                className="bg-white overflow-hidden rounded-md border border-neutral-200 flex flex-col"
+                                className="bg-white overflow-hidden border-t border-gray-400 flex flex-col"
                             >
                                 <div className="flex">
                                     <div className="flex w-full">
@@ -158,13 +177,13 @@ const page = () => {
                                             <p>${item.price}</p>
                                         </div>
                                         <div
-                                            className={`${commonStyle} w-2/12 gap-1 flex-wrap`}
+                                            className={`${commonStyle} w-2/12 flex-wrap flex items-start`}
                                         >
                                             {item.categories.map(
                                                 (cat: any, i) => (
                                                     <p
                                                         key={i}
-                                                        className="border border-neutral-700 text-sm rounded-lg bg-white w-fit px-1"
+                                                        className="border border-neutral-700 text-xs rounded-lg bg-white w-fit m-1 px-1"
                                                     >
                                                         {cat}
                                                     </p>
@@ -172,7 +191,7 @@ const page = () => {
                                             )}
                                         </div>
                                         <div
-                                            className={`${commonStyle} w-1/12 text-xl gap-4`}
+                                            className={`${commonStyle} w-1/12 text-xl flex gap-4`}
                                         >
                                             <button
                                                 onClick={() => {
@@ -194,17 +213,15 @@ const page = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2 flex-wrap px-4 py-2 bg-gray-50 border-t border-neutral-200">
+                                <div className="flex items-center gap-2 flex-wrap px-4 py-2 bg-gray-50">
                                     {item.images.map((img, idx) => (
                                         <div
                                             key={idx}
-                                            className={`w-16 h-16 rounded overflow-hidden border ${
-                                                idx === 0
-                                                    ? "border-2 border-blue-500 shadow-md"
-                                                    : "border-neutral-300"
-                                            }`}
+                                            className={`w-16 h-16 rounded overflow-hidden border ${idx === 0
+                                                ? "border-2 border-blue-500 shadow-md"
+                                                : "border-neutral-300"
+                                                }`}
                                         >
-                                            {/* Asegúrate de usar 'img.url' para acceder a la URL de la imagen */}
                                             <img
                                                 src={img.url}
                                                 alt={`Producto ${idx + 1}`}

@@ -1,23 +1,27 @@
 "use client";
 import AddCategoryModal from "@/components/modals/AddCategoryModal";
-import AddEditProductModal from "@/components/modals/AddEditProductModal";
 import { DeleteModal } from "@/components/modals/DeleteModal";
 import React, { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-// import AddEditProductModal from '../modals/AddEditProductModal';
-// import Swal from 'sweetalert2';
-// import { sortData } from '../../utils/utils';
+
+
+
+interface Categorie {
+    id: string;
+    name: string;
+}
 
 const page = () => {
     const [categories, setCategories] = useState([]);
     const [modal, setModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [selectedId, setSelectedId] = useState<string | null>(null);
-    const [productEdit, setProductEdit] = useState(null);
-    const [modalEdit, setModalEdit] = useState(false);
     const [search, setSearch] = useState("");
     const URL = process.env.NEXT_PUBLIC_API_URL;
+
+
+    
+
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -41,13 +45,10 @@ const page = () => {
     return (
         <section className="relative">
             {modal && <AddCategoryModal setModal={setModal} />}
-            {deleteModal && (
-                <DeleteModal
-                    itemId={selectedId}
-                    routeDelete="category/delete"
-                    modalText="¿Deseas borrar la categoría?"
-                    setDeleteModal={setDeleteModal}
-                />
+            {deleteModal && (<DeleteModal
+                itemId={selectedId}
+                modalText="¿Deseas borrar la categoría?"
+                setDeleteModal={setDeleteModal} />
             )}
 
             <div className="flex justify-between">
@@ -68,23 +69,23 @@ const page = () => {
             </div>
 
             <div>
-                <section className="flex flex-col gap-1">
-                    <article className="bg-neutral-800 text-white flex h-12 rounded-md w-full">
+                <section className="flex flex-col rounded-md overflow-hidden">
+                    <article className="bg-gray-800 text-white flex h-12 w-full">
                         <p className="px-4 flex items-center w-full py-2 border-e h-full font-semibold">
                             Nombre
                         </p>
                         <div className="flex  items-center justify-center">
                             <p className="w-48 flex justify-center font-semibold">
-                                Acciones
+                                Borrar
                             </p>
                         </div>
                     </article>
 
                     {categories.length !== 0 ? (
-                        categories.map((item, i) => (
+                        categories.map((item: Categorie, i) => (
                             <article
                                 key={i}
-                                className="bg-white flex h-12 rounded-md w-full"
+                                className="bg-white flex h-12 border-b w-full"
                             >
                                 <p className="px-4 flex items-center w-full py-2 border-e h-full">
                                     {item.name}
