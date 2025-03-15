@@ -4,8 +4,6 @@ import { DeleteModal } from "@/components/modals/DeleteModal";
 import React, { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-
-
 interface Categorie {
     id: string;
     name: string;
@@ -18,10 +16,6 @@ const page = () => {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [search, setSearch] = useState("");
     const URL = process.env.NEXT_PUBLIC_API_URL;
-
-
-    
-
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -47,7 +41,9 @@ const page = () => {
             {modal && <AddCategoryModal setModal={setModal} />}
             {deleteModal && (<DeleteModal
                 itemId={selectedId}
-                modalText="¿Deseas borrar la categoría?"
+                elemento="categoria"
+                ruta="category/delete/"
+
                 setDeleteModal={setDeleteModal} />
             )}
 

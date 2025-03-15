@@ -11,12 +11,12 @@ const HeroSection = ({
 
 }: Props) => {
   return (
-    <section className='h-screen bg-neutral-200 flex flex-col justify-end w-full'>
+    <section className='h-screen bg-gray-200 flex flex-col justify-end w-full'>
       <div className='w-[80rem] flex items-center mx-auto '>
         <div className='lg:w-1/2 flex flex-col justify-center'>
           <h1 className='lg:text-7xl font-extrabold'>ENCUENTRA LA ROPA QUE COMBINE CON TU ESTILO</h1>
           <h3 className='text-lg mt-6'>Explore nuestra variada gama de prendas meticulosamente elaboradas, diseñadas para resaltar su individualidad y satisfacer su sentido del estilo.</h3>
-          <button className='bg-black rounded-full py-4 px-12 hover:bg-neutral-800 duration-200 mt-8 text-white w-fit'>Explorar categorías</button>
+          <button className='bg-gray-950 rounded-full py-4 px-12 hover:bg-gray-800 duration-200 mt-8 text-white w-fit'>Explorar categorías</button>
           <div className='flex justify-center mt-10 mb-20'>
             <div>
               <p className='text-5xl font-semibold'>200+</p>
@@ -37,7 +37,7 @@ const HeroSection = ({
         </div>
 
       </div>
-      <div className='h-[8rem] bg-black  py-5 px-8'>
+      <div className='h-[8rem] bg-gray-950  py-5 px-8'>
         <div className='flex items-center justify-between gap-6 max-w-[100rem] mx-auto'>
           <Image width={1000} height={563} src="/img/timberland.png" alt='Moda' className='invert w-40  ' />
           <Image width={1024} height={544} src="/img/north_face.png" alt='Moda' className='invert w-40 ' />

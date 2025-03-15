@@ -1,12 +1,9 @@
 "use client";
-
 import AddEditProductModal from "@/components/modals/AddEditProductModal";
 import { DeleteModal } from "@/components/modals/DeleteModal";
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
-
 
 interface Product {
     id: string
@@ -82,11 +79,14 @@ const page = () => {
                 console.error("Error de conexión", error);
             }
         };
-
-        input.click(); // Abrir el selector de archivos
+        input.click();
     };
 
     const commonStyle = " p-3";
+
+
+    const filteredProducts = search !== '' ? products.filter(product => (product.name.toLowerCase().trim().includes(search.toLowerCase().trim()))) : products;
+
 
     return (
         <section className="relative">
@@ -152,62 +152,41 @@ const page = () => {
                     {loading ? (
                         <p className="mt-6 text-lg">Cargando...</p>
                     ) : (
-                        products.map((item: Product, i) => (
+                        filteredProducts.map((item: Product, i) => (
                             <article
                                 key={i}
-                                className="bg-white overflow-hidden border-t border-gray-400 flex flex-col"
-                            >
+                                className="bg-white overflow-hidden border-t border-gray-400 flex flex-col">
                                 <div className="flex">
                                     <div className="flex w-full">
-                                        <div
-                                            className={`${commonStyle} w-2/12`}
-                                        >
-                                            <p className="capitalize font-semibold">
-                                                {item.name}
-                                            </p>
+                                        <div className={`${commonStyle} w-2/12`}>
+                                            <p className="capitalize font-semibold">                                                {item.name}</p>
                                         </div>
-                                        <div
-                                            className={`${commonStyle} w-6/12`}
-                                        >
-                                            <p>{item.description}</p>
-                                        </div>
-                                        <div
-                                            className={`${commonStyle} w-1/12`}
-                                        >
+                                        <div className={`${commonStyle} w-6/12`}>
+                                            <p>{item.description}</p></div>
+                                        <div className={`${commonStyle} w-1/12`}>
                                             <p>${item.price}</p>
                                         </div>
-                                        <div
-                                            className={`${commonStyle} w-2/12 flex-wrap flex items-start`}
-                                        >
+                                        <div className={`${commonStyle} w-2/12 flex-wrap flex items-start`}>
                                             {item.categories.map(
                                                 (cat: any, i) => (
-                                                    <p
-                                                        key={i}
-                                                        className="border border-neutral-700 text-xs rounded-lg bg-white w-fit m-1 px-1"
-                                                    >
-                                                        {cat}
-                                                    </p>
+                                                    <p key={i} className="border border-neutral-700 text-xs rounded-lg bg-white w-fit m-1 px-1">{cat}</p>
                                                 )
                                             )}
                                         </div>
-                                        <div
-                                            className={`${commonStyle} w-1/12 text-xl flex gap-4`}
-                                        >
+                                        <div className={`${commonStyle} w-1/12 text-xl flex gap-4`}>
                                             <button
                                                 onClick={() => {
                                                     setProductEdit(item);
                                                     setModal(true);
                                                     setModalEdit(true);
-                                                }}
-                                            >
+                                                }}>
                                                 <FaEdit />
                                             </button>
                                             <button
                                                 onClick={() => {
                                                     setProductEdit(item);
                                                     setDeleteModal(true);
-                                                }}
-                                            >
+                                                }}>
                                                 <RiDeleteBin6Line color="red" />
                                             </button>
                                         </div>
@@ -220,21 +199,14 @@ const page = () => {
                                             className={`w-16 h-16 rounded overflow-hidden border ${idx === 0
                                                 ? "border-2 border-blue-500 shadow-md"
                                                 : "border-neutral-300"
-                                                }`}
-                                        >
+                                                }`}>
                                             <img
                                                 src={img.url}
                                                 alt={`Producto ${idx + 1}`}
-                                                className="w-full h-full object-cover"
-                                            />
+                                                className="w-full h-full object-cover" />
                                         </div>
                                     ))}
-                                    <button
-                                        className="w-16 h-16 flex items-center justify-center border border-neutral-400 rounded hover:bg-neutral-100"
-                                        onClick={() => handleAddImage(item.id)}
-                                    >
-                                        +
-                                    </button>
+                                    <button className="w-16 h-16 flex items-center justify-center border border-neutral-400 rounded hover:bg-neutral-100" onClick={() => handleAddImage(item.id)}>+</button>
                                 </div>
                             </article>
                         ))

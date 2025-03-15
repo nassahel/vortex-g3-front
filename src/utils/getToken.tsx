@@ -1,20 +1,27 @@
 import { jwtDecode } from "jwt-decode";
 
-export const getToken = () => {
-    return localStorage.getItem('token');
-}
+export const getAndVerifyToken = () => {
+    const token = localStorage.getItem("token");
 
-
-export const getUserInfo = () => {
-    const token = localStorage.getItem('token');
     if (!token) {
+        window.location.href = "/";
         return null;
     }
 
     try {
-        return jwtDecode(token);
+        const decoded: any = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+
+        if (decoded.exp < currentTime) {
+            localStorage.removeItem("token");
+            window.location.href = "/";
+            return null;
+        }
+
+        return { user: decoded, token };
     } catch (error) {
         console.error("Error al decodificar el token:", error);
+        window.location.href = "/";
         return null;
     }
-}
+};
