@@ -1,102 +1,126 @@
-"use client"
-import useAppStore from '@/zustand/zustand';
-import Link from 'next/link';
-import { useState } from 'react'
+"use client";
+import useAppStore from "@/zustand/zustand";
+import Link from "next/link";
+import { useState } from "react";
 
 interface FormData {
-  email: string;
-  password: string;
+    email: string;
+    password: string;
 }
 
 const page = () => {
-  // const logUser = useAppStore((state: any) => state.setToken)
-  const [loading, setLoading] = useState(false)
-  const [errorType, setErrorType] = useState('')
-  const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: ''
-  })
+    // const logUser = useAppStore((state: any) => state.setToken)
+    const [loading, setLoading] = useState(false);
+    const [errorType, setErrorType] = useState("");
+    const [formData, setFormData] = useState<FormData>({
+        email: "",
+        password: "",
+    });
 
-  const inputStyle: string = 'border rounded-lg py-2 px-4 outline-blue-600 mb-4';
-  const labelStyle: string = ''
+    const inputStyle: string =
+        "border rounded-lg py-2 px-4 outline-blue-600 mb-4";
+    const labelStyle: string = "";
 
-  const login = async (e: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true)
-    e.preventDefault()
-    const URL = process.env.NEXT_PUBLIC_API_URL + 'auth/login'
+    const login = async (e: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true);
+        e.preventDefault();
+        const URL = process.env.NEXT_PUBLIC_API_URL + "auth/login";
 
-    if (formData.email === '' || formData.password === '') {
-      setLoading(false)
-      return setErrorType('datosIncompletos')
-    }
+        if (formData.email === "" || formData.password === "") {
+            setLoading(false);
+            return setErrorType("datosIncompletos");
+        }
 
-    try {
-      const response = await fetch(URL, {
-        method: 'POST',
-        body: JSON.stringify(formData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+        try {
+            const response = await fetch(URL, {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
-      if (!response.ok) {
-        throw new Error(`Error al obtener datos: ${response.status}`)
+            if (!response.ok) {
+                throw new Error(`Error al obtener datos: ${response.status}`);
+            }
 
-      }
+            const data = await response.json();
+            setLoading(false);
+            localStorage.setItem("token", data.token);
+            window.location.href = "/";
+        } catch (error) {
+            setLoading(false);
+            console.error("Error al enviar los datos:", error);
+        }
+    };
 
-      const data = await response.json()
-      setLoading(false)
-      localStorage.setItem('token', data.token);
-      window.location.href = '/'
-    } catch (error) {
-      setLoading(false)
-      console.error('Error al enviar los datos:', error);
-    }
-  }
+    return (
+        <div className="px-2 sm:px-4 min-h-screen flex items-center justify-center">
+            <div>
+                <form
+                    onSubmit={login}
+                    className="flex flex-col bg-white px-6 py-6 w-full min-w-80 max-w-[28rem] border rounded-lg"
+                >
+                    <h2 className="text-center text-4xl font-semibold mb-4">
+                        Iniciar sesión
+                    </h2>
 
-  return (
-    <div className="min-h-screen flex flex-col justify-center items-center px-4">
-      <form 
-        onSubmit={login} 
-        className="flex flex-col bg-white px-6 py-6 w-full max-w-[25rem] border rounded-lg"
-      >
-        <h2 className="text-center text-4xl font-semibold mb-4">Iniciar sesión</h2>
-  
-        <label className={labelStyle} htmlFor="email">Email</label>
-        <input 
-          value={formData.email} 
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
-          className={inputStyle} 
-          type="text" 
-          name="email" 
-          id="email" 
-        />
-  
-        <label className={labelStyle} htmlFor="password">Contraseña</label>
-        <input 
-          value={formData.password} 
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
-          className={inputStyle} 
-          type="text" 
-          name="password" 
-          id="password" 
-        />
-  
-        <button 
-          type="submit" 
-          className="bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg"
-        >
-          {loading ? 'Ingresando...' : 'Ingresar'}
-        </button>
-      </form>
-  
-      <div className="text-center mt-4">
-        <p>No tenés cuenta? <Link href="/user/register" className="font-semibold">Registrarse</Link></p>
-        <Link className="text-sm font-semibold" href='/user/request-recovery-password'>Olvidé mi contraseña</Link>
-      </div>
-    </div>
-  );
-  
-}
+                    <label className={labelStyle} htmlFor="email">
+                        Email
+                    </label>
+                    <input
+                        value={formData.email}
+                        onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                        }
+                        className={inputStyle}
+                        type="text"
+                        name="email"
+                        id="email"
+                    />
 
-export default page
+                    <label className={labelStyle} htmlFor="password">
+                        Contraseña
+                    </label>
+                    <input
+                        value={formData.password}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                password: e.target.value,
+                            })
+                        }
+                        className={inputStyle}
+                        type="text"
+                        name="password"
+                        id="password"
+                    />
+
+                    <button
+                        type="submit"
+                        className="bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg"
+                    >
+                        {loading ? "Ingresando..." : "Ingresar"}
+                    </button>
+                </form>
+
+                <div className="text-center mt-4">
+                    <p>
+                        No tenés cuenta?{" "}
+                        <Link href="/user/register" className="font-semibold">
+                            Registrarse
+                        </Link>
+                    </p>
+                    <Link
+                        className="text-sm font-semibold"
+                        href="/user/request-recovery-password"
+                    >
+                        Olvidé mi contraseña
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default page;

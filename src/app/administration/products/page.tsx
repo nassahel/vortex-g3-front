@@ -1,6 +1,7 @@
 "use client";
 import AddEditProductModal from "@/components/modals/AddEditProductModal";
 import { DeleteModal } from "@/components/modals/DeleteModal";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -120,15 +121,23 @@ const page = () => {
                     type="search"
                     placeholder="Buscar productos..."
                 />
-                <button
-                    onClick={() => {
-                        setModal(true);
-                        setModalEdit(false);
-                    }}
-                    className="bg-white py-2 px-4 rounded-md border-2 border-neutral-400 hover:border-black duration-200 w-full sm:w-auto"
-                >
-                    Agregar Producto
-                </button>
+                <div className="flex gap-2">
+                    <Link
+                        href="/administration/import"
+                        className="bg-white py-2 px-4 rounded-md border-2 border-neutral-400 hover:border-black duration-200 w-full sm:w-auto"
+                    >
+                        Importar Productos
+                    </Link>
+                    <button
+                        onClick={() => {
+                            setModal(true);
+                            setModalEdit(false);
+                        }}
+                        className="bg-white py-2 px-4 rounded-md border-2 border-neutral-400 hover:border-black duration-200 w-full sm:w-auto"
+                    >
+                        Agregar Producto
+                    </button>
+                </div>
             </div>
 
             <section className="flex flex-col gap-1 mt-4">

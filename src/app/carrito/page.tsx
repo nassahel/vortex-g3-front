@@ -207,7 +207,7 @@ const CartPage = () => {
             console.error("Error al realizar el pago:", error);
         }
     };
-    console.log(cart);
+
     const subtotal = cart.reduce(
         (acc, item) => acc + item.price * item.quantity,
         0
@@ -231,7 +231,7 @@ const CartPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Lista de productos */}
-                    <div className="md:col-span-2 bg-white p-4 sm:p-6 rounded-lg border">
+                    <div className="md:col-span-2 bg-white p-4 sm:p-6 rounded-lg border min-h-[350px]">
                         {cart.length > 0 ? (
                             cart.map((item) => (
                                 <div
@@ -309,9 +309,12 @@ const CartPage = () => {
                                 </div>
                             ))
                         ) : (
-                            <p className="text-gray-500 text-center sm:text-left">
-                                Tu carrito está vacío.
-                            </p>
+                            <div className="flex justify-center items-center h-full w-full">
+                                <p className="text-gray-500 text-center flex flex-col items-center gap-2">
+                                    <CiShoppingCart className="size-12" />
+                                    Tu carrito está vacío
+                                </p>
+                            </div>
                         )}
                     </div>
 
@@ -350,15 +353,19 @@ const CartPage = () => {
                                 value={promoCode}
                                 onChange={(e) => setPromoCode(e.target.value)}
                             />
-                            <button className="bg-black text-white px-4 py-2 rounded-full w-full sm:w-auto">
+                            <button
+                                className="bg-black text-white px-4 py-2 rounded-full w-full sm:w-auto disabled:opacity-50"
+                                disabled={cart.length === 0}
+                            >
                                 Aplicar
                             </button>
                         </div>
 
                         {/* Botón de checkout */}
                         <button
-                            className="w-full bg-black text-white text-lg font-bold py-3 rounded-full mt-4 flex items-center justify-center gap-2"
+                            className="w-full bg-black text-white text-lg font-bold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
                             onClick={handleCheckout}
+                            disabled={cart.length === 0}
                         >
                             Completar el pago →
                         </button>
