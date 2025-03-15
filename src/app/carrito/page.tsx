@@ -5,11 +5,14 @@ import Link from "next/link";
 import { IoTrashOutline } from "react-icons/io5";
 import { CartItem } from "@/types/types";
 import BtnCategory from "@/components/BtnCategory";
-import { IoIosSearch } from "react-icons/io";
+import { IoIosArrowForward, IoIosSearch } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 import Navbar from "@/components/Navbar";
 import { checkoutService } from "@/services/checkout.service";
 import { jwtDecode } from "jwt-decode";
+import { FaArrowRightLong, FaRegCreditCard } from "react-icons/fa6";
+import { SiMercadopago } from "react-icons/si";
+import MercadoPago from "@/components/icons/MercadoPago";
 
 const USERS_API = `${process.env.NEXT_PUBLIC_API_URL}users/get-all-active`;
 const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
@@ -24,6 +27,7 @@ const CartPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [promoCode, setPromoCode] = useState("");
+    const [method, setMethod] = useState<"mercadopago" | "card">("mercadopago");
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -220,11 +224,7 @@ const CartPage = () => {
         <>
             <Navbar />
 
-            <div className="max-w-7xl mx-auto px-4 lg:mt-8">
-                <h3 className="font-sans mb-5 text-gray-500 text-sm sm:text-base mt-5">
-                    Inicio {">"} Carrito
-                </h3>
-
+            <div className="max-w-7xl py-4 mx-auto px-4 lg:mt-8">
                 <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">
                     TU CARRITO
                 </h1>
@@ -319,7 +319,7 @@ const CartPage = () => {
                     </div>
 
                     {/* Resumen del pedido */}
-                    <div className="bg-white p-4 sm:p-6 rounded-lg border w-full md:w-[350px] h-fit mx-auto">
+                    <div className="col-span-1 bg-white p-4 sm:p-6 rounded-lg border">
                         <h2 className="text-lg sm:text-xl font-bold mb-4 text-center sm:text-left">
                             Detalle del Pedido
                         </h2>
@@ -360,15 +360,54 @@ const CartPage = () => {
                                 Aplicar
                             </button>
                         </div>
-
-                        {/* Botón de checkout */}
-                        <button
-                            className="w-full bg-black text-white text-lg font-bold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
-                            onClick={handleCheckout}
-                            disabled={cart.length === 0}
-                        >
-                            Completar el pago →
-                        </button>
+                        <div className="flex flex-col gap-2 py-4">
+                            <p className="text-lg font-semibold">
+                                Método de pago:
+                            </p>
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <label htmlFor="">
+                                    <input
+                                        type="radio"
+                                        name="method"
+                                        checked={method === "mercadopago"}
+                                        onChange={() =>
+                                            setMethod("mercadopago")
+                                        }
+                                        className="mr-1"
+                                    />
+                                    Mercado Pago
+                                </label>
+                                <label htmlFor="">
+                                    <input
+                                        type="radio"
+                                        name="method"
+                                        checked={method === "card"}
+                                        onChange={() => setMethod("card")}
+                                        className="mr-1"
+                                    />
+                                    Tarjeta de crédito
+                                </label>
+                            </div>
+                        </div>
+                        {method === "mercadopago" ? (
+                            <button
+                                className="w-full bg-[#009EE3] hover:bg-[#009EE3]/80 text-white font-semibold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
+                                onClick={handleCheckout}
+                                disabled={cart.length === 0}
+                            >
+                                <MercadoPago className="size-5" />
+                                Continuar con Mercado Pago
+                            </button>
+                        ) : (
+                            <button
+                                className="w-full bg-black hover:bg-black/80 text-white font-semibold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
+                                onClick={handleCheckout}
+                                disabled={cart.length === 0}
+                            >
+                                <FaRegCreditCard />
+                                Completar pago con tarjeta
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
