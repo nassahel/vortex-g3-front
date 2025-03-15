@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import { MostBoughtProduct, Product } from "@/types/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export default function Home() {
     const [page, setPage] = useState(1);

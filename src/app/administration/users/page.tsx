@@ -2,7 +2,7 @@
 
 import AddEditUserModal from "@/components/modals/AddEditUsersModal";
 import { DeleteModal } from "@/components/modals/DeleteModal";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -14,6 +14,7 @@ interface User {
   rol: string;
   email: string;
   profile: Profile;
+  password?: string;
 }
 
 interface Profile {
@@ -29,6 +30,7 @@ interface Profile {
 const Page = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [modal, setModal] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false)
   const [deleteModal, setDeleteModal] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -53,6 +55,9 @@ const Page = () => {
     }
   };
 
+  console.log(users);
+  
+
   useEffect(() => {
     fetchUsers();
   }, [deleteModal]);
@@ -66,18 +71,18 @@ const Page = () => {
   const openEditModal = (user: User) => {
     setSelectedUser(user);
     setModal(true);
+    setIsEditing(true)
   };
 
-
-  const commonStyle = "py-2 px-3 border-b border-neutral-300";
+  const commonStyle = "py-2 px-3 border-b border-neutral-300 flex items-center font-semibold";
 
   return (
     <section className="relative">
       {modal && (
         <AddEditUserModal
           setModal={setModal}
-          initialData={selectedUser}
-          refreshUsers={fetchUsers}
+          user={selectedUser}
+          isEditing={isEditing}
         />
       )}
       {deleteModal && (
@@ -109,27 +114,12 @@ const Page = () => {
       <div>
         <section className="flex flex-col rounded-md overflow-hidden">
           <article className="bg-gray-800 text-white flex ">
-            <div className={`${commonStyle} w-1/12 font-semibold`}>
-              Foto
-            </div>
-            <div className={`${commonStyle} w-2/12 font-semibold`}>
-              Nombre
-            </div>
-            <div className={`${commonStyle} w-3/12 font-semibold`}>
-              Email
-            </div>
-            <div className={`${commonStyle} w-2/12 font-semibold`}>
-              Dirección
-            </div>
-            <div className={`${commonStyle} w-2/12 font-semibold`}>
-              Teléfono
-            </div>
-            <div className={`${commonStyle} w-1/12 font-semibold`}>
-              Rol
-            </div>
-            <div className={`${commonStyle} w-1/12 font-semibold`}>
-              Opciones
-            </div>
+
+            <div className={`${commonStyle} w-1/12`}>Foto</div>
+            <div className={`${commonStyle} w-3/12`}>Nombre</div>
+            <div className={`${commonStyle} w-4/12`}>Email</div>
+            <div className={`${commonStyle} w-2/12`}>Rol</div>
+            <div className={`${commonStyle} w-2/12 justify-end`}>Opciones</div>
           </article>
 
           {users.map((user, i) => (
@@ -140,22 +130,17 @@ const Page = () => {
                   className=" h-12 rounded-full"
                 />
               </div>
-              <div className={`${commonStyle} w-2/12`}>
+              <div className={`${commonStyle} w-3/12`}>
                 {user.name}
               </div>
-              <div className={`${commonStyle} w-3/12`}>
+              <div className={`${commonStyle} w-4/12`}>
                 {user.email}
               </div>
+
               <div className={`${commonStyle} w-2/12`}>
-                {user.profile?.address || 'Sin asignar'}
-              </div>
-              <div className={`${commonStyle} w-2/12`}>
-                {user.profile?.phone || 'Sin asignar'}
-              </div>
-              <div className={`${commonStyle} w-1/12`}>
                 {user.rol}
               </div>
-              <div className={`${commonStyle} flex w-1/12 gap-4 text-center`}>
+              <div className={`${commonStyle} flex w-2/12 gap-6 justify-end`}>
                 <button onClick={() => openEditModal(user)}>
                   <FaEdit />
                 </button>

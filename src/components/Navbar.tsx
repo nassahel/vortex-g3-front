@@ -59,9 +59,7 @@ const Navbar = (props: Props) => {
                                 Administración
                             </Link>
                         )}
-
-                        <Link href="">Favoritos</Link>
-                    </div>                  
+                    </div>
                     <SearchBar />
                     <div className="flex items-center gap-4">
                         <Link href="/carrito" className="relative h-8 w-7 ">
@@ -72,11 +70,10 @@ const Navbar = (props: Props) => {
                             )}
 
                             <CiShoppingCart
-                                className={`text-3xl transition-all hover:scale-110 duration-150 ${
-                                    items.length !== 0
-                                        ? "text-black"
-                                        : "text-neutral-400"
-                                }`}
+                                className={`text-3xl transition-all hover:scale-110 duration-150 ${items.length !== 0
+                                    ? "text-black"
+                                    : "text-neutral-400"
+                                    }`}
                             />
                         </Link>
                         {user === null ? (
@@ -88,10 +85,7 @@ const Navbar = (props: Props) => {
                             </Link>
                         ) : (
                             <div className="flex gap-6">
-                                <Link
-                                    className="w-fit  font-bold"
-                                    href="/profile"
-                                >
+                                <Link className="w-fit  font-bold" href="/profile">
                                     {user.userName.split(" ")[0]}
                                 </Link>
                             </div>
@@ -115,20 +109,17 @@ const Navbar = (props: Props) => {
                     <IoMdMenu />
                 </button>
                 <div
-                    className={`${
-                        showNav ? "w-full" : "w-0"
-                    } fixed top-0 z-40 bottom-0 left-0 right-0`}
+                    className={`${showNav ? "w-full" : "w-0"
+                        } fixed top-0 z-40 bottom-0 left-0 right-0`}
                 >
                     <div
                         onClick={() => setShowNav(false)}
-                        className={`${
-                            showNav ? "fixed" : "hidden"
-                        } fixed bg-black/60  animate-appear top-0 bottom-0 left-0 right-0  `}
+                        className={`${showNav ? "fixed" : "hidden"
+                            } fixed bg-black/60  animate-appear top-0 bottom-0 left-0 right-0  `}
                     ></div>
                     <div
-                        className={`${
-                            showNav ? "" : "-translate-x-[17rem]"
-                        } duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}
+                        className={`${showNav ? "" : "-translate-x-[17rem]"
+                            } duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}
                     >
                         <div
                             onClick={() => setShowNav(false)}
