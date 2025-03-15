@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import { FaArrowRightLong, FaRegCreditCard } from "react-icons/fa6";
 import { SiMercadopago } from "react-icons/si";
 import MercadoPago from "@/components/icons/MercadoPago";
+import CardPaymentModal from "@/components/modals/CardPaymentModal";
 
 const USERS_API = `${process.env.NEXT_PUBLIC_API_URL}users/get-all-active`;
 const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
@@ -28,6 +29,7 @@ const CartPage = () => {
     const [error, setError] = useState(false);
     const [promoCode, setPromoCode] = useState("");
     const [method, setMethod] = useState<"mercadopago" | "card">("mercadopago");
+    const [isCardPaymentModalOpen, setIsCardPaymentModalOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -204,7 +206,7 @@ const CartPage = () => {
             return;
         }
         try {
-            const res = await checkoutService(user.id);
+            const res = await checkoutService(user.id, "MercadoPago");
             //redirige a mercado pago mediante el link
             router.replace(res.link);
         } catch (error) {
@@ -365,9 +367,10 @@ const CartPage = () => {
                                 Método de pago:
                             </p>
                             <div className="flex flex-col md:flex-row gap-4">
-                                <label htmlFor="">
+                                <label htmlFor="mercadopago">
                                     <input
                                         type="radio"
+                                        id="mercadopago"
                                         name="method"
                                         checked={method === "mercadopago"}
                                         onChange={() =>
@@ -377,8 +380,9 @@ const CartPage = () => {
                                     />
                                     Mercado Pago
                                 </label>
-                                <label htmlFor="">
+                                <label htmlFor="card">
                                     <input
+                                        id="card"
                                         type="radio"
                                         name="method"
                                         checked={method === "card"}
@@ -391,7 +395,7 @@ const CartPage = () => {
                         </div>
                         {method === "mercadopago" ? (
                             <button
-                                className="w-full bg-[#009EE3] hover:bg-[#009EE3]/80 text-white font-semibold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="w-full bg-[#009EE3] hover:bg-[#009EE3]/80 text-white font-semibold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"
                                 onClick={handleCheckout}
                                 disabled={cart.length === 0}
                             >
@@ -400,8 +404,8 @@ const CartPage = () => {
                             </button>
                         ) : (
                             <button
-                                className="w-full bg-black hover:bg-black/80 text-white font-semibold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50"
-                                onClick={handleCheckout}
+                                className="w-full bg-black hover:bg-black/80 text-white font-semibold py-3 rounded-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"
+                                onClick={() => setIsCardPaymentModalOpen(true)}
                                 disabled={cart.length === 0}
                             >
                                 <FaRegCreditCard />
@@ -411,6 +415,12 @@ const CartPage = () => {
                     </div>
                 </div>
             </div>
+            {isCardPaymentModalOpen && (
+                <CardPaymentModal
+                    isOpen={isCardPaymentModalOpen}
+                    onClose={() => setIsCardPaymentModalOpen(false)}
+                />
+            )}
         </>
     );
 };
