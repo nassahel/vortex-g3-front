@@ -15,9 +15,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "strict": false, 
-    "noImplicitAny": false,
-    "strictNullChecks": false,
+    "strict": false,           
+    "noImplicitAny": false,     
+    "strictNullChecks": false, 
+    "noUnusedLocals": false,    
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false, 
     "incremental": true,
     "plugins": [
       {
