@@ -76,6 +76,17 @@ const Page = () => {
 
   const commonStyle = "py-2 px-3 border-b border-neutral-300 flex items-center font-semibold";
 
+  const filteredUsers =
+  search !== ""
+      ? users.filter((user) =>
+        user.name
+              .toLowerCase()
+              .trim()
+              .includes(search.toLowerCase().trim())
+      )
+      : users;
+
+
   return (
     <section className="relative">
       {modal && (
@@ -122,7 +133,7 @@ const Page = () => {
             <div className={`${commonStyle} w-2/12 justify-end`}>Opciones</div>
           </article>
 
-          {users.map((user, i) => (
+          {filteredUsers.map((user, i) => (
             <article key={i} className="bg-white flex">
               <div className={`${commonStyle} w-1/12`}>
                 <img

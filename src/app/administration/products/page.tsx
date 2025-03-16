@@ -86,11 +86,11 @@ const page = () => {
     const filteredProducts =
         search !== ""
             ? products.filter((product) =>
-                  product.name
-                      .toLowerCase()
-                      .trim()
-                      .includes(search.toLowerCase().trim())
-              )
+                product.name
+                    .toLowerCase()
+                    .trim()
+                    .includes(search.toLowerCase().trim())
+            )
             : products;
 
     return (
@@ -112,7 +112,6 @@ const page = () => {
                 />
             )}
 
-            {/* Búsqueda y botón responsivos */}
             <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <input
                     value={search}
@@ -141,7 +140,6 @@ const page = () => {
             </div>
 
             <section className="flex flex-col gap-1 mt-4">
-                {/* Encabezado responsivo */}
                 <article className="bg-neutral-800 text-white rounded-md font-semibold hidden md:flex">
                     <div className="w-full grid grid-cols-2 md:grid-cols-12 gap-2">
                         <div className={`${commonStyle} md:col-span-2`}>
@@ -162,11 +160,10 @@ const page = () => {
                     </div>
                 </article>
 
-                {/* Productos responsivos */}
                 {loading ? (
                     <p className="mt-6 text-lg text-center">Cargando...</p>
                 ) : (
-                    products.map((item: Product, i) => (
+                    filteredProducts.map((item: Product, i) => (
                         <article
                             key={i}
                             className="bg-white overflow-hidden rounded-md border border-neutral-200 flex flex-col p-4"
@@ -183,14 +180,11 @@ const page = () => {
                                 <div className={`${commonStyle} md:col-span-1`}>
                                     <p>${item.price}</p>
                                 </div>
-                                <div
-                                    className={`${commonStyle} md:col-span-2 flex-wrap`}
-                                >
+                                <div className={`${commonStyle} md:col-span-2 flex flex-wrap gap-2`}>
                                     {item.categories.map((cat: any, i) => (
                                         <p
                                             key={i}
-                                            className="border border-neutral-700 text-sm rounded-lg bg-white w-fit px-1"
-                                        >
+                                            className="text-sm rounded-full bg-gray-900 text-gray-100 px-3 py-1 shadow-md hover:bg-gray-700 transition-all duration-300">
                                             {cat}
                                         </p>
                                     ))}
@@ -218,16 +212,14 @@ const page = () => {
                                 </div>
                             </div>
 
-                            {/* Imágenes responsivas */}
                             <div className="flex items-center gap-2 flex-wrap px-4 py-2 bg-gray-50 border-t border-neutral-200">
                                 {item.images.map((img, idx) => (
                                     <div
                                         key={idx}
-                                        className={`w-16 h-16 rounded overflow-hidden border ${
-                                            idx === 0
-                                                ? "border-2 border-blue-500 shadow-md"
-                                                : "border-neutral-300"
-                                        }`}
+                                        className={`w-16 h-16 rounded overflow-hidden border ${idx === 0
+                                            ? "border-2 border-blue-500 shadow-md"
+                                            : "border-neutral-300"
+                                            }`}
                                     >
                                         <img
                                             src={img.url}

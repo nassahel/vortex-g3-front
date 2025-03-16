@@ -36,6 +36,17 @@ const page = () => {
         setDeleteModal(true);
     };
 
+
+    const filteredCategories =
+        search !== ""
+            ? categories.filter((categorie: Categorie) =>
+                categorie.name
+                    .toLowerCase()
+                    .trim()
+                    .includes(search.toLowerCase().trim())
+            )
+            : categories;
+
     return (
         <section className="relative">
             {modal && <AddCategoryModal setModal={setModal} />}
@@ -78,7 +89,7 @@ const page = () => {
                     </article>
 
                     {categories.length !== 0 ? (
-                        categories.map((item: Categorie, i) => (
+                        filteredCategories.map((item: Categorie, i) => (
                             <article
                                 key={i}
                                 className="bg-white flex h-12 border-b w-full"
