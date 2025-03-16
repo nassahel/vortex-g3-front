@@ -66,7 +66,7 @@ const Navbar = () => {
             )}
 
             <div className="w-full bg-white hidden md:block">
-                <div className="flex max-w-[80rem] min-w-[60rem] py-4 mx-auto gap-10 border-b">
+                <div className="flex max-w-[80rem] min-w-[60rem] py-4 mx-auto gap-10">
                     <Link href="/">
                         <h2 className="text-4xl font-bold">LuxShop</h2>
                     </Link>
