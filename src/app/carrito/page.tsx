@@ -419,6 +419,8 @@ const CartPage = () => {
                 <CardPaymentModal
                     isOpen={isCardPaymentModalOpen}
                     onClose={() => setIsCardPaymentModalOpen(false)}
+                    total={subtotal}
+                    idUser={user?.id || ""}
                 />
             )}
         </>
