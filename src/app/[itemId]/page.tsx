@@ -46,7 +46,7 @@ const ProductPage = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-            router.push("/user/login"); // 🔥 Redirigir al login si no hay sesión activa
+            router.push("/user/login"); 
             return;
         }
 
@@ -64,16 +64,7 @@ const ProductPage = () => {
             return;
         }
 
-        // const newItem = {
-        //     id: product?.id,
-        //     name: product?.name,
-        //     image: product?.images?.[0] || "/img/default-product.jpg",
-        //     size: "N/A",
-        //     color: "N/A",
-        //     price: product?.price || 0,
-        //     quantity,
-        // };
-
+    
         try {
             const response = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user?.id}`,
@@ -124,12 +115,12 @@ const ProductPage = () => {
                             <div className="w-[50%] flex flex-col gap-6">
                                 <div className="flex items-center gap-2">
                                     {product?.categories.map(
-                                        (item: any, i: number) => (
+                                        (item, i: number) => (
                                             <p
                                                 className="bg-gray-200 text-gray-800 px-2 py-1 rounded-xl text-xs cursor-default"
                                                 key={i}
                                             >
-                                                {item?.category?.name}
+                                                {item?.name}
                                             </p>
                                         )
                                     )}

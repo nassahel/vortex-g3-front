@@ -1,8 +1,8 @@
 "use client";
-import Link from "next/link";
 import AddEditProductModal from "@/components/modals/AddEditProductModal";
+import Link from "next/link";
 import { DeleteModal } from "@/components/modals/DeleteModal";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -181,7 +181,7 @@ const page = () => {
                                     <p>${item.price}</p>
                                 </div>
                                 <div className={`${commonStyle} md:col-span-2 flex flex-wrap gap-2`}>
-                                    {item.categories.map((cat: any, i) => (
+                                    {item.categories.map((cat, i) => (
                                         <p
                                             key={i}
                                             className="text-sm rounded-full bg-gray-900 text-gray-100 px-3 py-1 shadow-md hover:bg-gray-700 transition-all duration-300">

@@ -12,7 +12,7 @@ export interface Product {
   price: number;
   isFavorite: boolean;
   description: string;
-  categories: string[];
+  categories: Categorie[];
 }
 
 export interface FormuData {
