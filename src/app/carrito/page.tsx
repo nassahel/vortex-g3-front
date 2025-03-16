@@ -14,6 +14,8 @@ import CardPaymentModal from "@/components/modals/CardPaymentModal";
 const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
 const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
 
+
+
 const CartPage = () => {
     const router = useRouter();
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -150,7 +152,7 @@ const CartPage = () => {
                 console.error("Error al actualizar carrito:", error);
             }
         } else {
-            const updatedCart = cart.map((item) =>
+            const updatedCart = cart.map((item: CartItem) =>
                 item.id === productId || item.productId === productId
                     ? { ...item, quantity: newQuantity }
                     : item

@@ -64,15 +64,15 @@ const ProductPage = () => {
             return;
         }
 
-        const newItem = {
-            id: product?.id,
-            name: product?.name,
-            image: product?.images?.[0] || "/img/default-product.jpg",
-            size: "N/A",
-            color: "N/A",
-            price: product?.price || 0,
-            quantity,
-        };
+        // const newItem = {
+        //     id: product?.id,
+        //     name: product?.name,
+        //     image: product?.images?.[0] || "/img/default-product.jpg",
+        //     size: "N/A",
+        //     color: "N/A",
+        //     price: product?.price || 0,
+        //     quantity,
+        // };
 
         try {
             const response = await fetch(
