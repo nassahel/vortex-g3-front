@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { IoMdClose } from "react-icons/io";
 import Navigation from "@/components/Navigation";
 
 const ImportProductsPage = () => {
@@ -27,6 +25,8 @@ const ImportProductsPage = () => {
         setFile(selectedFile);
     };
 
+    console.log(error);
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!file) return;

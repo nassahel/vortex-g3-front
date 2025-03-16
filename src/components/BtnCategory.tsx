@@ -1,6 +1,5 @@
 
 "use client"
-import CategoryItem from '@/app/administration/categories/categoryTree';
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";

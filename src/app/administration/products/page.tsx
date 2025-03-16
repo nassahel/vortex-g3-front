@@ -1,8 +1,8 @@
 "use client";
+import Link from "next/link";
 import AddEditProductModal from "@/components/modals/AddEditProductModal";
 import { DeleteModal } from "@/components/modals/DeleteModal";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 

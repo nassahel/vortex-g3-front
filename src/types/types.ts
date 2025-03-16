@@ -25,13 +25,13 @@ export interface FormuData {
 }
 
 export interface CartItem {
-  id: string;
+  itemId: string;
   name: string;
   image: string;
   size: string;
   productId: string;
   color: string;
-  price: number;
+  subtotal: number;
   quantity: number;
 }
 

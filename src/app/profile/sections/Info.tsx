@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
     user: any;
 };
 
 const Info = ({ user }: Props) => {
-    const info = user && user.profile;
+    // const info = user && user.profile;
     const [edit, setEdit] = useState<string>('');
     const [inputData, setInputData] = useState<string>('');
     const [address, setAddress] = useState<string>('');

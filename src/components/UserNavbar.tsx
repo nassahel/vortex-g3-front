@@ -1,9 +1,8 @@
 import Link from "next/link";
 import React from "react";
 
-type Props = {};
 
-const UserNavbar = (props: Props) => {
+const UserNavbar = () => {
     return (
         <div className="bg-neutral-800">
             <div className="flex flex-col justify-between max-w-[75rem] h-[4rem] mx-auto pt-2 pb-3 px-2 sm:px-4">

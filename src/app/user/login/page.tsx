@@ -1,5 +1,4 @@
 "use client";
-import useAppStore from "@/zustand/zustand";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -11,7 +10,7 @@ interface FormData {
 const page = () => {
     // const logUser = useAppStore((state: any) => state.setToken)
     const [loading, setLoading] = useState(false);
-    const [errorType, setErrorType] = useState("");
+    // const [errorType, setErrorType] = useState("");
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -28,7 +27,7 @@ const page = () => {
 
         if (formData.email === "" || formData.password === "") {
             setLoading(false);
-            return setErrorType("datosIncompletos");
+            // return setErrorType("datosIncompletos");
         }
 
         try {

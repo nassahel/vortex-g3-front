@@ -2,8 +2,7 @@
 import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/cards/ProductCard";
 import Navbar from "@/components/Navbar";
-import { MostBoughtProduct, Product } from "@/types/types";
-import Link from "next/link";
+import { MostBoughtProduct } from "@/types/types";
 import { useEffect, useState } from "react";
 
 export default function Home() {

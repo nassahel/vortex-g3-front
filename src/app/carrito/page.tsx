@@ -1,21 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { IoTrashOutline } from "react-icons/io5";
 import { CartItem } from "@/types/types";
-import BtnCategory from "@/components/BtnCategory";
-import { IoIosArrowForward, IoIosSearch } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 import Navbar from "@/components/Navbar";
 import { checkoutService } from "@/services/checkout.service";
 import { jwtDecode } from "jwt-decode";
-import { FaArrowRightLong, FaRegCreditCard } from "react-icons/fa6";
-import { SiMercadopago } from "react-icons/si";
+import { FaRegCreditCard } from "react-icons/fa6";
 import MercadoPago from "@/components/icons/MercadoPago";
 import CardPaymentModal from "@/components/modals/CardPaymentModal";
 
-const USERS_API = `${process.env.NEXT_PUBLIC_API_URL}users/get-all-active`;
+// const USERS_API = `${process.env.NEXT_PUBLIC_API_URL}users/get-all-active`;
 const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
 const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
 
@@ -25,8 +20,8 @@ const CartPage = () => {
     const [user, setUser] = useState<{ userRol: string; id: string } | null>(
         null
     );
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(false);
     const [promoCode, setPromoCode] = useState("");
     const [method, setMethod] = useState<"mercadopago" | "card">("mercadopago");
     const [isCardPaymentModalOpen, setIsCardPaymentModalOpen] = useState(false);
@@ -59,12 +54,12 @@ const CartPage = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                setLoading(true);
-                setError(false);
+                // setLoading(true);
+                // setError(false);
 
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    setCart([]); // No hay usuario, carrito vacío
+                    setCart([]);
                     return;
                 }
 
@@ -117,9 +112,9 @@ const CartPage = () => {
                 setCart(detailedCart);
             } catch (err) {
                 console.error("🚨 Error al obtener el carrito:", err);
-                setError(true);
+                // setError(true);
             } finally {
-                setLoading(false);
+                // setLoading(false);
             }
         };
 
@@ -136,7 +131,6 @@ const CartPage = () => {
         if (newQuantity < 1) return handleRemoveItem(productId);
 
         if (user?.id) {
-            // 🔥 Si el usuario está logueado, actualizar en el backend
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user.id}`,
@@ -156,7 +150,6 @@ const CartPage = () => {
                 console.error("Error al actualizar carrito:", error);
             }
         } else {
-            // 🔥 Si el usuario NO está logueado, actualizar `localStorage`
             const updatedCart = cart.map((item) =>
                 item.id === productId || item.productId === productId
                     ? { ...item, quantity: newQuantity }
@@ -207,7 +200,6 @@ const CartPage = () => {
         }
         try {
             const res = await checkoutService(user.id, "MercadoPago");
-            //redirige a mercado pago mediante el link
             router.replace(res.link);
         } catch (error) {
             console.error("Error al realizar el pago:", error);
@@ -232,7 +224,6 @@ const CartPage = () => {
                 </h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Lista de productos */}
                     <div className="md:col-span-2 bg-white p-4 sm:p-6 rounded-lg border min-h-[350px]">
                         {cart.length > 0 ? (
                             cart.map((item) => (

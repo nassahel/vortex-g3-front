@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { IoIosSearch, IoMdMenu } from "react-icons/io";
+import { IoMdMenu } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import BtnCategory from "./BtnCategory";

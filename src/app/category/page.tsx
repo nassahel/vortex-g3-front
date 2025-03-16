@@ -1,5 +1,4 @@
 "use client";
-import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/cards/ProductCard";
 import Navbar from "@/components/Navbar";
 import { useSearchParams, useRouter } from "next/navigation";

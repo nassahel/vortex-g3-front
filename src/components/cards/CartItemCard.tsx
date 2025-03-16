@@ -1,5 +1,4 @@
 import { CartItem, Product } from '@/types/types'
-import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { FaPlus, FaMinus } from "react-icons/fa6";
 
@@ -24,12 +23,6 @@ const CartItemCard = ({ item }: Props) => {
     }
     getProductById()
   }, [])
-
-
-
-
-  
-
 
   return (
     <article className='flex items-center border-t border-neutral-300 h-32'>

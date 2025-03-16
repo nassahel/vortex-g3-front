@@ -2,9 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Navigation from "@/components/Navigation";
 import ProductImages from "@/components/ProductImages";
-import { CartItem, Product } from "@/types/types";
-import useAppStore from "@/zustand/zustand";
-import Image from "next/image";
+import { Product } from "@/types/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -14,7 +12,6 @@ import { jwtDecode } from "jwt-decode";
 const ProductPage = () => {
     const { itemId } = useParams();
     const router = useRouter();
-    const addItemToChart = useAppStore((state: any) => state.addItem);
     const [product, setProduct] = useState<Product | null>(null);
     const [quantity, setQuantity] = useState<number>(1);
 
@@ -25,7 +22,6 @@ const ProductPage = () => {
             try {
                 const response = await fetch(`${URL}product/${itemId}`);
                 const data = await response.json();
-                // console.log('data', data);
 
                 setProduct(data);
                 // setLoading(false)
@@ -114,15 +110,15 @@ const ProductPage = () => {
                             <ProductImages
                                 image={
                                     Array.isArray(product?.images) &&
-                                    product.images.length > 0
+                                        product.images.length > 0
                                         ? product.images
                                         : [
-                                              {
-                                                  url: "/img/default-product.webp",
-                                                  altText: "default",
-                                                  id: "1default",
-                                              },
-                                          ]
+                                            {
+                                                url: "/img/default-product.webp",
+                                                altText: "default",
+                                                id: "1default",
+                                            },
+                                        ]
                                 }
                             />
                             <div className="w-[50%] flex flex-col gap-6">
