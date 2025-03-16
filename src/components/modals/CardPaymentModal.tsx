@@ -43,7 +43,6 @@ const CardPaymentModal = ({
         try {
             const res = await checkoutService(idUser, "Card");
             console.log(res);
-            alert("Pago realizado correctamente");
             router.push("/payments/success");
         } catch (error) {
             console.error("Error al realizar el pago:", error);
@@ -147,7 +146,7 @@ const CardPaymentModal = ({
                             <input
                                 type="number"
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"
-                                value={formData.amount}
+                                value={formData.amount.toFixed(2)}
                                 disabled
                                 required
                             />
