@@ -20,7 +20,7 @@ const ProductPage = () => {
             // setLoading(true)
             const URL = process.env.NEXT_PUBLIC_API_URL;
             try {
-                const response = await fetch(`${URL}product/${itemId}`);
+                const response = await fetch(`${URL}/product/${itemId}`);
                 const data = await response.json();
 
                 setProduct(data);
@@ -67,7 +67,7 @@ const ProductPage = () => {
     
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user?.id}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/cart/item/${user?.id}`,
                 {
                     method: "POST",
                     headers: {

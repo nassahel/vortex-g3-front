@@ -20,7 +20,7 @@ const Page = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch(URL + "category/all");
+                const response = await fetch(URL + "/category/all");
                 const data = await response.json();
 
                 setCategories(data.data);

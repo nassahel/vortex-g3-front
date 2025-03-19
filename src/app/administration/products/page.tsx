@@ -33,7 +33,7 @@ const Page = () => {
         const fetchActiveProducts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(URL + "product/all");
+                const response = await fetch(URL + "/product/all");
                 const data = await response.json();
                 setProducts(data.data);
                 setLoading(false);
@@ -59,7 +59,7 @@ const Page = () => {
         
             try {
               const response = await fetch(
-                `${URL}images/upload-image/${productId}`,
+                `${URL}/images/upload-image/${productId}`,
                 {
                   method: "POST",
                   body: formData,

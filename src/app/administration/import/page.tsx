@@ -39,7 +39,7 @@ const ImportProductsPage = () => {
         formData.append("file", file);
 
         try {
-            const response = await fetch(`${URL}product/upload-products`, {
+            const response = await fetch(`${URL}/product/upload-products`, {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + token,

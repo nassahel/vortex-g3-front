@@ -18,7 +18,7 @@ const RequestPasswordRecoveryPage = () => {
         setMessage(null)
         setError(null)
 
-        const URL = process.env.NEXT_PUBLIC_API_URL + 'auth/request-recovery-password'
+        const URL = process.env.NEXT_PUBLIC_API_URL + '/auth/request-recovery-password'
 
         if (email.trim() === '') {
             setLoading(false)

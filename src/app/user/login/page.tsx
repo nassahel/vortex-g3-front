@@ -22,7 +22,7 @@ const Page = () => {
     const login = async (e: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
         e.preventDefault();
-        const URL = process.env.NEXT_PUBLIC_API_URL + "auth/login";
+        const URL = process.env.NEXT_PUBLIC_API_URL + "/auth/login";
 
         if (formData.email === "" || formData.password === "") {
             setLoading(false);

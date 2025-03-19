@@ -60,7 +60,7 @@ console.log(product);
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch(`${url}category/all`);
+            const response = await fetch(`${url}/category/all`);
             const data = await response.json();
             setCategories(data.data);
         } catch (error) {

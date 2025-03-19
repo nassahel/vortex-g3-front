@@ -21,7 +21,7 @@ const PageContent = () => {
         setMessage(null);  // Limpiar mensaje previo
         setError(null);    // Limpiar error previo
 
-        const URL = process.env.NEXT_PUBLIC_API_URL + 'auth/recovery-password';
+        const URL = process.env.NEXT_PUBLIC_API_URL + '/auth/recovery-password';
 
         if (password === '') {
             setLoading(false);

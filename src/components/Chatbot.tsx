@@ -29,7 +29,7 @@ const Chatbot = () => {
         setQuestion("");
 
         try {
-            const response = await fetch(URL + "chatbot/send-message", {
+            const response = await fetch(URL + "/chatbot/send-message", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

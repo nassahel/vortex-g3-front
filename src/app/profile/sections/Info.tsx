@@ -18,7 +18,7 @@ const Info = ({ user }: Props) => {
         const URL = process.env.NEXT_PUBLIC_API_URL;
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${URL}profile/update/${user.id}`, {
+            const response = await fetch(`${URL}/profile/update/${user.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -33,8 +33,8 @@ const AddEditUserModal: React.FC<Props> = ({ setModal, isEditing, user }) => {
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
         const endpoint = isEditing
-            ? `${url}users/${user?.id}`
-            : `${url}users/`;
+            ? `${url}/users/${user?.id}`
+            : `${url}/users/`;
 
         const method = isEditing ? 'PATCH' : 'POST';
         console.log(formData);

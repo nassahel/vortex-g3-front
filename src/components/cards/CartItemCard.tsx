@@ -14,7 +14,7 @@ const CartItemCard = ({ item }: Props) => {
     const getProductById = async () => {
       try {
         const URL = process.env.NEXT_PUBLIC_API_URL
-        const response = await fetch(`${URL}products/${item.itemId}`)
+        const response = await fetch(`${URL}/products/${item.itemId}`)
         const data = await response.json();
         setProd(data);
       } catch (error) {

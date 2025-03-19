@@ -46,7 +46,7 @@ const Page = () => {
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}profile/upload-image`,
+                `${process.env.NEXT_PUBLIC_API_URL}/profile/upload-image`,
                 {
                     method: "POST",
                     body: formData,
@@ -86,7 +86,7 @@ const Page = () => {
             try {
                 const response = await fetch(
                     process.env.NEXT_PUBLIC_API_URL +
-                    "users/" +
+                    "/users/" +
                     decodeToken.userId,
                     {
                         method: "GET",

@@ -41,7 +41,7 @@ const Page = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${URL}users/admin/all`, {
+      const response = await fetch(`${URL}/users/admin/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

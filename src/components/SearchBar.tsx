@@ -47,7 +47,7 @@ const SearchBarContent = () => {
                 setIsLoading(true);
                 try {
                     const response = await fetch(
-                        `${URL}product/all?name=${encodeURIComponent(
+                        `${URL}/product/all?name=${encodeURIComponent(
                             searchTerm.trim()
                         )}`
                     );

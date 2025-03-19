@@ -10,8 +10,8 @@ import { FaRegCreditCard } from "react-icons/fa6";
 import MercadoPago from "@/components/icons/MercadoPago";
 import CardPaymentModal from "@/components/modals/CardPaymentModal";
 
-const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
-const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
+const CART_API = `${process.env.NEXT_PUBLIC_API_URL}/cart/active`;
+const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}/product`;
 
 const CartPageContent = () => {
     const router = useRouter();
@@ -122,7 +122,7 @@ const CartPageContent = () => {
         if (user?.id) {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user.id}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/cart/item/${user.id}`,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -161,7 +161,7 @@ const CartPageContent = () => {
             )
         );
 
-        const url = `${process.env.NEXT_PUBLIC_API_URL}cart/item/${user.id}/${productId}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}/cart/item/${user.id}/${productId}`;
 
         try {
             const response = await fetch(url, {
