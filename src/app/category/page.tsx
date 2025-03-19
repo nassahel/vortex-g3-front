@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { IoIosArrowForward, IoMdClose } from "react-icons/io";
 import { GiSettingsKnobs } from "react-icons/gi";
-import { Categorie, Filters, PaginationType, Product } from "@/types/types";
+import { Categorie, Filters, MostBoughtProduct, PaginationType, Product } from "@/types/types";
 import Pagination from "@/components/Pagination";
 
 
@@ -186,7 +186,7 @@ const CategoryPage = () => {
                                 {products?.length === 0 ? (
                                     <div className="italic">Cargando...</div>
                                 ) : (
-                                    products?.map((item: Product, i: number) => (
+                                    products?.map((item: MostBoughtProduct, i: number) => (
                                         <ProductCard key={i} item={item} />
                                     ))
                                 )}

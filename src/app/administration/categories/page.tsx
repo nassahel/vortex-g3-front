@@ -9,7 +9,7 @@ interface Categorie {
     name: string;
 }
 
-const page = () => {
+const Page = () => {
     const [categories, setCategories] = useState([]);
     const [modal, setModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -116,4 +116,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

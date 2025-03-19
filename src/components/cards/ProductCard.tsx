@@ -1,4 +1,4 @@
-import { MostBoughtProduct, Product } from "@/types/types";
+import { MostBoughtProduct } from "@/types/types";
 import Link from "next/link";
 
 interface Props {

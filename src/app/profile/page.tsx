@@ -11,7 +11,7 @@ import { BiLogOut } from "react-icons/bi";
 import { LuPencilLine } from "react-icons/lu";
 
 
-const page = () => {
+const Page = () => {
     const [user, setUser] = useState<User>();
     const [sectionSelected, setSectionSelected] = useState(0);
     const [image, setImage] = useState<File | null>(null);
@@ -211,4 +211,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

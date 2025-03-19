@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 
 
-const page = () => {
+const Page = () => {
   const [proccess, setProccess] = useState<boolean>(false);
   const URL = process.env.NEXT_PUBLIC_API_URL
   const [errors, setErrors] = useState([]);
@@ -112,4 +112,4 @@ const page = () => {
 
 }
 
-export default page
+export default Page

@@ -18,6 +18,8 @@ export interface Product {
 
 export interface Image {
   url: string;
+  altText: string;
+  id: string;
 }
 
 export interface FormuData {
@@ -39,6 +41,8 @@ export interface CartItem {
   subtotal: number;
   quantity: number;
   product?: Product;
+  size: string;
+  image: string;
 }
 
 
@@ -81,7 +85,7 @@ export interface User {
   email: string;
   profile: Profile;
   password?: string;
-  cart: Cart[];
+  cart: Purchase[];
 }
 
 export interface Profile {
@@ -95,9 +99,7 @@ export interface Profile {
 }
 
 
-export interface Cart {
 
-}
 
 
 

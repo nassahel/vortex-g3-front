@@ -18,7 +18,7 @@ interface Product {
       categories?: string[];
     }
 
-const page = () => {
+const Page = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [modal, setModal] = useState(false);
     const [productEdit, setProductEdit] = useState<Product | null>(null);
@@ -241,4 +241,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

@@ -7,7 +7,7 @@ interface FormData {
     password: string;
 }
 
-const page = () => {
+const Page = () => {
     const [loading, setLoading] = useState(false);
     const [errorType, setErrorType] = useState([]);
     const [formData, setFormData] = useState<FormData>({
@@ -132,4 +132,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

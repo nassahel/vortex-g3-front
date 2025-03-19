@@ -1,14 +1,11 @@
 "use client";
+import { Image } from "@/types/types";
 import React, { useState } from "react";
 
-type ImageType = {
-    id: string;
-    url: string;
-    altText: string | null;
-};
+
 
 type Props = {
-    image: ImageType[] | [];
+    image: Image[];
 };
 
 const ProductImages = ({ image }: Props) => {
