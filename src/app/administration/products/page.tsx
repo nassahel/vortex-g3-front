@@ -106,7 +106,7 @@ const Page = () => {
                     elemento="producto"
                     nombre={productEdit?.name}
                     itemId={productEdit?.id || ""}
-                    ruta="product/delete/"
+                    ruta="/product/delete/"
                 />
             )}
 

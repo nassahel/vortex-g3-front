@@ -135,15 +135,16 @@ console.log(product);
         <section className="fixed z-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center">
             <div onClick={() => setModal(false)} className="fixed z-40 top-0 bottom-0 left-0 right-0 bg-black/50"></div>
             <article className="bg-white w-11/12 max-w-[30rem] rounded-md relative shadow py-6 px-10 z-50">
-                <h2 className="mb-6">{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
+                <h2 className="mb-6 text-center font-bold">{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
+                <label htmlFor="Nombre"></label>
                 <input name="name" value={formData.name} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Nombre" />
-
+                <label htmlFor="Descripción"></label>
                 <textarea name="description" value={formData.description} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Descripción" />
-
+                <label htmlFor="Precio"></label>
                 <input name="price" value={formData.price} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Precio" />
-
+                <label htmlFor="Stock"></label>
                 <input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Stock" />
-
+                <label htmlFor="Categorías"></label>
                 <div className="grid grid-cols-3 gap-2 mb-4">
                     {categories.map(cat => (
                         <label key={cat.id} className="flex items-center gap-2">

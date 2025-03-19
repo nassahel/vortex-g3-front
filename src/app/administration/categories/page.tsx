@@ -53,7 +53,7 @@ const Page = () => {
             {deleteModal && (<DeleteModal
                 itemId={selectedId}
                 elemento="categoria"
-                ruta="category/delete/"
+                ruta="/category/delete/"
 
                 setDeleteModal={setDeleteModal} />
             )}

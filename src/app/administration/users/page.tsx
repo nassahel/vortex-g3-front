@@ -102,7 +102,7 @@ const Page = () => {
           nombre={selectedUser?.name}
           elemento="usuario"
           itemId={selectedUser?.id || ""}
-          ruta="users/delete/"
+          ruta="/users/delete/"
         />
       )}
 
