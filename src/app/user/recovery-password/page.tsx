@@ -1,32 +1,32 @@
-"use client"
+"use client";
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react'
+import { Suspense, useState } from 'react';
 
-const Page = () => {
+const PageContent = () => {
     const searchParams = useSearchParams();
     const token = searchParams.get('t');
-    const [loading, setLoading] = useState(false)
-    const [password, setPassword] = useState<string>('')
-    const [message, setMessage] = useState<string | null>(null) // Estado para mostrar mensajes
-    const [error, setError] = useState<string | null>(null)     // Estado para mostrar errores
-    const [isSuccess, setIsSuccess] = useState(false) // Estado para manejar el éxito
+    const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState<string>('');
+    const [message, setMessage] = useState<string | null>(null); // Estado para mostrar mensajes
+    const [error, setError] = useState<string | null>(null);     // Estado para mostrar errores
+    const [isSuccess, setIsSuccess] = useState(false); // Estado para manejar el éxito
 
     const inputStyle: string = 'border rounded-lg py-2 px-4 outline-blue-600 mb-4';
     const labelStyle: string = '';
 
     const login = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setLoading(true)
-        setMessage(null)  // Limpiar mensaje previo
-        setError(null)    // Limpiar error previo
+        e.preventDefault();
+        setLoading(true);
+        setMessage(null);  // Limpiar mensaje previo
+        setError(null);    // Limpiar error previo
 
-        const URL = process.env.NEXT_PUBLIC_API_URL + 'auth/recovery-password'
+        const URL = process.env.NEXT_PUBLIC_API_URL + 'auth/recovery-password';
 
         if (password === '') {
-            setLoading(false)
-            setError('La contraseña no puede estar vacía.')
-            return
+            setLoading(false);
+            setError('La contraseña no puede estar vacía.');
+            return;
         }
 
         try {
@@ -37,22 +37,22 @@ const Page = () => {
                 },
                 body: JSON.stringify({
                     token: token,
-                    newPassword: password
+                    newPassword: password,
                 }),
-            })
+            });
 
             if (!response.ok) {
-                const errorData = await response.json()
-                throw new Error(errorData.message || `Error al cambiar la contraseña`)
+                const errorData = await response.json();
+                throw new Error(errorData.message || `Error al cambiar la contraseña`);
             }
 
-            setIsSuccess(true)  // Si la contraseña se cambió con éxito, mostramos el mensaje de éxito
+            setIsSuccess(true);  // Si la contraseña se cambió con éxito, mostramos el mensaje de éxito
         } catch (error) {
-            setError(error.message || 'No se pudo cambiar la contraseña.')
+            setError(error.message || 'No se pudo cambiar la contraseña.');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     return (
         <div className="flex justify-center items-center min-h-screen">
@@ -100,7 +100,15 @@ const Page = () => {
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Page
+const Page = () => {
+    return (
+        <Suspense fallback={<div>Cargando...</div>}>
+            <PageContent />
+        </Suspense>
+    );
+};
+
+export default Page;

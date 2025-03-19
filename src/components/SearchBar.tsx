@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +12,7 @@ interface Product {
     images: { url: string }[];
 }
 
-const SearchBar = () => {
+const SearchBarContent = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [searchTerm, setSearchTerm] = useState(
@@ -143,6 +143,14 @@ const SearchBar = () => {
                 </div>
             )}
         </div>
+    );
+};
+
+const SearchBar = () => {
+    return (
+        <Suspense fallback={<div>Cargando...</div>}>
+            <SearchBarContent />
+        </Suspense>
     );
 };
 
