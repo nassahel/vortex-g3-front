@@ -210,7 +210,7 @@ const CartPage = () => {
 
     return (
         <Suspense>
-
+            <Navbar />
             <div className="max-w-7xl py-4 mx-auto px-4 lg:mt-8">
                 <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">
                     TU CARRITO
