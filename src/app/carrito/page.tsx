@@ -13,14 +13,10 @@ import CardPaymentModal from "@/components/modals/CardPaymentModal";
 const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
 const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
 
-
-
-const CartPage = () => {
+const CartPageContent = () => {
     const router = useRouter();
     const [cart, setCart] = useState<CartItem[]>([]);
-    const [user, setUser] = useState<{ userRol: string; id: string } | null>(
-        null
-    );
+    const [user, setUser] = useState<{ userRol: string; id: string } | null>(null);
     const [promoCode, setPromoCode] = useState("");
     const [method, setMethod] = useState<"mercadopago" | "card">("mercadopago");
     const [isCardPaymentModalOpen, setIsCardPaymentModalOpen] = useState(false);
@@ -40,7 +36,7 @@ const CartPage = () => {
                 setUser({
                     id: decodedUser.userId,
                     userRol: decodedUser.userRol,
-                }); // 🔥 Ajuste aquí
+                });
             } catch (error) {
                 console.error("❌ Error al decodificar el token:", error);
                 setUser(null);
@@ -108,7 +104,6 @@ const CartPage = () => {
                 setCart(detailedCart);
             } catch (err) {
                 console.error("🚨 Error al obtener el carrito:", err);
-            } finally {
             }
         };
 
@@ -209,7 +204,7 @@ const CartPage = () => {
     const total = subtotal - discount + deliveryFee;
 
     return (
-        <Suspense>
+        <>
             <Navbar />
             <div className="max-w-7xl py-4 mx-auto px-4 lg:mt-8">
                 <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">
@@ -407,6 +402,14 @@ const CartPage = () => {
                     idUser={user?.id || ""}
                 />
             )}
+        </>
+    );
+};
+
+const CartPage = () => {
+    return (
+        <Suspense fallback={<div>Cargando...</div>}>
+            <CartPageContent />
         </Suspense>
     );
 };
