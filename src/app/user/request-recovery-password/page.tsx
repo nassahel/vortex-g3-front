@@ -41,7 +41,7 @@ const RequestPasswordRecoveryPage = () => {
             }
 
             setIsSuccess(true) // Si la solicitud fue exitosa, mostramos el mensaje de éxito
-        } catch (error: any) {
+        } catch (error) {
             setError(error.message || 'Error al enviar la solicitud.')
         } finally {
             setLoading(false)

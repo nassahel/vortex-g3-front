@@ -1,5 +1,6 @@
 
 "use client"
+import { Categorie } from '@/types/types';
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
 import { IoIosArrowDown } from "react-icons/io";
@@ -49,7 +50,7 @@ const BtnCategory = ({ setShowNav }: Props) => {
                         <div className=' bg-zinc-800  text-white  rounded-md py-5 '>
                             <ul>
                                 {
-                                    categories.map((item: any, i) => (
+                                    categories.map((item: Categorie, i) => (
                                         <li key={i} className='w-[10rem] h-8 flex items-center  hover:bg-neutral-600 duration-200 cursor-pointer'>
                                             <Link href={`/category?id=${item.id}`} className=' w-full px-8 ' >
                                                 {item.name}
@@ -68,7 +69,7 @@ const BtnCategory = ({ setShowNav }: Props) => {
                 <button className='flex gap-2 items-end' onClick={() => setShowCategories(!showCategories)}>Categorias <IoIosArrowDown className={`${showCategories ? 'rotate-180': ''} duration-200`} /></button>
                 <div className={`${showCategories ? 'max-h-[40rem] ' : 'max-h-0 '}duration-500 overflow-hidden`}>
                     {
-                        categories.map((item: any, i) => (
+                        categories.map((item: Categorie, i) => (
                             <button onClick={() => setShowNav && setShowNav(false)} key={i} className=''>
                                 <Link href={`/category?id=${item.id}`} className=' w-full px-8 ' >
                                     -  {item.name}

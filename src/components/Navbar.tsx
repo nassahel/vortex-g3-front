@@ -7,11 +7,12 @@ import BtnCategory from "./BtnCategory";
 import { IoCloseOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import SearchBar from "./SearchBar";
+import { DecodedUser } from "@/types/types";
 
 const Navbar = () => {
     const [offerModal, setOfferModal] = useState(true);
     const [showNav, setShowNav] = useState(false);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<DecodedUser>(null);
 
     // Función para obtener el usuario desde el localStorage o sessionStorage
     const getUser = () => {
@@ -19,7 +20,7 @@ const Navbar = () => {
             localStorage.getItem("token") || sessionStorage.getItem("token");
         if (token) {
             try {
-                const decodedUser = jwtDecode(token);
+                const decodedUser = jwtDecode<DecodedUser>(token);
                 setUser(decodedUser);
             } catch (error) {
                 console.error("Error al decodificar el token:", error);

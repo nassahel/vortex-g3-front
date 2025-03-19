@@ -5,20 +5,18 @@ import { DeleteModal } from "@/components/modals/DeleteModal";
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Image } from "@/types/types";
+
 
 interface Product {
-    id: string;
-    categories: string[];
-    description: string;
-    images: Image[];
-    name: string;
-    price: number;
-    stock: number;
-}
-
-interface Image {
-    url: string;
-}
+      id?: string;
+      images?: Image[];
+      name?: string;
+      price?: number;
+      stock?: number;
+      description?: string;
+      categories?: string[];
+    }
 
 const page = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -51,22 +49,22 @@ const page = () => {
         input.type = "file";
         input.accept = "image/*";
 
-        input.onchange = async (e: any) => {
-            const file = e.target.files[0];
+        input.addEventListener("change", async (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            const file = target.files ? target.files[0] : null;
             if (!file) return;
-
+        
             const formData = new FormData();
             formData.append("image", file);
-
+        
             try {
-                const response = await fetch(
-                    `${URL}images/upload-image/${productId}`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
-
+              const response = await fetch(
+                `${URL}images/upload-image/${productId}`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
                 const result = await response.json();
                 setRefresh(Math.random());
 
@@ -77,7 +75,7 @@ const page = () => {
             } catch (error) {
                 console.error("Error de conexión", error);
             }
-        };
+        });
         input.click();
     };
 
@@ -98,7 +96,7 @@ const page = () => {
             {modal && (
                 <AddEditProductModal
                     setModal={setModal}
-                    user={productEdit}
+                    product={productEdit}
                     isEditing={modalEdit}
                 />
             )}

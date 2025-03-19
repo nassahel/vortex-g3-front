@@ -1,7 +1,8 @@
+import { User } from '@/types/types';
 import { useEffect, useState } from 'react';
 
 type Props = {
-    user: any;
+    user: User;
 };
 
 const Info = ({ user }: Props) => {

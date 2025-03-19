@@ -1,39 +1,41 @@
+import { Categorie, Image} from '@/types/types';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 interface Props {
     setModal: (value: boolean) => void;
     isEditing: boolean;
-    user?: Product | null;
+    product?: Product | null;
 }
+
 
 interface Product {
-    id: string;
-    categories: string[];
-    description: string;
-    images: Image[];
-    name: string;
-    price: number;
-    stock: number;
-}
+      id?: string;
+      images?: Image[];
+      name?: string;
+      price?: number;
+      stock?: number;
+      description?: string;
+      categories?: string[];
+    }
 
-interface Image {
-    url: string;
-}
 
-const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, user: product }) => {
-    const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) => {
+    const [categories, setCategories] = useState<Categorie[]>([]);
     const [formData, setFormData] = useState<Product>({
         id: product?.id || '',
         images: product?.images || [],
         name: isEditing && product ? product.name : '',
-        description: isEditing && product ? product.description : '',
         price: isEditing && product ? product.price : 0,
+        description: isEditing && product ? product.description : '',
         stock: isEditing && product ? product.stock : 0,
         categories: isEditing && product ? product.categories : [],
     });
 
     const url = process.env.NEXT_PUBLIC_API_URL || '';
+
+console.log(product);
+
 
     useEffect(() => {
         fetchCategories();

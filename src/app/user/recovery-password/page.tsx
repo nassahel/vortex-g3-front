@@ -50,7 +50,7 @@ const Page = () => {
        
 
             setIsSuccess(true)  // Si la contraseña se cambió con éxito, mostramos el mensaje de éxito
-        } catch (error: any) {
+        } catch (error) {
             setError(error.message || 'No se pudo cambiar la contraseña.')
         } finally {
             setLoading(false)

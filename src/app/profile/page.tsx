@@ -1,7 +1,7 @@
 "use client";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { DecodedToken } from "@/types/types";
+import { DecodedToken, User } from "@/types/types";
 import ReqAuth from "@/utils/ReqAuth";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ import { LuPencilLine } from "react-icons/lu";
 
 
 const page = () => {
-    const [user, setUser] = useState<any>();
+    const [user, setUser] = useState<User>();
     const [sectionSelected, setSectionSelected] = useState(0);
     const [image, setImage] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
@@ -104,7 +104,7 @@ const page = () => {
                 const userData = await response.json();
                 setUser(userData);
                 setUserImage(userData.profile?.profileImage);
-            } catch (error: any) {
+            } catch (error) {
                 console.error("Error:", error.message);
             }
         };

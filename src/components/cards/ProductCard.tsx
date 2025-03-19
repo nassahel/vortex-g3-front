@@ -1,7 +1,8 @@
+import { MostBoughtProduct, Product } from "@/types/types";
 import Link from "next/link";
 
 interface Props {
-    item: any;
+    item: MostBoughtProduct;
 }
 
 const ProductCard = ({ item }: Props) => {

@@ -3,15 +3,16 @@ import Link from 'next/link';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 
-type Props = {}
 
 
-const page = (props: Props) => {
+
+const page = () => {
   const [proccess, setProccess] = useState<boolean>(false);
   const URL = process.env.NEXT_PUBLIC_API_URL
+  const [errors, setErrors] = useState([]);
 
 
-  const sendData = async (e: any) => {
+  const sendData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const form = e.currentTarget;
@@ -25,31 +26,44 @@ const page = (props: Props) => {
 
 
     toast.promise((async () => {
-      setProccess(true);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password, repeatPassword }),
-      });
+      try {
+        setProccess(true);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password, repeatPassword }),
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error desconocido');
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          setProccess(false);
+
+          if (responseData.errorMessages) {
+            setErrors(responseData.errorMessages);
+          } else if (responseData.message) {
+            setErrors([responseData.message]);
+          }
+
+          // Lanzamos el error para que toast lo detecte
+          throw new Error(responseData.message || 'No se pudo registrar usuario.');
+        }
+
+        form.reset();
+        setProccess(false);
+        window.location.href = '/user/login';
+        return responseData;
+
+      } catch (error) {
+        throw error; // Esto es necesario para que toast capture el error
       }
-
-      const responseData = await response.json();
-      form.reset();
-      setProccess(false)
-      window.location.href = '/user/login';
-      return responseData;
     })(), {
       loading: 'Guardando...',
       success: 'Usuario registrado!',
-      error: 'No se pudo registrar usuario.'
-    })
+      error: (error) => error.message || 'No se pudo registrar usuario.'
+    });
   }
+
 
 
 
@@ -58,39 +72,44 @@ const page = (props: Props) => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4">
-      <form 
-        onSubmit={sendData} 
+      <form
+        onSubmit={sendData}
         className="flex flex-col bg-white px-6 py-6 w-full max-w-[25rem] border rounded-lg"
       >
         <h2 className="text-center text-4xl font-semibold mb-4">Registrarse</h2>
-  
+
         <label className={labelStyle} htmlFor="name">Nombre</label>
         <input className={inputStyle} type="text" name="name" id="name" />
-  
+
         <label className={labelStyle} htmlFor="email">Email</label>
         <input className={inputStyle} type="text" name="email" id="email" />
-  
+
         <label className={labelStyle} htmlFor="password">Contraseña</label>
         <input className={inputStyle} type="text" name="password" id="password" />
-  
+
         <label className={labelStyle} htmlFor="rePassword">Repetir contraseña</label>
         <input className={inputStyle} type="text" name="rePassword" id="rePassword" />
-  
-        <button 
-          disabled={proccess} 
-          type="submit" 
+
+        <button
+          disabled={proccess}
+          type="submit"
           className="bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg"
         >
           {proccess ? 'Registrando...' : 'Aceptar'}
         </button>
+        {
+          errors.map((error, i) => (
+            <p className='text-sm text-center text-red-600' key={i}>{error}</p>
+          ))
+        }
       </form>
-  
+
       <div className="text-center mt-4">
         <p>Ya tenés cuenta? <Link href="/user/login" className="font-bold">Iniciar sesión</Link></p>
       </div>
     </div>
   );
-  
+
 }
 
 export default page

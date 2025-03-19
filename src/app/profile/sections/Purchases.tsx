@@ -1,16 +1,11 @@
+import { Purchase } from '@/types/types';
 import React, { useState } from 'react'
 
 type Props = {
-  purchases: any;
+  purchases: Purchase[];
 }
 
-interface Purchase {
-  id: string;
-  status: string;
-  price: number;
-  userId: string;
-  createdAt: string;
-}
+
 
 const getInvoice = async (id: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   const token = localStorage.getItem('token');

@@ -6,33 +6,36 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { IoIosArrowForward, IoMdClose } from "react-icons/io";
 import { GiSettingsKnobs } from "react-icons/gi";
+import { Categorie, Filters, PaginationType, Product } from "@/types/types";
 import Pagination from "@/components/Pagination";
 
+
+
 const CategoryPage = () => {
-    const [products, setProducts] = useState<any>();
+    const [products, setProducts] = useState<Product[]>();
     const URL = process.env.NEXT_PUBLIC_API_URL;
     const router = useRouter();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
     const currentMin = searchParams.get("min");
     const currentMax = searchParams.get("max");
-    const [categories, setCategories] = useState<any[]>([]);
+    const [categories, setCategories] = useState<Categorie[]>([]);
     const [min, setMin] = useState<number>(Number(currentMin) || 0);
     const [max, setMax] = useState<number>(Number(currentMax) || 0);
     const [showFilters, setShowFilters] = useState(false);
-    const [pagination, setPagination] = useState<any>({
+    const [pagination, setPagination] = useState<PaginationType>({
         currentPage: 1,
         totalPages: 1,
         hasNextPage: false,
         hasPreviousPage: false,
     });
-    const [filters, setFilters] = useState<any>({
+    const [filters, setFilters] = useState<Filters>({
         min: Number(currentMin) || 0,
         max: Number(currentMax) || 0,
     });
 
     const handleChangePage = (page: number) => {
-        setPagination((prev: any) => ({
+        setPagination((prev: PaginationType) => ({
             ...prev,
             currentPage: page,
         }));
@@ -120,7 +123,7 @@ const CategoryPage = () => {
                         </p>
                         <hr />
                         <div className="space-y-2">
-                            {categories?.map((item: any, i: number) => (
+                            {categories?.map((item: Categorie, i: number) => (
                                 <Link
                                     href={`/category?id=${item.id}`}
                                     key={i}
@@ -174,7 +177,7 @@ const CategoryPage = () => {
                             <h2 className="text-black text-3xl capitalize font-semibold">
                                 {
                                     categories.find(
-                                        (item: any) => item.id === id
+                                        (item: Categorie) => item.id === id
                                     )?.name
                                 }
                             </h2>
@@ -183,7 +186,7 @@ const CategoryPage = () => {
                                 {products?.length === 0 ? (
                                     <div className="italic">Cargando...</div>
                                 ) : (
-                                    products?.map((item: any, i: number) => (
+                                    products?.map((item: Product, i: number) => (
                                         <ProductCard key={i} item={item} />
                                     ))
                                 )}
