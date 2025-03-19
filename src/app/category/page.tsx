@@ -99,7 +99,7 @@ const CategoryPage = () => {
     };
 
     return (
-        <Suspense fallback={<p>Cargando...</p>}>
+        <Suspense>
             <div>
                 <Navbar />
                 <main className="">
