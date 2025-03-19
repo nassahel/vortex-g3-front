@@ -10,7 +10,6 @@ import { FaRegCreditCard } from "react-icons/fa6";
 import MercadoPago from "@/components/icons/MercadoPago";
 import CardPaymentModal from "@/components/modals/CardPaymentModal";
 
-// const USERS_API = `${process.env.NEXT_PUBLIC_API_URL}users/get-all-active`;
 const CART_API = `${process.env.NEXT_PUBLIC_API_URL}cart/active`;
 const PRODUCTS_API = `${process.env.NEXT_PUBLIC_API_URL}product`;
 
@@ -22,8 +21,6 @@ const CartPage = () => {
     const [user, setUser] = useState<{ userRol: string; id: string } | null>(
         null
     );
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState(false);
     const [promoCode, setPromoCode] = useState("");
     const [method, setMethod] = useState<"mercadopago" | "card">("mercadopago");
     const [isCardPaymentModalOpen, setIsCardPaymentModalOpen] = useState(false);
@@ -56,9 +53,6 @@ const CartPage = () => {
     useEffect(() => {
         const fetchCart = async () => {
             try {
-                // setLoading(true);
-                // setError(false);
-
                 const token = localStorage.getItem("token");
                 if (!token) {
                     setCart([]);
@@ -113,10 +107,8 @@ const CartPage = () => {
                 const detailedCart = await Promise.all(productDetailsPromises);
                 setCart(detailedCart);
             } catch (err) {
-                console.error("🚨 Error al obtener el carrito:", err);
-                // setError(true);
+                console.error("🚨 Error al obtener el carrito:", err);          
             } finally {
-                // setLoading(false);
             }
         };
 

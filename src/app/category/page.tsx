@@ -2,7 +2,7 @@
 import ProductCard from "@/components/cards/ProductCard";
 import Navbar from "@/components/Navbar";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { IoIosArrowForward, IoMdClose } from "react-icons/io";
 import { GiSettingsKnobs } from "react-icons/gi";
@@ -99,110 +99,111 @@ const CategoryPage = () => {
     };
 
     return (
-        <div>
-            <Navbar />
-            <main className="">
-            <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row justify-between py-12 gap-6">                    {/* Botón de filtros en mobile */}
-                <button 
-                    className="bg-black text-white px-4 py-2 rounded-lg w-full sm:hidden"
-                    onClick={() => setShowFilters(!showFilters)}
-                >
-                    {showFilters ? "Ocultar Filtros" : "Mostrar Filtros"}
-                </button>
+        <Suspense fallback={<p>Cargando...</p>}>
+            <div>
+                <Navbar />
+                <main className="">
+                    <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row justify-between py-12 gap-6">                    {/* Botón de filtros en mobile */}
+                        <button
+                            className="bg-black text-white px-4 py-2 rounded-lg w-full sm:hidden"
+                            onClick={() => setShowFilters(!showFilters)}
+                        >
+                            {showFilters ? "Ocultar Filtros" : "Mostrar Filtros"}
+                        </button>
 
-                {/* Filtros - Se despliega en mobile, siempre visible en desktop */}
-                <div 
-                    className={`w-full sm:w-1/4 relative transition-all duration-300 ${
-                        showFilters ? "block" : "hidden sm:block"
-                    }`}
-                >
-                    <div className="rounded-lg p-4 space-y-4 border sticky top-6 bg-white shadow-lg sm:shadow-none">
-                        <p className="text-black text-lg font-semibold flex items-center justify-between gap-2">
-                            Filtros
-                            <GiSettingsKnobs className="text-gray-400" />
-                        </p>
-                        <hr />
-                        <div className="space-y-2">
-                            {categories?.map((item: Categorie, i: number) => (
-                                <Link
-                                    href={`/category?id=${item.id}`}
-                                    key={i}
-                                    className="flex items-center justify-between gap-2 text-gray-400 transition-all hover:text-black hover:translate-x-1 duration-200"
-                                >
-                                    <p className="text-sm">{item.name}</p>
-                                    <IoIosArrowForward />
-                                </Link>
-                            ))}
-                        </div>
-                        <hr />
-                        <div className="space-y-2">
-                            <p className="text-black text-lg font-semibold">Precio</p>
-                            <div className="flex gap-2">
-                                <input
-                                    type="text"
-                                    placeholder="Mínimo"
-                                    className="w-1/2 border rounded-lg p-2"
-                                    value={min || ""}
-                                    onChange={(e) => setMin(Number(e.target.value))}
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Máximo"
-                                    className="w-1/2 border rounded-lg p-2"
-                                    value={max || ""}
-                                    onChange={(e) => setMax(Number(e.target.value))}
-                                />
-                            </div>
-                            <button
-                                onClick={handleFilter}
-                                className="bg-black text-white px-4 py-2 rounded-lg w-full transition-colors hover:bg-gray-800 duration-200"
-                            >
-                                Aplicar
-                            </button>
-                        </div>
-                        <hr />
-                        <div>
-                            <button
-                                onClick={handleClearFilter}
-                                className="bg-red-200 text-red-800 px-4 py-2 rounded-lg w-full transition-colors hover:bg-red-500 hover:text-white duration-200 flex items-center gap-2 justify-center"
-                            >
-                                <IoMdClose />
-                                Limpiar filtros
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                    <div className="w-4/5 md:min-h-[700px] flex flex-col justify-between">
-                        <div>
-                            <h2 className="text-black text-3xl capitalize font-semibold">
-                                {
-                                    categories.find(
-                                        (item: Categorie) => item.id === id
-                                    )?.name
-                                }
-                            </h2>
-
-                            <div className="flex flex-wrap w-full gap-8 pt-10 pb-10">
-                                {products?.length === 0 ? (
-                                    <div className="italic">Cargando...</div>
-                                ) : (
-                                    products?.map((item: MostBoughtProduct, i: number) => (
-                                        <ProductCard key={i} item={item} />
-                                    ))
-                                )}
+                        {/* Filtros - Se despliega en mobile, siempre visible en desktop */}
+                        <div
+                            className={`w-full sm:w-1/4 relative transition-all duration-300 ${showFilters ? "block" : "hidden sm:block"
+                                }`}
+                        >
+                            <div className="rounded-lg p-4 space-y-4 border sticky top-6 bg-white shadow-lg sm:shadow-none">
+                                <p className="text-black text-lg font-semibold flex items-center justify-between gap-2">
+                                    Filtros
+                                    <GiSettingsKnobs className="text-gray-400" />
+                                </p>
+                                <hr />
+                                <div className="space-y-2">
+                                    {categories?.map((item: Categorie, i: number) => (
+                                        <Link
+                                            href={`/category?id=${item.id}`}
+                                            key={i}
+                                            className="flex items-center justify-between gap-2 text-gray-400 transition-all hover:text-black hover:translate-x-1 duration-200"
+                                        >
+                                            <p className="text-sm">{item.name}</p>
+                                            <IoIosArrowForward />
+                                        </Link>
+                                    ))}
+                                </div>
+                                <hr />
+                                <div className="space-y-2">
+                                    <p className="text-black text-lg font-semibold">Precio</p>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            placeholder="Mínimo"
+                                            className="w-1/2 border rounded-lg p-2"
+                                            value={min || ""}
+                                            onChange={(e) => setMin(Number(e.target.value))}
+                                        />
+                                        <input
+                                            type="text"
+                                            placeholder="Máximo"
+                                            className="w-1/2 border rounded-lg p-2"
+                                            value={max || ""}
+                                            onChange={(e) => setMax(Number(e.target.value))}
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={handleFilter}
+                                        className="bg-black text-white px-4 py-2 rounded-lg w-full transition-colors hover:bg-gray-800 duration-200"
+                                    >
+                                        Aplicar
+                                    </button>
+                                </div>
+                                <hr />
+                                <div>
+                                    <button
+                                        onClick={handleClearFilter}
+                                        className="bg-red-200 text-red-800 px-4 py-2 rounded-lg w-full transition-colors hover:bg-red-500 hover:text-white duration-200 flex items-center gap-2 justify-center"
+                                    >
+                                        <IoMdClose />
+                                        Limpiar filtros
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <hr />
-                            <Pagination
-                                pagination={pagination}
-                                handleChangePage={handleChangePage}
-                            />
+                        <div className="w-4/5 md:min-h-[700px] flex flex-col justify-between">
+                            <div>
+                                <h2 className="text-black text-3xl capitalize font-semibold">
+                                    {
+                                        categories.find(
+                                            (item: Categorie) => item.id === id
+                                        )?.name
+                                    }
+                                </h2>
+
+                                <div className="flex flex-wrap w-full gap-8 pt-10 pb-10">
+                                    {products?.length === 0 ? (
+                                        <div className="italic">Cargando...</div>
+                                    ) : (
+                                        products?.map((item: MostBoughtProduct, i: number) => (
+                                            <ProductCard key={i} item={item} />
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                            <div>
+                                <hr />
+                                <Pagination
+                                    pagination={pagination}
+                                    handleChangePage={handleChangePage}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </main>
-        </div>
+                </main>
+            </div>
+        </Suspense>
     );
 };
 
