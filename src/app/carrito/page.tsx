@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CartItem } from "@/types/types";
 import { CiShoppingCart } from "react-icons/ci";
@@ -107,7 +107,7 @@ const CartPage = () => {
                 const detailedCart = await Promise.all(productDetailsPromises);
                 setCart(detailedCart);
             } catch (err) {
-                console.error("🚨 Error al obtener el carrito:", err);          
+                console.error("🚨 Error al obtener el carrito:", err);
             } finally {
             }
         };
@@ -209,8 +209,7 @@ const CartPage = () => {
     const total = subtotal - discount + deliveryFee;
 
     return (
-        <>
-            <Navbar />
+        <Suspense>
 
             <div className="max-w-7xl py-4 mx-auto px-4 lg:mt-8">
                 <h1 className="text-2xl sm:text-3xl font-sans font-black mb-6">
@@ -408,7 +407,7 @@ const CartPage = () => {
                     idUser={user?.id || ""}
                 />
             )}
-        </>
+        </Suspense>
     );
 };
 
