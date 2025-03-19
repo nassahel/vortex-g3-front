@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
-type Props = {}
+
 
 const paymentsImage = [
     '/img/medios_de_pago/visa.png',
@@ -34,7 +34,7 @@ const foterSections = [
 
 
 
-const Footer = (props: Props) => {
+const Footer = () => {
     return (
     <div className="px-6 sm:px-8 md:px-10 py-10 bg-neutral-100 text-sm text-neutral-800">
         <div className="max-w-[95rem] mx-auto">

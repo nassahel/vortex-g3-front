@@ -36,10 +36,6 @@ const BtnCategory = ({ setShowNav }: Props) => {
         fetchCategories()
     }, [])
 
-    const toggleModal = () => {
-        setModal(prev => !prev);
-    }
-
     return (
         <>
             <div className='relative hidden md:block'>

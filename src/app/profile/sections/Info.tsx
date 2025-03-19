@@ -27,6 +27,8 @@ const Info = ({ user }: Props) => {
                 body: JSON.stringify({ [field]: inputData }),
             });
             const data = await response.json();
+            console.log(data);
+            
 
             if (response.ok) {
                 // Actualiza el estado local de forma adecuada

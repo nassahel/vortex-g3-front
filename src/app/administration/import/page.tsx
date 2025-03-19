@@ -56,6 +56,8 @@ const ImportProductsPage = () => {
             alert(`${data.cantidad} productos importados correctamente`);
             setFile(null);
         } catch (error) {
+            console.log(error);
+            
             setError(
                 "Error al importar los productos. Por favor, intente nuevamente."
             );

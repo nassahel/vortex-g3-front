@@ -46,9 +46,6 @@ const Page = () => {
                 throw new Error(errorData.message || `Error al cambiar la contraseña`)
             }
 
-            const data = await response.json()
-       
-
             setIsSuccess(true)  // Si la contraseña se cambió con éxito, mostramos el mensaje de éxito
         } catch (error) {
             setError(error.message || 'No se pudo cambiar la contraseña.')

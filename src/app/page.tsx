@@ -6,7 +6,6 @@ import { MostBoughtProduct } from "@/types/types";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-    const [page, setPage] = useState(1);
     const [products, setProducts] = useState<MostBoughtProduct[]>();
     const [loading, setLoading] = useState(true);
 
@@ -30,7 +29,7 @@ export default function Home() {
             }
         };
         fetchActiveProducts();
-    }, [page]);
+    }, []);
 
     return (
         <div>

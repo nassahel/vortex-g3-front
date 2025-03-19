@@ -14,9 +14,7 @@ const Page = () => {
 
   const sendData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const form = e.currentTarget;
-
     const formData = new FormData(form)
     const name = formData.get('name');
     const email = formData.get('email')
@@ -28,7 +26,7 @@ const Page = () => {
     toast.promise((async () => {
       try {
         setProccess(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/register`, {
+        const response = await fetch(`${URL}auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password, repeatPassword }),

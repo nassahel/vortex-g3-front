@@ -26,6 +26,7 @@ export const DeleteModal: React.FC<Props> = ({ setDeleteModal, itemId, nombre, e
                 toast.error(`No se pudo eliminar el ${elemento}`);
             }
         } catch (error) {
+            console.log(error);
             toast.error(`Error al eliminar el ${elemento}`);
         }
     };
@@ -33,7 +34,7 @@ export const DeleteModal: React.FC<Props> = ({ setDeleteModal, itemId, nombre, e
     return (
         <div className="fixed z-50 top-0 left-0 right-0 bottom-0 flex justify-center text-center items-center bg-black/50">
             <div className="bg-white py-6 px-4 shadow-md rounded-md w-[20rem]">
-                <h3>¿Deseas borrar al {elemento} <span className="font-bold">"{nombre}"?</span></h3>
+                <h3>¿Deseas borrar al {elemento} <span className="font-bold">&quot;{nombre}&quot;?</span></h3>
                 <div className="mt-6 flex justify-between px-2">
                     <button onClick={() => setDeleteModal(false)} className="py-1 px-2 bg-gray-500 text-white rounded">Cancelar</button>
                     <button onClick={handleDelete} className="py-1 px-2 bg-red-500 text-white rounded">Eliminar</button>
