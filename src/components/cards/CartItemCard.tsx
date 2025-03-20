@@ -1,5 +1,4 @@
 import { CartItem, Product } from '@/types/types'
-import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { FaPlus, FaMinus } from "react-icons/fa6";
 
@@ -15,7 +14,7 @@ const CartItemCard = ({ item }: Props) => {
     const getProductById = async () => {
       try {
         const URL = process.env.NEXT_PUBLIC_API_URL
-        const response = await fetch(`${URL}products/${item.itemId}`)
+        const response = await fetch(`${URL}/products/${item.itemId}`)
         const data = await response.json();
         setProd(data);
       } catch (error) {
@@ -24,12 +23,6 @@ const CartItemCard = ({ item }: Props) => {
     }
     getProductById()
   }, [])
-
-
-
-
-  
-
 
   return (
     <article className='flex items-center border-t border-neutral-300 h-32'>

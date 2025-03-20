@@ -2,15 +2,17 @@ import toast from "react-hot-toast";
 
 interface Props {
     setDeleteModal: (value: boolean) => void;
-    modalText: string;
-    itemId: string;
+    itemId: string | null;
+    elemento?: string;
+    nombre?: string;
+    ruta: string;
 }
 
-export const DeleteModal: React.FC<Props> = ({ setDeleteModal, modalText, itemId }) => {
+export const DeleteModal: React.FC<Props> = ({ setDeleteModal, itemId, nombre, elemento, ruta }) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}product/delete/${itemId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ruta}${itemId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -18,23 +20,24 @@ export const DeleteModal: React.FC<Props> = ({ setDeleteModal, modalText, itemId
                 }
             });
             if (response.ok) {
-                toast.success('Producto eliminado');
+                toast.success(`${elemento} eliminado`);
                 setDeleteModal(false);
             } else {
-                toast.error('No se pudo eliminar el producto');
+                toast.error(`No se pudo eliminar el ${elemento}`);
             }
         } catch (error) {
-            toast.error('Error al eliminar el producto');
+            console.log(error);
+            toast.error(`Error al eliminar el ${elemento}`);
         }
     };
 
     return (
-        <div className="fixed z-50 top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-black/50">
-            <div className="bg-white p-6 rounded-md w-[25rem]">
-                <h3>{modalText}</h3>
-                <div className="mt-4 flex justify-between">
-                    <button onClick={() => setDeleteModal(false)} className="p-2 bg-gray-500 text-white rounded">Cancelar</button>
-                    <button onClick={handleDelete} className="p-2 bg-red-500 text-white rounded">Eliminar</button>
+        <div className="fixed z-50 top-0 left-0 right-0 bottom-0 flex justify-center text-center items-center bg-black/50">
+            <div className="bg-white py-6 px-4 shadow-md rounded-md w-[20rem]">
+                <h3>¿Deseas borrar al {elemento} <span className="font-bold">&quot;{nombre}&quot;?</span></h3>
+                <div className="mt-6 flex justify-between px-2">
+                    <button onClick={() => setDeleteModal(false)} className="py-1 px-2 bg-gray-500 text-white rounded">Cancelar</button>
+                    <button onClick={handleDelete} className="py-1 px-2 bg-red-500 text-white rounded">Eliminar</button>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
-export const checkoutService = async (userId: string) => {
+export const checkoutService = async (userId: string, payMethod: string) => {
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}cart/checkout/${userId}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/cart/checkout/${userId}?payMethod=${payMethod}`,
             {
                 method: "POST",
             }

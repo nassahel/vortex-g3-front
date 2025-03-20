@@ -1,44 +1,51 @@
+import { Categorie, Image} from '@/types/types';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 interface Props {
     setModal: (value: boolean) => void;
     isEditing: boolean;
-    product: string;
+    product?: Product | null;
 }
 
-interface FormDataType {
-    name: string;
-    description: string;
-    price: string;
-    stock: number;
-    categories: string[];
-}
+
+interface Product {
+      id?: string;
+      images?: Image[];
+      name?: string;
+      price?: number;
+      stock?: number;
+      description?: string;
+      categories?: string[];
+    }
+
 
 const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) => {
-    const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
-    const [formData, setFormData] = useState<FormDataType>({
-        name: isEditing ? product.name : '',
-        description: isEditing ? product.description : '',
-        price: isEditing ? product.price : '',
-        stock: isEditing ? product.stock : '',
-        categories: isEditing ? product.categories : []
+    const [categories, setCategories] = useState<Categorie[]>([]);
+    const [formData, setFormData] = useState<Product>({
+        id: product?.id || '',
+        images: product?.images || [],
+        name: isEditing && product ? product.name : '',
+        price: isEditing && product ? product.price : 0,
+        description: isEditing && product ? product.description : '',
+        stock: isEditing && product ? product.stock : 0,
+        categories: isEditing && product ? product.categories : [],
     });
 
-    const url = process.env.NEXT_PUBLIC_API_URL;
+    const url = process.env.NEXT_PUBLIC_API_URL || '';
 
-    // Simulamos cargar un producto si es edición
-    // 1. Cargar las categorías cuando se monta el componente
+console.log(product);
+
+
     useEffect(() => {
         fetchCategories();
     }, []);
 
-    // 2. Cuando las categorías ya estén cargadas, inicializamos el formData en modo edición
     useEffect(() => {
-        if (isEditing && product && product.categories && categories.length > 0) {
+        if (isEditing && product && categories.length > 0) {
             const selectedCategoryIds = categories
-                .filter(cat => product.categories.includes(cat.name)) // Comparar por nombre
-                .map(cat => cat.id); // Obtener IDs
+                .filter(cat => product.categories.includes(cat.name))
+                .map(cat => cat.id);
 
             setFormData(prev => ({
                 ...prev,
@@ -46,15 +53,14 @@ const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) 
                 description: product.description,
                 price: product.price,
                 stock: product.stock,
-                categories: selectedCategoryIds
+                categories: selectedCategoryIds,
             }));
         }
     }, [isEditing, product, categories]);
 
-
     const fetchCategories = async () => {
         try {
-            const response = await fetch(`${url}category/all`);
+            const response = await fetch(`${url}/category/all`);
             const data = await response.json();
             setCategories(data.data);
         } catch (error) {
@@ -65,19 +71,23 @@ const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) 
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
 
+        if (!token) {
+            toast.error('No tienes una sesión activa.');
+            return;
+        }
+
         const productData = {
             name: formData.name,
             description: formData.description,
             price: formData.price,
             stock: formData.stock,
-            categories: formData.categories
+            categories: formData.categories,
         };
 
         console.log(productData);
 
-
-        const endpoint = isEditing
-            ? `${url}product/update/${product && product.id}`
+        const endpoint = isEditing && product?.id
+            ? `${url}product/update/${product.id}`
             : `${url}product/create-product`;
 
         const method = isEditing ? 'PATCH' : 'POST';
@@ -87,12 +97,12 @@ const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) 
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
                 },
-                body: JSON.stringify(productData)
+                body: JSON.stringify(productData),
             });
 
-            console.log('respouesta', response);
+            console.log('Respuesta:', response);
 
             if (response.ok) {
                 toast.success(isEditing ? 'Producto actualizado!' : 'Producto creado!');
@@ -122,36 +132,37 @@ const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) 
     };
 
     return (
-        <section className='fixed z-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center'>
-            <div onClick={() => setModal(false)} className='fixed z-40 top-0 bottom-0 left-0 right-0 bg-black/50'></div>
-            <article className='bg-white w-11/12 max-w-[30rem] rounded-md relative shadow py-6 px-10 z-50'>
-                <h2 className='mb-6'>{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
-                <input name="name" value={formData.name} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Nombre' />
-
-                <textarea name="description" value={formData.description} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Descripción' />
-
-                <input name="price" value={formData.price} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Precio' />
-
-                <input type="number" name="stock" value={formData.stock} onChange={handleChange} className='mb-4 border px-2 py-1 w-full' placeholder='Stock' />
-
-                <div className='grid grid-cols-3 gap-2 mb-4'>
+        <section className="fixed z-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+            <div onClick={() => setModal(false)} className="fixed z-40 top-0 bottom-0 left-0 right-0 bg-black/50"></div>
+            <article className="bg-white w-11/12 max-w-[30rem] rounded-md relative shadow py-6 px-10 z-50">
+                <h2 className="mb-6 text-center font-bold">{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
+                <label htmlFor="Nombre"></label>
+                <input name="name" value={formData.name} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Nombre" />
+                <label htmlFor="Descripción"></label>
+                <textarea name="description" value={formData.description} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Descripción" />
+                <label htmlFor="Precio"></label>
+                <input name="price" value={formData.price} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Precio" />
+                <label htmlFor="Stock"></label>
+                <input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Stock" />
+                <label htmlFor="Categorías"></label>
+                <div className="grid grid-cols-3 gap-2 mb-4">
                     {categories.map(cat => (
-                        <label key={cat.id} className='flex items-center gap-2'>
+                        <label key={cat.id} className="flex items-center gap-2">
                             <input
                                 type="checkbox"
                                 checked={formData.categories.includes(cat.id)}
-                                onChange={(e) => handleCategoryChange(cat.id, e.target.checked)}
+                                onChange={e => handleCategoryChange(cat.id, e.target.checked)}
                             />
                             {cat.name}
                         </label>
                     ))}
                 </div>
 
-                <div className='flex justify-end gap-2'>
-                    <button onClick={handleSubmit} className='bg-blue-500 text-white px-4 py-2 rounded'>
+                <div className="flex justify-end gap-2">
+                    <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded">
                         {isEditing ? 'Actualizar' : 'Guardar'}
                     </button>
-                    <button onClick={() => setModal(false)} className='bg-gray-500 text-white px-4 py-2 rounded'>
+                    <button onClick={() => setModal(false)} className="bg-gray-500 text-white px-4 py-2 rounded">
                         Cancelar
                     </button>
                 </div>
