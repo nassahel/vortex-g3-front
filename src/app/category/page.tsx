@@ -52,13 +52,14 @@ const CategoryPageContent = () => {
             try {
                 let url =
                     URL +
-                    `product/all?categoryId=${id}&page=${pagination.currentPage}`;
+                    `/product/all?categoryId=${id}&page=${pagination.currentPage}`;
                 if (filters.min > 0) url += `&minPrice=${filters.min}`;
                 if (filters.max > 0) url += `&maxPrice=${filters.max}`;
 
                 const response = await fetch(url);
                 const data = await response.json();
                 setProducts(data.data);
+                             
                 setPagination({
                     currentPage: data.meta.currentPage,
                     totalPages: data.meta.totalPages,
