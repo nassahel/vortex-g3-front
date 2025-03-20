@@ -37,8 +37,7 @@ const AddEditUserModal: React.FC<Props> = ({ setModal, isEditing, user }) => {
             : `${url}/users/`;
 
         const method = isEditing ? 'PATCH' : 'POST';
-        console.log(formData);
-
+ 
         try {
             const response = await fetch(endpoint, {
                 method,
@@ -51,8 +50,7 @@ const AddEditUserModal: React.FC<Props> = ({ setModal, isEditing, user }) => {
             });
 
             const data = await response.json();
-            console.log(data);
-
+ 
             if (response.ok) {
                 toast.success(data.message || 'No se pudo actualizar');
                 setModal(false);

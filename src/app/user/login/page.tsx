@@ -39,8 +39,7 @@ const Page = () => {
             });
 
             const res = await response.json()
-            console.log(res);
-
+       
             if (!response.ok) {
 
                 if (res.errorMessages) {
