@@ -43,6 +43,8 @@ const CardPaymentModal = ({
         try {
             const res = await checkoutService(idUser, "Card");
                router.push("/payments/success");
+               console.log(res);
+               
         } catch (error) {
             console.error("Error al realizar el pago:", error);
         }

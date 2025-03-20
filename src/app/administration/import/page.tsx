@@ -5,19 +5,16 @@ import Navigation from "@/components/Navigation";
 const ImportProductsPage = () => {
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string>("");
     const URL = process.env.NEXT_PUBLIC_API_URL;
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
-        setError("");
 
         if (!selectedFile) return;
 
         // Validar extensión del archivo
         const fileExtension = selectedFile.name.split(".").pop()?.toLowerCase();
         if (fileExtension !== "xlsx") {
-            setError("Solo se permiten archivos Excel (.xlsx)");
             e.target.value = "";
             return;
         }
@@ -31,7 +28,6 @@ const ImportProductsPage = () => {
         if (!file) return;
 
         setLoading(true);
-        setError("");
         const token = localStorage.getItem("token");
 
         const formData = new FormData();
@@ -57,9 +53,7 @@ const ImportProductsPage = () => {
         } catch (error) {
             console.log(error);
             
-            setError(
-                "Error al importar los productos. Por favor, intente nuevamente."
-            );
+     
         } finally {
             setLoading(false);
         }
