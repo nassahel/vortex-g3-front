@@ -1,18 +1,25 @@
 export interface Categorie {
   id: string;
   name: string;
-  description: string;
-  product: Product[]
+  isDeleted: boolean;
+  product?: Product[]
 }
 
 export interface Product {
+  id?: string;
+  images?: Image[];
+  name?: string;
+  price?: number;
+  stock?: number;
+  description?: string;
+  categories?: Categorie[] | string[];
+}
+
+
+export interface Image {
+  url: string;
+  altText: string;
   id: string;
-  images: string;
-  name: string;
-  price: number;
-  isFavorite: boolean;
-  description: string;
-  categories: string[];
 }
 
 export interface FormuData {
@@ -25,23 +32,25 @@ export interface FormuData {
 }
 
 export interface CartItem {
-  id: string;
+  id: string
+  itemId: string;
   name: string;
-  image: string;
-  size: string;
   productId: string;
+  price: number
   color: string;
-  price: number;
+  subtotal: number;
   quantity: number;
+  product?: Product;
+  size: string;
+  image: string;
 }
 
 
 export interface MostBoughtProduct {
   id: string;
-  image: string;
+  images: Image[];
   name: string;
   price: number;
-  // isFavorite: boolean;
   description: string;
   category: string;
   quantity: number;
@@ -51,4 +60,61 @@ export interface DecodedToken {
   userId: string;
   userName: string;
   userRol: string
+}
+
+
+export interface PaginationType {
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface Filters {
+  min: number;
+  max: number;
+}
+
+
+export interface User {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  rol: string;
+  email: string;
+  profile: Profile;
+  password?: string;
+  cart: Purchase[];
+}
+
+export interface Profile {
+  address: string;
+  birthday: string;
+  dni: string;
+  id: string;
+  phone: string;
+  profileImage: string;
+  userId: string
+}
+
+
+
+
+
+
+export interface Purchase {
+  id: string;
+  status: string;
+  price: number;
+  userId: string;
+  createdAt: string;
+  product?: CartItem[];
+  items?: CartItem[];
+}
+
+
+export interface DecodedUser {
+  userRol: string;
+  userName: string;
 }

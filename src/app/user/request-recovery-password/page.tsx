@@ -18,7 +18,7 @@ const RequestPasswordRecoveryPage = () => {
         setMessage(null)
         setError(null)
 
-        const URL = process.env.NEXT_PUBLIC_API_URL + 'auth/request-recovery-password'
+        const URL = process.env.NEXT_PUBLIC_API_URL + '/auth/request-recovery-password'
 
         if (email.trim() === '') {
             setLoading(false)
@@ -41,7 +41,7 @@ const RequestPasswordRecoveryPage = () => {
             }
 
             setIsSuccess(true) // Si la solicitud fue exitosa, mostramos el mensaje de éxito
-        } catch (error: any) {
+        } catch (error) {
             setError(error.message || 'Error al enviar la solicitud.')
         } finally {
             setLoading(false)

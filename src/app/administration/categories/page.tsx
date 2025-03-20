@@ -9,7 +9,7 @@ interface Categorie {
     name: string;
 }
 
-const page = () => {
+const Page = () => {
     const [categories, setCategories] = useState([]);
     const [modal, setModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -20,7 +20,7 @@ const page = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch(URL + "category/all");
+                const response = await fetch(URL + "/category/all");
                 const data = await response.json();
 
                 setCategories(data.data);
@@ -36,13 +36,24 @@ const page = () => {
         setDeleteModal(true);
     };
 
+
+    const filteredCategories =
+        search !== ""
+            ? categories.filter((categorie: Categorie) =>
+                categorie.name
+                    .toLowerCase()
+                    .trim()
+                    .includes(search.toLowerCase().trim())
+            )
+            : categories;
+
     return (
         <section className="relative">
             {modal && <AddCategoryModal setModal={setModal} />}
             {deleteModal && (<DeleteModal
                 itemId={selectedId}
                 elemento="categoria"
-                ruta="category/delete/"
+                ruta="/category/delete/"
 
                 setDeleteModal={setDeleteModal} />
             )}
@@ -78,7 +89,7 @@ const page = () => {
                     </article>
 
                     {categories.length !== 0 ? (
-                        categories.map((item: Categorie, i) => (
+                        filteredCategories.map((item: Categorie, i) => (
                             <article
                                 key={i}
                                 className="bg-white flex h-12 border-b w-full"
@@ -105,4 +116,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

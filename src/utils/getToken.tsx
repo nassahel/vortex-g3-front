@@ -9,7 +9,7 @@ export const getAndVerifyToken = () => {
     }
 
     try {
-        const decoded: any = jwtDecode(token);
+        const decoded = jwtDecode(token);
         const currentTime = Date.now() / 1000;
 
         if (decoded.exp < currentTime) {

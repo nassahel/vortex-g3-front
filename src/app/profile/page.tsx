@@ -1,21 +1,18 @@
 "use client";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { DecodedToken } from "@/types/types";
+import { DecodedToken, User } from "@/types/types";
 import ReqAuth from "@/utils/ReqAuth";
 import { jwtDecode } from "jwt-decode";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Info from "./sections/Info";
 import Purchases from "./sections/Purchases";
-import { AiOutlineLogout } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
-import { FaUserEdit } from "react-icons/fa";
 import { LuPencilLine } from "react-icons/lu";
 
-type Props = {};
 
-const page = (props: Props) => {
-    const [user, setUser] = useState<any>();
+const Page = () => {
+    const [user, setUser] = useState<User>();
     const [sectionSelected, setSectionSelected] = useState(0);
     const [image, setImage] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
@@ -49,7 +46,7 @@ const page = (props: Props) => {
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL}profile/upload-image`,
+                `${process.env.NEXT_PUBLIC_API_URL}/profile/upload-image`,
                 {
                     method: "POST",
                     body: formData,
@@ -89,8 +86,8 @@ const page = (props: Props) => {
             try {
                 const response = await fetch(
                     process.env.NEXT_PUBLIC_API_URL +
-                        "users/" +
-                        decodeToken.userId,
+                    "/users/" +
+                    decodeToken.userId,
                     {
                         method: "GET",
                         headers: {
@@ -107,7 +104,7 @@ const page = (props: Props) => {
                 const userData = await response.json();
                 setUser(userData);
                 setUserImage(userData.profile?.profileImage);
-            } catch (error: any) {
+            } catch (error) {
                 console.error("Error:", error.message);
             }
         };
@@ -181,21 +178,19 @@ const page = (props: Props) => {
                     <div className="flex gap-2 border-b border-gray-300">
                         <button
                             onClick={() => setSectionSelected(0)}
-                            className={`w-1/2 text-center py-2 text-sm font-medium border-b-2 ${
-                                sectionSelected === 0
+                            className={`w-1/2 text-center py-2 text-sm font-medium border-b-2 ${sectionSelected === 0
                                     ? "border-black text-black"
                                     : "border-transparent text-gray-500 hover:text-black"
-                            }`}
+                                }`}
                         >
                             Mi información
                         </button>
                         <button
                             onClick={() => setSectionSelected(1)}
-                            className={`w-1/2 text-center py-2 text-sm font-medium border-b-2 ${
-                                sectionSelected === 1
+                            className={`w-1/2 text-center py-2 text-sm font-medium border-b-2 ${sectionSelected === 1
                                     ? "border-black text-black"
                                     : "border-transparent text-gray-500 hover:text-black"
-                            }`}
+                                }`}
                         >
                             Mis compras
                         </button>
@@ -216,4 +211,4 @@ const page = (props: Props) => {
     );
 };
 
-export default page;
+export default Page;

@@ -1,19 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { IoIosSearch, IoMdMenu } from "react-icons/io";
+import { IoMdMenu } from "react-icons/io";
 import { CiShoppingCart } from "react-icons/ci";
 import Link from "next/link";
 import BtnCategory from "./BtnCategory";
-import useAppStore from "@/zustand/zustand";
 import { IoCloseOutline } from "react-icons/io5";
 import { jwtDecode } from "jwt-decode";
 import SearchBar from "./SearchBar";
+import { DecodedUser } from "@/types/types";
 
 const Navbar = () => {
-    const items = useAppStore((state: any) => state.items);
     const [offerModal, setOfferModal] = useState(true);
     const [showNav, setShowNav] = useState(false);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<DecodedUser>(null);
 
     // Función para obtener el usuario desde el localStorage o sessionStorage
     const getUser = () => {
@@ -21,7 +20,7 @@ const Navbar = () => {
             localStorage.getItem("token") || sessionStorage.getItem("token");
         if (token) {
             try {
-                const decodedUser = jwtDecode(token);
+                const decodedUser = jwtDecode<DecodedUser>(token);
                 setUser(decodedUser);
             } catch (error) {
                 console.error("Error al decodificar el token:", error);
@@ -82,18 +81,7 @@ const Navbar = () => {
                     <SearchBar />
                     <div className="flex items-center gap-4">
                         <Link href="/carrito" className="relative h-8 w-7 ">
-                            {items.length !== 0 && (
-                                <p className="absolute top-[7px] left-[14px] text-xs">
-                                    {items.length}
-                                </p>
-                            )}
-                            <CiShoppingCart
-                                className={`text-3xl transition-all hover:scale-110 duration-150 ${
-                                    items.length !== 0
-                                        ? "text-black"
-                                        : "text-neutral-400"
-                                }`}
-                            />
+                            <CiShoppingCart className="text-3xl" />
                         </Link>
                         {user ? (
                             <div className="flex gap-6">
@@ -150,11 +138,6 @@ const Navbar = () => {
                     {/* Botón de Carrito */}
                     <Link href="/carrito" className="relative">
                         <CiShoppingCart className="text-3xl" />
-                        {items.length > 0 && (
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                                {items.length}
-                            </span>
-                        )}
                     </Link>
 
                     {/* Botón de menú hamburguesa */}
@@ -167,20 +150,17 @@ const Navbar = () => {
                 </div>
 
                 <div
-                    className={`${
-                        showNav ? "w-full" : "w-0"
-                    } fixed top-0 z-40 bottom-0 left-0 right-0`}
+                    className={`${showNav ? "w-full" : "w-0"
+                        } fixed top-0 z-40 bottom-0 left-0 right-0`}
                 >
                     <div
                         onClick={() => setShowNav(false)}
-                        className={`${
-                            showNav ? "fixed" : "hidden"
-                        } fixed bg-black/60 animate-appear top-0 bottom-0 left-0 right-0`}
+                        className={`${showNav ? "fixed" : "hidden"
+                            } fixed bg-black/60 animate-appear top-0 bottom-0 left-0 right-0`}
                     ></div>
                     <div
-                        className={`${
-                            showNav ? "" : "-translate-x-[17rem]"
-                        } duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}
+                        className={`${showNav ? "" : "-translate-x-[17rem]"
+                            } duration-300 w-[17rem] bg-neutral-50 z-50 fixed top-0 bottom-0`}
                     >
                         <div
                             onClick={() => setShowNav(false)}

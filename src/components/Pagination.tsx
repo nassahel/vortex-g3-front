@@ -1,10 +1,11 @@
+import { PaginationType } from "@/types/types";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 const Pagination = ({
     pagination,
     handleChangePage,
 }: {
-    pagination: any;
+    pagination: PaginationType;
     handleChangePage: (page: number) => void;
 }) => {
     return (

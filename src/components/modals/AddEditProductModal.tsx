@@ -1,39 +1,41 @@
+import { Categorie, Image} from '@/types/types';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 interface Props {
     setModal: (value: boolean) => void;
     isEditing: boolean;
-    user?: Product | null;
+    product?: Product | null;
 }
+
 
 interface Product {
-    id: string;
-    categories: string[];
-    description: string;
-    images: Image[];
-    name: string;
-    price: number;
-    stock: number;
-}
+      id?: string;
+      images?: Image[];
+      name?: string;
+      price?: number;
+      stock?: number;
+      description?: string;
+      categories?: string[];
+    }
 
-interface Image {
-    url: string;
-}
 
-const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, user: product }) => {
-    const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, product }) => {
+    const [categories, setCategories] = useState<Categorie[]>([]);
     const [formData, setFormData] = useState<Product>({
         id: product?.id || '',
         images: product?.images || [],
         name: isEditing && product ? product.name : '',
-        description: isEditing && product ? product.description : '',
         price: isEditing && product ? product.price : 0,
+        description: isEditing && product ? product.description : '',
         stock: isEditing && product ? product.stock : 0,
         categories: isEditing && product ? product.categories : [],
     });
 
     const url = process.env.NEXT_PUBLIC_API_URL || '';
+
+console.log(product);
+
 
     useEffect(() => {
         fetchCategories();
@@ -58,7 +60,7 @@ const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, user: produ
 
     const fetchCategories = async () => {
         try {
-            const response = await fetch(`${url}category/all`);
+            const response = await fetch(`${url}/category/all`);
             const data = await response.json();
             setCategories(data.data);
         } catch (error) {
@@ -133,15 +135,16 @@ const AddEditProductModal: React.FC<Props> = ({ setModal, isEditing, user: produ
         <section className="fixed z-40 top-0 bottom-0 left-0 right-0 flex justify-center items-center">
             <div onClick={() => setModal(false)} className="fixed z-40 top-0 bottom-0 left-0 right-0 bg-black/50"></div>
             <article className="bg-white w-11/12 max-w-[30rem] rounded-md relative shadow py-6 px-10 z-50">
-                <h2 className="mb-6">{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
+                <h2 className="mb-6 text-center font-bold">{isEditing ? 'Editar Producto' : 'Agregar Producto'}</h2>
+                <label htmlFor="Nombre"></label>
                 <input name="name" value={formData.name} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Nombre" />
-
+                <label htmlFor="Descripción"></label>
                 <textarea name="description" value={formData.description} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Descripción" />
-
+                <label htmlFor="Precio"></label>
                 <input name="price" value={formData.price} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Precio" />
-
+                <label htmlFor="Stock"></label>
                 <input type="number" name="stock" value={formData.stock} onChange={handleChange} className="mb-4 border px-2 py-1 w-full" placeholder="Stock" />
-
+                <label htmlFor="Categorías"></label>
                 <div className="grid grid-cols-3 gap-2 mb-4">
                     {categories.map(cat => (
                         <label key={cat.id} className="flex items-center gap-2">

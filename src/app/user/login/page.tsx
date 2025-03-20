@@ -1,5 +1,4 @@
 "use client";
-import useAppStore from "@/zustand/zustand";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -8,10 +7,9 @@ interface FormData {
     password: string;
 }
 
-const page = () => {
-    // const logUser = useAppStore((state: any) => state.setToken)
+const Page = () => {
     const [loading, setLoading] = useState(false);
-    const [errorType, setErrorType] = useState("");
+    const [errorType, setErrorType] = useState([]);
     const [formData, setFormData] = useState<FormData>({
         email: "",
         password: "",
@@ -24,11 +22,11 @@ const page = () => {
     const login = async (e: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
         e.preventDefault();
-        const URL = process.env.NEXT_PUBLIC_API_URL + "auth/login";
+        const URL = process.env.NEXT_PUBLIC_API_URL + "/auth/login";
 
         if (formData.email === "" || formData.password === "") {
             setLoading(false);
-            return setErrorType("datosIncompletos");
+            // return setErrorType("datosIncompletos");
         }
 
         try {
@@ -40,17 +38,25 @@ const page = () => {
                 },
             });
 
-            if (!response.ok) {
-                throw new Error(`Error al obtener datos: ${response.status}`);
-            }
+            const res = await response.json()
+            console.log(res);
 
-            const data = await response.json();
+            if (!response.ok) {
+
+                if (res.errorMessages) {
+                    setErrorType(res.errorMessages)
+                }
+                if (res.message)
+                    setErrorType([res.message])
+                return
+            }
+            
             setLoading(false);
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("token", res.token);
             window.location.href = "/";
         } catch (error) {
             setLoading(false);
-            console.error("Error al enviar los datos:", error);
+            console.log("Error al enviar los datos:", error);
         }
     };
 
@@ -98,10 +104,13 @@ const page = () => {
 
                     <button
                         type="submit"
-                        className="bg-neutral-500 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg"
+                        className="bg-neutral-500 mb-2 hover:bg-neutral-700 duration-300 text-white text-lg font-semibold py-2 rounded-lg"
                     >
                         {loading ? "Ingresando..." : "Ingresar"}
                     </button>
+                    {errorType.map((error, i) => (
+                        <p className="text-red-600 p-0 text-sm leading-4 text-center" key={i}>{error}</p>
+                    ))}
                 </form>
 
                 <div className="text-center mt-4">
@@ -123,4 +132,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

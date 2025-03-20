@@ -1,16 +1,11 @@
+import { Purchase } from '@/types/types';
 import React, { useState } from 'react'
 
 type Props = {
-  purchases: any;
+  purchases: Purchase[];
 }
 
-interface Purchase {
-  id: string;
-  status: string;
-  price: number;
-  userId: string;
-  createdAt: string;
-}
+
 
 const getInvoice = async (id: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   const token = localStorage.getItem('token');
@@ -22,7 +17,7 @@ const getInvoice = async (id: string, setLoading: React.Dispatch<React.SetStateA
 
   try {
     setLoading(true); // Activar el loader mientras descargamos el archivo
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + 'report/generate-invoice/' + id, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL + '/report/generate-invoice/' + id, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

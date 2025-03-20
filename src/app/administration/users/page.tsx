@@ -41,7 +41,7 @@ const Page = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${URL}users/admin/all`, {
+      const response = await fetch(`${URL}/users/admin/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -76,6 +76,17 @@ const Page = () => {
 
   const commonStyle = "py-2 px-3 border-b border-neutral-300 flex items-center font-semibold";
 
+  const filteredUsers =
+  search !== ""
+      ? users.filter((user) =>
+        user.name
+              .toLowerCase()
+              .trim()
+              .includes(search.toLowerCase().trim())
+      )
+      : users;
+
+
   return (
     <section className="relative">
       {modal && (
@@ -91,7 +102,7 @@ const Page = () => {
           nombre={selectedUser?.name}
           elemento="usuario"
           itemId={selectedUser?.id || ""}
-          ruta="users/delete/"
+          ruta="/users/delete/"
         />
       )}
 
@@ -122,7 +133,7 @@ const Page = () => {
             <div className={`${commonStyle} w-2/12 justify-end`}>Opciones</div>
           </article>
 
-          {users.map((user, i) => (
+          {filteredUsers.map((user, i) => (
             <article key={i} className="bg-white flex">
               <div className={`${commonStyle} w-1/12`}>
                 <img

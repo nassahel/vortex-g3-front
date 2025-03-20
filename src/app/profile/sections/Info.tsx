@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { User } from '@/types/types';
+import { useEffect, useState } from 'react';
 
 type Props = {
-    user: any;
+    user: User;
 };
 
 const Info = ({ user }: Props) => {
-    const info = user && user.profile;
+    // const info = user && user.profile;
     const [edit, setEdit] = useState<string>('');
     const [inputData, setInputData] = useState<string>('');
     const [address, setAddress] = useState<string>('');
@@ -17,7 +18,7 @@ const Info = ({ user }: Props) => {
         const URL = process.env.NEXT_PUBLIC_API_URL;
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${URL}profile/update/${user.id}`, {
+            const response = await fetch(`${URL}/profile/update/${user.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,6 +27,8 @@ const Info = ({ user }: Props) => {
                 body: JSON.stringify({ [field]: inputData }),
             });
             const data = await response.json();
+            console.log(data);
+            
 
             if (response.ok) {
                 // Actualiza el estado local de forma adecuada

@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { IoMdClose } from "react-icons/io";
 import Navigation from "@/components/Navigation";
 
 const ImportProductsPage = () => {
@@ -27,6 +25,8 @@ const ImportProductsPage = () => {
         setFile(selectedFile);
     };
 
+    console.log(error);
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!file) return;
@@ -39,7 +39,7 @@ const ImportProductsPage = () => {
         formData.append("file", file);
 
         try {
-            const response = await fetch(`${URL}product/upload-products`, {
+            const response = await fetch(`${URL}/product/upload-products`, {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + token,
@@ -56,6 +56,8 @@ const ImportProductsPage = () => {
             alert(`${data.cantidad} productos importados correctamente`);
             setFile(null);
         } catch (error) {
+            console.log(error);
+            
             setError(
                 "Error al importar los productos. Por favor, intente nuevamente."
             );

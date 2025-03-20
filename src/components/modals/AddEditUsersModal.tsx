@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 interface Props {
@@ -33,8 +33,8 @@ const AddEditUserModal: React.FC<Props> = ({ setModal, isEditing, user }) => {
     const handleSubmit = async () => {
         const token = localStorage.getItem('token');
         const endpoint = isEditing
-            ? `${url}users/${user?.id}`
-            : `${url}users/`;
+            ? `${url}/users/${user?.id}`
+            : `${url}/users/`;
 
         const method = isEditing ? 'PATCH' : 'POST';
         console.log(formData);

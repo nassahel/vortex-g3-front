@@ -1,11 +1,12 @@
+import { MostBoughtProduct } from "@/types/types";
 import Link from "next/link";
 
 interface Props {
-    item: any;
+    item: MostBoughtProduct;
 }
 
 const ProductCard = ({ item }: Props) => {
-    const { description, image, quantity, name, price } = item;
+    const { name, price } = item;
 
     return (
         <Link
@@ -25,10 +26,10 @@ const ProductCard = ({ item }: Props) => {
                     {item.quantity > 10
                         ? "⭐⭐⭐⭐⭐"
                         : item.quantity > 5
-                        ? "⭐⭐⭐⭐"
-                        : item.quantity > 3
-                        ? "⭐⭐⭐"
-                        : "⭐"}
+                            ? "⭐⭐⭐⭐"
+                            : item.quantity > 3
+                                ? "⭐⭐⭐"
+                                : "⭐"}
                 </div>
                 <p className="text-2xl font-semibold">${price}</p>
             </div>

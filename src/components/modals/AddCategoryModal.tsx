@@ -1,5 +1,4 @@
 "use client"
-import { getToken } from '@/utils/getToken';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 
@@ -21,7 +20,7 @@ const AddCategoryModal: React.FC<Props> = ({ setModal }) => {
     })
 
     const createCategory = async () => {
-        const url = `${process.env.NEXT_PUBLIC_API_URL}category/new`
+        const url = `${process.env.NEXT_PUBLIC_API_URL}/category/new`
         const method = 'POST'
         const token = localStorage.getItem('token');
         if (!token) return console.log('No se pudo obtener el token');

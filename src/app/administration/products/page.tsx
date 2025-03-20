@@ -1,26 +1,24 @@
 "use client";
 import AddEditProductModal from "@/components/modals/AddEditProductModal";
-import { DeleteModal } from "@/components/modals/DeleteModal";
 import Link from "next/link";
+import { DeleteModal } from "@/components/modals/DeleteModal";
 import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Image } from "@/types/types";
+
 
 interface Product {
-    id: string;
-    categories: string[];
-    description: string;
-    images: Image[];
-    name: string;
-    price: number;
-    stock: number;
-}
+      id?: string;
+      images?: Image[];
+      name?: string;
+      price?: number;
+      stock?: number;
+      description?: string;
+      categories?: string[];
+    }
 
-interface Image {
-    url: string;
-}
-
-const page = () => {
+const Page = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [modal, setModal] = useState(false);
     const [productEdit, setProductEdit] = useState<Product | null>(null);
@@ -35,7 +33,7 @@ const page = () => {
         const fetchActiveProducts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(URL + "product/all");
+                const response = await fetch(URL + "/product/all");
                 const data = await response.json();
                 setProducts(data.data);
                 setLoading(false);
@@ -51,22 +49,22 @@ const page = () => {
         input.type = "file";
         input.accept = "image/*";
 
-        input.onchange = async (e: any) => {
-            const file = e.target.files[0];
+        input.addEventListener("change", async (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            const file = target.files ? target.files[0] : null;
             if (!file) return;
-
+        
             const formData = new FormData();
             formData.append("image", file);
-
+        
             try {
-                const response = await fetch(
-                    `${URL}images/upload-image/${productId}`,
-                    {
-                        method: "POST",
-                        body: formData,
-                    }
-                );
-
+              const response = await fetch(
+                `${URL}/images/upload-image/${productId}`,
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
                 const result = await response.json();
                 setRefresh(Math.random());
 
@@ -77,7 +75,7 @@ const page = () => {
             } catch (error) {
                 console.error("Error de conexión", error);
             }
-        };
+        });
         input.click();
     };
 
@@ -86,11 +84,11 @@ const page = () => {
     const filteredProducts =
         search !== ""
             ? products.filter((product) =>
-                  product.name
-                      .toLowerCase()
-                      .trim()
-                      .includes(search.toLowerCase().trim())
-              )
+                product.name
+                    .toLowerCase()
+                    .trim()
+                    .includes(search.toLowerCase().trim())
+            )
             : products;
 
     return (
@@ -98,7 +96,7 @@ const page = () => {
             {modal && (
                 <AddEditProductModal
                     setModal={setModal}
-                    user={productEdit}
+                    product={productEdit}
                     isEditing={modalEdit}
                 />
             )}
@@ -108,11 +106,10 @@ const page = () => {
                     elemento="producto"
                     nombre={productEdit?.name}
                     itemId={productEdit?.id || ""}
-                    ruta="product/delete/"
+                    ruta="/product/delete/"
                 />
             )}
 
-            {/* Búsqueda y botón responsivos */}
             <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <input
                     value={search}
@@ -141,7 +138,6 @@ const page = () => {
             </div>
 
             <section className="flex flex-col gap-1 mt-4">
-                {/* Encabezado responsivo */}
                 <article className="bg-neutral-800 text-white rounded-md font-semibold hidden md:flex">
                     <div className="w-full grid grid-cols-2 md:grid-cols-12 gap-2">
                         <div className={`${commonStyle} md:col-span-2`}>
@@ -162,11 +158,10 @@ const page = () => {
                     </div>
                 </article>
 
-                {/* Productos responsivos */}
                 {loading ? (
                     <p className="mt-6 text-lg text-center">Cargando...</p>
                 ) : (
-                    products.map((item: Product, i) => (
+                    filteredProducts.map((item: Product, i) => (
                         <article
                             key={i}
                             className="bg-white overflow-hidden rounded-md border border-neutral-200 flex flex-col p-4"
@@ -183,14 +178,11 @@ const page = () => {
                                 <div className={`${commonStyle} md:col-span-1`}>
                                     <p>${item.price}</p>
                                 </div>
-                                <div
-                                    className={`${commonStyle} md:col-span-2 flex-wrap`}
-                                >
-                                    {item.categories.map((cat: any, i) => (
+                                <div className={`${commonStyle} md:col-span-2 flex flex-wrap gap-2`}>
+                                    {item.categories.map((cat, i) => (
                                         <p
                                             key={i}
-                                            className="border border-neutral-700 text-sm rounded-lg bg-white w-fit px-1"
-                                        >
+                                            className="text-sm rounded-full bg-gray-900 text-gray-100 px-3 py-1 shadow-md hover:bg-gray-700 transition-all duration-300">
                                             {cat}
                                         </p>
                                     ))}
@@ -218,16 +210,14 @@ const page = () => {
                                 </div>
                             </div>
 
-                            {/* Imágenes responsivas */}
                             <div className="flex items-center gap-2 flex-wrap px-4 py-2 bg-gray-50 border-t border-neutral-200">
                                 {item.images.map((img, idx) => (
                                     <div
                                         key={idx}
-                                        className={`w-16 h-16 rounded overflow-hidden border ${
-                                            idx === 0
-                                                ? "border-2 border-blue-500 shadow-md"
-                                                : "border-neutral-300"
-                                        }`}
+                                        className={`w-16 h-16 rounded overflow-hidden border ${idx === 0
+                                            ? "border-2 border-blue-500 shadow-md"
+                                            : "border-neutral-300"
+                                            }`}
                                     >
                                         <img
                                             src={img.url}
@@ -251,4 +241,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

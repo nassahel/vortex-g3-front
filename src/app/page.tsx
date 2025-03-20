@@ -2,12 +2,10 @@
 import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/cards/ProductCard";
 import Navbar from "@/components/Navbar";
-import { MostBoughtProduct, Product } from "@/types/types";
-import Link from "next/link";
+import { MostBoughtProduct } from "@/types/types";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-    const [page, setPage] = useState(1);
     const [products, setProducts] = useState<MostBoughtProduct[]>();
     const [loading, setLoading] = useState(true);
 
@@ -17,7 +15,7 @@ export default function Home() {
             const URL = process.env.NEXT_PUBLIC_API_URL;
             try {
                 const response = await fetch(
-                    `${URL}product/most-bought-products?limit=4`
+                    `${URL}/product/most-bought-products?limit=4`
                 );
                 const data = await response.json();
                 if (data.length > 0) {
@@ -31,7 +29,7 @@ export default function Home() {
             }
         };
         fetchActiveProducts();
-    }, [page]);
+    }, []);
 
     return (
         <div>
