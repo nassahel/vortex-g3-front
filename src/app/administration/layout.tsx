@@ -17,7 +17,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <ReqAuth allowedRoles={["ADMIN"]}>
-            <div className="min-h-screen bg-gray-100">
+            <div className=" bg-gray-100 min-h-screen">
                 <section className="lg:hidden bg-gray-200 h-screen flex flex-col items-center justify-center text-center text-gray-700 px-4">
                     <img src="/img/pclogo.png" alt="logo PC" className="w-1/3 mb-4" />
                     <p>Esta página solo puede verse desde una PC.</p>
@@ -37,9 +37,9 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
                     </header>
 
                     <section className="flex flex-grow">
-                        <aside className="w-64 bg-gray-800 text-gray-200 flex flex-col justify-between shadow-lg">
+                        <aside className="w-[15rem] bg-gray-800 text-gray-200 pt-10 flex flex-col justify-between shadow-lg">
                             <div>
-                                <Link href="/" className="flex items-center justify-center gap-2 py-3 text-gray-300 hover:bg-gray-700 transition">
+                                <Link href="/" className="flex items-center ps-10 gap-2 py-3 text-gray-300 hover:bg-gray-700 transition">
                                     <MdExitToApp />
                                     <span>Salir</span>
                                 </Link>
@@ -49,7 +49,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
                                         <Link
                                             href={item.link}
                                             key={i}
-                                            className="py-3 text-center hover:bg-gray-700 transition"
+                                            className="py-3 ps-10 hover:bg-gray-700 transition"
                                         >
                                             {item.title}
                                         </Link>
@@ -62,7 +62,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
                             </div>
                         </aside>
 
-                        <main className="flex-grow p-6 bg-white shadow-inner">
+                        <main className="w-full p-6 bg-white shadow-inner">
                             {children}
                         </main>
                     </section>
