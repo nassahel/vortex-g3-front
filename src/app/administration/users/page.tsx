@@ -55,8 +55,6 @@ const Page = () => {
     }
   };
 
-  console.log(users);
-  
 
   useEffect(() => {
     fetchUsers();

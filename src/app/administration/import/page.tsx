@@ -25,7 +25,6 @@ const ImportProductsPage = () => {
         setFile(selectedFile);
     };
 
-    console.log(error);
     
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,7 +51,7 @@ const ImportProductsPage = () => {
             }
 
             const data = await response.json();
-            console.log(data);
+         
             alert(`${data.cantidad} productos importados correctamente`);
             setFile(null);
         } catch (error) {

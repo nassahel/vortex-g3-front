@@ -6,17 +6,18 @@ import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Image } from "@/types/types";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 
 interface Product {
-      id?: string;
-      images?: Image[];
-      name?: string;
-      price?: number;
-      stock?: number;
-      description?: string;
-      categories?: string[];
-    }
+    id?: string;
+    images?: Image[];
+    name?: string;
+    price?: number;
+    stock?: number;
+    description?: string;
+    categories?: string[];
+}
 
 const Page = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -28,21 +29,41 @@ const Page = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const URL = process.env.NEXT_PUBLIC_API_URL;
     const [refresh, setRefresh] = useState<number>(0);
+    const [page, setPage] = useState<number>(1)
+    const [numberOfPages, setNumberOfPages] = useState(1)
+
+
+
+    const nextPage = () => {
+        if (page < numberOfPages) {
+            setPage(page + 1)
+        }
+    }
+
+    const prevPage = () => {
+        if (page > 1) {
+            setPage(page - 1)
+        }
+    }
+
+    console.log(numberOfPages);
+
 
     useEffect(() => {
         const fetchActiveProducts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(URL + "/product/all");
+                const response = await fetch(URL + "/product/all?page=" + page);
                 const data = await response.json();
                 setProducts(data.data);
+                setNumberOfPages(data.meta.totalPages);
                 setLoading(false);
             } catch (error) {
                 console.error("No se pudo obtener los datos", error);
             }
         };
         fetchActiveProducts();
-    }, [deleteModal, refresh]);
+    }, [deleteModal, refresh, page]);
 
     const handleAddImage = async (productId: string) => {
         const input = document.createElement("input");
@@ -53,18 +74,18 @@ const Page = () => {
             const target = e.target as HTMLInputElement;
             const file = target.files ? target.files[0] : null;
             if (!file) return;
-        
+
             const formData = new FormData();
             formData.append("image", file);
-        
+
             try {
-              const response = await fetch(
-                `${URL}/images/upload-image/${productId}`,
-                {
-                  method: "POST",
-                  body: formData,
-                }
-              );
+                const response = await fetch(
+                    `${URL}/images/upload-image/${productId}`,
+                    {
+                        method: "POST",
+                        body: formData,
+                    }
+                );
                 const result = await response.json();
                 setRefresh(Math.random());
 
@@ -110,7 +131,7 @@ const Page = () => {
                 />
             )}
 
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 ">
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -137,9 +158,9 @@ const Page = () => {
                 </div>
             </div>
 
-            <section className="flex flex-col gap-1 mt-4">
-                <article className="bg-neutral-800 text-white rounded-md font-semibold hidden md:flex">
-                    <div className="w-full grid grid-cols-2 md:grid-cols-12 gap-2">
+            <section className="flex flex-col mt-4">
+                <article className="bg-gray-800 text-white font-semibold hidden md:flex">
+                    <div className="w-full grid grid-cols-2 md:grid-cols-12">
                         <div className={`${commonStyle} md:col-span-2`}>
                             <p className="capitalize">Nombre</p>
                         </div>
@@ -237,6 +258,11 @@ const Page = () => {
                     ))
                 )}
             </section>
+            <div className="flex gap-4 flex-center mt-10">
+                <button onClick={prevPage}><IoIosArrowBack /></button>
+                <div>{page}</div>
+                <button onClick={nextPage}><IoIosArrowForward /></button>
+            </div>
         </section>
     );
 };
