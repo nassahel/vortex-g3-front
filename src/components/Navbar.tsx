@@ -183,7 +183,7 @@ const Navbar = () => {
                                 <Link href="">Favoritos</Link>
                             </li>
                             <li className="m-3">
-                                <Link href="/profile" className="text-black">
+                                <Link href="/user/login" className="text-black">
                                     {user
                                         ? user.userName?.split(" ")[0]
                                         : "Ingresá"}
